@@ -19,6 +19,25 @@ const MyProfileScreen = () => {
   const [ email, setEmail ] = useState("eagle625@naver.com");
   const [ newName, setNewName ] = useState("");
 
+  // 프로필 업데이트 함수
+  const updateProfileImage = async () => {
+    try {
+      const token = await getData("access-token");
+      const formData = new FormData();
+      formData.append("image", image);
+      console.log("보내기 전: ", formData);
+      const response = await axios.post("http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/profile", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log("error: ", error);
+    };
+  };
+
+  // 닉네임 변경 함수
   const updateNickName = async () => {
     try {
       const token = await getData("access-token");
@@ -32,9 +51,10 @@ const MyProfileScreen = () => {
       console.log(response);
     } catch (error) {
       console.log("error: ", error);
-    } 
-  }
+    } ;
+  };
 
+  // 사용자 정보 불러오기 함수
   const fetchUserInfo = async () => {
     try {
       const token = await getData("access-token");
@@ -59,6 +79,12 @@ const MyProfileScreen = () => {
 
     fetchData();
   }, [isOpened]);
+
+  useEffect(() => {
+    if (image !== null) {
+      updateProfileImage();
+    };
+  }, [image]);
 
   return (
     <>

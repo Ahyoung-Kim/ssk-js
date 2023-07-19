@@ -7,6 +7,7 @@ const client = axios.create({
   baseURL: APIURL,
   headers: {
     Accept: "application/json",
+    "Content-Type": "application/json",
   },
 });
 

@@ -12,7 +12,7 @@ import NotificationScreen from "../screens/root/NotificationScreen";
 const Stack = createNativeStackNavigator(); // Stack 네비게이터 생성
 const RootNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="TabNavigator">
+    <Stack.Navigator initialRouteName="LoginScreen">
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="OAuthLoginScreen" component={OAuthLoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="OAuthInfoScreen" component={OAuthInfoScreen} options={{ headerShown: false }} />
