@@ -6,7 +6,7 @@ import color from "../../common/color";
 import ModalContainer from "./ModalContainer";
 
 import client from "../../config/axios";
-import Loading from "./Loading";
+import Loading from "../common/Loading";
 
 const InviteCodeModal = ({ modalVisible, setModalVisible, tutoringId }) => {
   const [inviteCode, setInviteCode] = useState("");

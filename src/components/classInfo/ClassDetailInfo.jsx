@@ -6,7 +6,7 @@ import color from "../../common/color";
 import ClassUserInfo from "./ClassUserInfo";
 
 import { Day } from "../../utils/date";
-import InviteCodeModal from "../common/InviteCodeModal";
+import InviteCodeModal from "../modal/InviteCodeModal";
 
 const ClassDetailInfo = ({ classInfo }) => {
   const { dayTimeList, startDate, subject, tuteeName, tutorName, tutoringId } =

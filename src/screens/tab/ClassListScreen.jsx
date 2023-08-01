@@ -17,6 +17,9 @@ const ClassListScreen = () => {
   const [classList, setClassList] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // 수업 초대 수락 모달
+  const [modalVisible, setModalVisible] = useState(false);
+
   const getClassList = async () => {
     setLoading(true);
 
