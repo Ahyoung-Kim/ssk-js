@@ -4,37 +4,27 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 
 import ModalContainer from "./ModalContainer";
-
-import client from "../../config/axios";
 import Loading from "../common/Loading";
 
-const InviteCodeModal = ({ modalVisible, setModalVisible, tutoringId }) => {
-  const [inviteCode, setInviteCode] = useState("");
-  const [loading, setLoading] = useState(false);
+import client from "../../config/axios";
 
-  const getInviteCode = async () => {
+const ApproveModal = ({ modalVisible, setModalVisible }) => {
+  const [loading, setLoading] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
+
+  const approveInvitation = async () => {
     setLoading(true);
 
     try {
-      const ret = await client.post(`/api/tutoring/${tutoringId}/invite/tutee`);
-      // console.log(ret.status);
+      const ret = await client.post("/api/tutoring/invite/approve", {
+        invitationCode: inviteCode,
+      });
+
       if (ret.status == 200) {
-        console.log(ret.data);
-        setInviteCode(ret.data.invitationCode);
+        setModalVisible(false);
       }
     } catch (err) {
-      console.log("Invite code error: ", err);
-      console.log(err?.response?.status);
-
-      const status = err?.response?.status;
-
-      if (status >= 500) {
-        setInviteCode(`${status} 서버 에러`);
-      } else if (status === 404) {
-        setInviteCode("404 Not found");
-      } else if (status === 409) {
-        setInviteCode("409 Conflict: ");
-      }
+      console.log("Approve invitation error: ", err);
     } finally {
       setLoading(false);
     }
@@ -47,7 +37,7 @@ const InviteCodeModal = ({ modalVisible, setModalVisible, tutoringId }) => {
         setModalVisible={setModalVisible}
       >
         <DescriptionText>
-          초대 코드를 발급하여 학생을 초대하세요!
+          초대 코드를 입력하여 수업에 참여하세요!
         </DescriptionText>
 
         <InviteCodeWrapper>
@@ -55,9 +45,10 @@ const InviteCodeModal = ({ modalVisible, setModalVisible, tutoringId }) => {
             <Loading size={50} padding={0} />
           ) : (
             <InviteCode
-              editable={false}
               multiline={true}
-              value={inviteCode ? inviteCode : "초대 코드"}
+              value={inviteCode}
+              onChangeText={setInviteCode}
+              placeholder="초대 코드를 입력하세요"
             />
           )}
         </InviteCodeWrapper>
@@ -65,18 +56,16 @@ const InviteCodeModal = ({ modalVisible, setModalVisible, tutoringId }) => {
         <InviteButton
           loading={loading}
           activeOpacity={0.5}
-          onPress={loading ? null : getInviteCode}
+          onPress={loading ? null : approveInvitation}
         >
-          <ButtonText>
-            {inviteCode ? "초대 코드 재발급" : "초대 코드 발급"}
-          </ButtonText>
+          <ButtonText>수업 참여하기</ButtonText>
         </InviteButton>
       </ModalContainer>
     </>
   );
 };
 
-export default InviteCodeModal;
+export default ApproveModal;
 
 const DescriptionText = styled.Text`
   font-size: 12;
@@ -97,7 +86,6 @@ const InviteCode = styled.TextInput`
   text-align: center;
   font-size: 24;
   font-weight: bold;
-  color: ${({ inviteCode }) => (inviteCode ? "#000" : color.COLOR_GRAY_TEXT)};
 `;
 
 const InviteButton = styled.TouchableOpacity`

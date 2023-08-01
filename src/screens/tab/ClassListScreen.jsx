@@ -10,8 +10,13 @@ import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import EmptyClassList from "../../components/common/EmptyClassList";
+import ApproveModal from "../../components/modal/ApproveModal";
+
+import useIsTutor from "../../hooks/useIsTutor";
+import { useNavigation } from "@react-navigation/native";
 
 const ClassListScreen = () => {
+  const isTutor = useIsTutor();
   // 학생 => [{ tutoringId, subject, tutorName }]
   // 선생 => [{ tutoringId, subject, tuteeName }]
   const [classList, setClassList] = useState(null);
@@ -19,6 +24,8 @@ const ClassListScreen = () => {
 
   // 수업 초대 수락 모달
   const [modalVisible, setModalVisible] = useState(false);
+
+  const navigation = useNavigation();
 
   const getClassList = async () => {
     setLoading(true);
@@ -45,6 +52,14 @@ const ClassListScreen = () => {
     }
   };
 
+  const handlePressIcon = () => {
+    if (isTutor) {
+      navigation.navigate("CreateClassScreen");
+    } else {
+      setModalVisible(true);
+    }
+  };
+
   useEffect(() => {
     getClassList();
   }, []);
@@ -67,7 +82,17 @@ const ClassListScreen = () => {
         )}
       </MainLayout>
 
-      <CircleIconButton name="plus" />
+      <CircleIconButton name={"plus"} onPress={handlePressIcon} />
+
+      {/* 학생 수업 참여 모달 */}
+      {!isTutor && (
+        <>
+          <ApproveModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        </>
+      )}
     </>
   );
 };
