@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 
 import { clearData, getData } from "../../constants/asyncStorage";
 
@@ -58,6 +58,11 @@ const MyPageScreen = () => {
         text: "확인",
         onPress: async () => {
           await clearData();
+          navigation.dispatch(
+            CommonActions.reset({
+              routes: [{ name: "LoginScreen" }],
+            })
+          );
           navigation.navigate("LoginScreen");
         },
       },

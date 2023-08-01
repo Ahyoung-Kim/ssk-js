@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
 // import { SafeAreaView } from "react-native-safe-area-context";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, RefreshControl } from "react-native";
 import Header from "./Header";
 
-const MainLayout = ({ children, headerText, headerType }) => {
+const MainLayout = ({ children, headerText, headerType, handleRefresh }) => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    if (handleRefresh) {
+      setRefreshing(true);
+      handleRefresh().then(() => {
+        setRefreshing(false);
+      });
+    }
+  };
+
   return (
     <Wrapper>
       <Header text={headerText} type={headerType} />
-      <Inner>
+      <Inner
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Contents>{children}</Contents>
       </Inner>
     </Wrapper>

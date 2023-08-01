@@ -6,11 +6,21 @@ import color from "../../common/color";
 import ClassUserInfo from "./ClassUserInfo";
 
 import { Day } from "../../utils/date";
-import InviteCodeModal from "../common/InviteCodeModal";
+import InviteCodeModal from "../modal/InviteCodeModal";
 
 const ClassDetailInfo = ({ classInfo }) => {
-  const { dayTimeList, startDate, subject, tuteeName, tutorName, tutoringId } =
-    classInfo;
+  const {
+    dayTimeList,
+    startDate,
+    subject,
+    tuteeName,
+    tutorName,
+    tutoringId,
+    tutorImage,
+    tuteeImage,
+  } = classInfo;
+
+  // console.log(classInfo);
 
   // 초대 코드 모달
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,15 +32,15 @@ const ClassDetailInfo = ({ classInfo }) => {
           <InfoContainer>
             <InfroWrapper>
               <ClassUserInfo
-                profileImageUrl={null}
-                name={"신짱구"}
+                profileImageUrl={tuteeImage}
+                name={tuteeName}
                 role="TUTEE"
               />
             </InfroWrapper>
 
             <InfroWrapper>
               <ClassUserInfo
-                profileImageUrl={null}
+                profileImageUrl={tutorImage}
                 name={tutorName}
                 role="TUTOR"
               />

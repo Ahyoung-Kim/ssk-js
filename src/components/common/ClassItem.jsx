@@ -35,9 +35,9 @@ const ClassItem = ({ classItem }) => {
 
           <UserSmallText>
             {!isTutor
-              ? tutorName
+              ? tutorName + " 선생님"
               : tuteeName
-              ? tuteeName
+              ? tuteeName + " 학생"
               : "학생이 초대되지 않았습니다."}
           </UserSmallText>
         </UserTextView>

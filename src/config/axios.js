@@ -1,7 +1,6 @@
 import { APIURL } from "./key";
 import axios from "axios";
-import { getData, storeData } from "../constants/asyncStorage";
-import navigation from "./navigation";
+import { clearData, getData, storeData } from "../constants/asyncStorage";
 
 const client = axios.create({
   baseURL: APIURL,
@@ -22,6 +21,7 @@ client.interceptors.request.use(
   },
   function (error) {
     console.log("client error: ", error);
+    return Promise.reject(error);
   }
 );
 
@@ -41,17 +41,27 @@ client.interceptors.response.use(
       console.log("Unauthorized Error");
       const originalRequest = config;
       const refreshToken = await getData("refreshToken");
+      const oldAccessToken = await getData("accessToken");
 
-      // console.log(refreshToken);
       if (!refreshToken) {
         return Promise.reject(error);
       }
 
       try {
+        console.log("refreshToken: ", refreshToken);
         // 토큰 재발급 IF-43
-        const ret = await client.post(`/api/auth/refresh`, {
-          refreshToken,
-        });
+        const ret = await axios.post(
+          `${APIURL}/api/auth/refresh`,
+          {
+            refreshToken,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${oldAccessToken}`,
+            },
+          }
+        );
+
         console.log("토큰 재발급: ", ret.data);
         if (ret.status == 200) {
           const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
@@ -59,16 +69,19 @@ client.interceptors.response.use(
           await storeData("accessToken", newAccessToken);
           await storeData("refreshToken", newRefreshToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
           return axios(originalRequest);
-        } else {
-          console.log("dd");
         }
       } catch (err) {
+        // refreshToken 만료
         console.log("토큰 재발급 에러: ", err);
+        await clearData();
       }
     } else if (status == 400) {
+      // Bad Request
       console.log("Bad request");
     } else if (status == 409) {
+      // Conflict
       console.log("request conflict");
     }
 
