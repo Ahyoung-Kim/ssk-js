@@ -28,8 +28,6 @@ const ClassListScreen = () => {
   const navigation = useNavigation();
 
   const getClassList = async () => {
-    setLoading(true);
-
     try {
       const ret = await client.get("/api/tutoring/list");
       // console.log(ret.status);
@@ -47,8 +45,6 @@ const ClassListScreen = () => {
           setClassList([]);
         }
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -61,12 +57,17 @@ const ClassListScreen = () => {
   };
 
   useEffect(() => {
-    getClassList();
+    setLoading(true);
+    getClassList().then(() => setLoading(false));
   }, []);
 
   return (
     <>
-      <MainLayout headerText={"수업 목록"} headerType={"basic"}>
+      <MainLayout
+        headerText={"수업 목록"}
+        headerType={"basic"}
+        handleRefresh={getClassList}
+      >
         {loading ? (
           <Loading />
         ) : classList ? (
