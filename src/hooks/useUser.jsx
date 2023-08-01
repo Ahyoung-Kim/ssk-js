@@ -13,7 +13,9 @@ const useUser = () => {
     let name = await getData("name");
     let userId = await getData("userId");
 
-    if (!role || !name || !userId) {
+    if (!userId) {
+      navigation.navigate("LoginScreen");
+    } else if (!role || !name || !userId) {
       try {
         const ret = await client.get("/api/user/detail");
         if (ret.status == 200) {
