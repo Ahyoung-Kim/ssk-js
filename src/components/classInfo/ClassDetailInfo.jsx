@@ -20,7 +20,7 @@ const ClassDetailInfo = ({ classInfo }) => {
     tuteeImage,
   } = classInfo;
 
-  console.log(classInfo);
+  // console.log(classInfo);
 
   // 초대 코드 모달
   const [modalVisible, setModalVisible] = useState(false);
