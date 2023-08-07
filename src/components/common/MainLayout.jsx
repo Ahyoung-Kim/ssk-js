@@ -5,8 +5,11 @@ import color from "../../common/color";
 // import { SafeAreaView } from "react-native-safe-area-context";
 import { SafeAreaView, RefreshControl } from "react-native";
 import Header from "./Header";
+import useAxiosInterceptors from "../../hooks/useAxiosInterceptors";
 
 const MainLayout = ({ children, headerText, headerType, handleRefresh }) => {
+  useAxiosInterceptors();
+
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
