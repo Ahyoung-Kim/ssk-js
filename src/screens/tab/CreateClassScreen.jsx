@@ -15,7 +15,12 @@ import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import client from "../../config/axios";
 
+import { useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
+
 const CreateClassScreen = () => {
+  const dispatch = useDispatch();
+
   // 과목 이름
   const [subject, setSubject] = useState("");
   // 정규 일정일: 월(1) ~ 일(7)
@@ -77,9 +82,10 @@ const CreateClassScreen = () => {
         const ret = await client.post("/api/tutoring", body);
 
         if (ret.status === 200) {
-          setTimeout(() => {
-            navigation.navigate("HomeScreen");
-          }, 2000);
+          getClassList().then((ret) => {
+            dispatch(ret);
+            navigation.navigate("ClassListScreen");
+          });
         }
       } catch (err) {
         console.log("Create class request fail: ", err);
