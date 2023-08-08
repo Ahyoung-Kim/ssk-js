@@ -7,7 +7,13 @@ import { SafeAreaView, RefreshControl } from "react-native";
 import Header from "./Header";
 import useAxiosInterceptors from "../../hooks/useAxiosInterceptors";
 
-const MainLayout = ({ children, headerText, headerType, handleRefresh }) => {
+const MainLayout = ({
+  children,
+  headerText,
+  headerType,
+  handleRefresh,
+  bgColor = color.COLOR_GRAY_BACKGROUND,
+}) => {
   useAxiosInterceptors();
 
   const [refreshing, setRefreshing] = useState(false);
@@ -25,11 +31,12 @@ const MainLayout = ({ children, headerText, headerType, handleRefresh }) => {
     <Wrapper>
       <Header text={headerText} type={headerType} />
       <Inner
+        bgColor={bgColor}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Contents>{children}</Contents>
+        <Contents bgColor={bgColor}>{children}</Contents>
       </Inner>
     </Wrapper>
   );
@@ -46,12 +53,12 @@ const Wrapper = styled(SafeAreaView)`
 const Inner = styled.ScrollView`
   width: 100%;
   flex: 1;
-  background-color: ${color.COLOR_GRAY_BACKGROUND};
+  background-color: ${({ bgColor }) => bgColor};
 `;
 
 const Contents = styled.View`
   width: 100%;
   flex: 1;
-  background-color: ${color.COLOR_GRAY_BACKGROUND};
+  background-color: ${({ bgColor }) => bgColor};
   padding-bottom: 100;
 `;

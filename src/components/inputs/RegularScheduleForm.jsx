@@ -6,7 +6,6 @@ import color from "../../common/color";
 import InputContainer from "./InputContainer";
 import TimePicker from "../common/TimePicker";
 
-import { Text } from "react-native";
 import { dateToTimeFormat } from "../../utils/date";
 
 import { FontAwesome5, Feather } from "@expo/vector-icons";
@@ -15,22 +14,12 @@ const RegularScheduleForm = ({ days, setDays }) => {
   const [selectedDay, setSelectedDay] = useState(null);
 
   const today = new Date();
-  today.setMinutes(0);
+
   const [startTime, setStartTime] = useState(today);
   const [endTime, setEndTime] = useState(today);
 
   const handleDayPress = (objKey) => {
-    const dayInfo = { ...days[objKey] };
-
     setSelectedDay(objKey);
-
-    setDays({
-      ...days,
-      [objKey]: {
-        ...dayInfo,
-        selected: true,
-      },
-    });
   };
 
   const handlePressXMark = (objKey) => {
@@ -64,6 +53,7 @@ const RegularScheduleForm = ({ days, setDays }) => {
         ...dayInfo,
         startTime,
         endTime,
+        selected: true,
       },
     });
   };

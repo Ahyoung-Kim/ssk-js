@@ -8,7 +8,12 @@ import Loading from "../common/Loading";
 
 import client from "../../config/axios";
 
+import { useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
+
 const ApproveModal = ({ modalVisible, setModalVisible }) => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
 
@@ -21,7 +26,10 @@ const ApproveModal = ({ modalVisible, setModalVisible }) => {
       });
 
       if (ret.status == 200) {
-        setModalVisible(false);
+        getClassList().then((ret) => {
+          dispatch(ret);
+          setModalVisible(false);
+        });
       }
     } catch (err) {
       console.log("Approve invitation error: ", err);

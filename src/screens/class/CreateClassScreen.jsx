@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import styled from "styled-components/native";
 
+import MainLayout from "../../components/common/MainLayout";
 import KeyboardAvoidingLayout from "../../components/common/KeyboardAvoidingLayout";
-import WhiteLayout from "../../components/common/WhiteLayout";
 import TextInputForm from "../../components/inputs/TextInputForm";
 import DatePickerForm from "../../components/inputs/DatePickerForm";
 import RegularScheduleForm from "../../components/inputs/RegularScheduleForm";
@@ -18,13 +18,15 @@ import client from "../../config/axios";
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
 
+import initialRegularDays from "../../constants/initialRegularDays";
+
 const CreateClassScreen = () => {
   const dispatch = useDispatch();
 
   // 과목 이름
   const [subject, setSubject] = useState("");
   // 정규 일정일: 월(1) ~ 일(7)
-  const [days, setDays] = useState(initialDays);
+  const [days, setDays] = useState(initialRegularDays);
   // 수업 시작일
   const [startDate, setStartDate] = useState(new Date());
 
@@ -107,7 +109,7 @@ const CreateClassScreen = () => {
 
   return (
     <KeyboardAvoidingLayout>
-      <WhiteLayout headerText={"수업 생성"} headerType={"back"}>
+      <MainLayout headerText={"수업 생성"} headerType={"back"} bgColor="white">
         <Wrapper>
           <TextInputForm
             label="과목 이름"
@@ -124,7 +126,7 @@ const CreateClassScreen = () => {
 
           <RegularScheduleForm days={days} setDays={setDays} />
         </Wrapper>
-      </WhiteLayout>
+      </MainLayout>
 
       <BigButton onPress={handleCreateClass} text="수업 생성" />
     </KeyboardAvoidingLayout>
@@ -141,62 +143,3 @@ const Wrapper = styled.View`
   justify-content: flex-start;
   margin-vertical: 15;
 `;
-
-const initialDays = {
-  MON: {
-    id: "MON",
-    value: 1,
-    text: "월",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-  TUE: {
-    id: "TUE",
-    value: 2,
-    text: "화",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-  WED: {
-    id: "WED",
-    value: 3,
-    text: "수",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-  THU: {
-    id: "THU",
-    value: 4,
-    text: "목",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-  FRI: {
-    id: "FRI",
-    value: 5,
-    text: "금",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-  SAT: {
-    id: "SAT",
-    value: 6,
-    text: "토",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-  SUN: {
-    id: "SUN",
-    value: 7,
-    text: "일",
-    selected: false,
-    startTime: null,
-    endTime: null,
-  },
-};

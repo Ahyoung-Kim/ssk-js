@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 
 import { Modal } from "react-native";
 
@@ -17,10 +21,16 @@ import ClassInfo from "../../components/classInfo/ClassInfo";
 import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
 import ClassDetailInfo from "../../components/classInfo/ClassDetailInfo";
+import useIsTutor from "../../hooks/useIsTutor";
+import CircleIconButton from "../../components/common/CircleIconButton";
 
 const ClassInfoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+
+  const isTutor = useIsTutor();
+
+  const isFocused = useIsFocused();
 
   const { tutoringId } = route.params;
 
@@ -35,6 +45,11 @@ const ClassInfoScreen = () => {
   };
   const handlePressReviewBtn = () => {
     navigation.navigate("ReviewListPage");
+  };
+  const handlePressCircleIcon = () => {
+    navigation.navigate("UpdateClassScreen", {
+      classInfo,
+    });
   };
 
   const getClassInfo = async () => {
@@ -60,45 +75,63 @@ const ClassInfoScreen = () => {
     }
   }, [year, month, tutoringId]);
 
+  useEffect(() => {
+    if (isFocused && route.params.refetch) {
+      if (year && month && tutoringId) {
+        getClassInfo();
+      }
+    }
+  }, [isFocused]);
+
   return (
-    <MainLayout headerText={"수업 정보"} headerType={"back"}>
-      {!classInfo ? (
-        <Loading />
-      ) : (
-        <>
-          {/* <SubLayout>
+    <>
+      <MainLayout headerText={"수업 정보"} headerType={"back"}>
+        {!classInfo ? (
+          <Loading />
+        ) : (
+          <>
+            {/* <SubLayout>
             <InfroWrapper>
               <TeacherInfo />
               <StudentInfo />
               <ClassInfo />
             </InfroWrapper>
           </SubLayout> */}
-          <ClassDetailInfo classInfo={classInfo} />
+            <ClassDetailInfo classInfo={classInfo} />
 
-          <Calendar
-            scheduleList={classInfo?.scheduleList}
-            onChangeYearMonth={(_year, _month) => {
-              if (_year !== year) {
-                setYear(_year);
-              }
+            <Calendar
+              scheduleList={classInfo?.scheduleList}
+              onChangeYearMonth={(_year, _month) => {
+                if (_year !== year) {
+                  setYear(_year);
+                }
 
-              if (_month !== month) {
-                setMonth(_month);
-              }
-            }}
-          />
+                if (_month !== month) {
+                  setMonth(_month);
+                }
+              }}
+            />
 
-          <SubLayout>
-            <TouchableArea onPress={handlePressHwBtn}>
-              <HwNotePreview />
-            </TouchableArea>
-            <TouchableArea onPress={handlePressReviewBtn}>
-              <ReviewNotePreview />
-            </TouchableArea>
-          </SubLayout>
-        </>
+            <SubLayout>
+              <TouchableArea onPress={handlePressHwBtn}>
+                <HwNotePreview />
+              </TouchableArea>
+              <TouchableArea onPress={handlePressReviewBtn}>
+                <ReviewNotePreview />
+              </TouchableArea>
+            </SubLayout>
+          </>
+        )}
+      </MainLayout>
+
+      {isTutor && (
+        <CircleIconButton
+          name="cog"
+          onPress={handlePressCircleIcon}
+          size={18}
+        />
       )}
-    </MainLayout>
+    </>
   );
 };
 
