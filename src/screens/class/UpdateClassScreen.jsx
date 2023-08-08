@@ -20,6 +20,9 @@ import {
 import client from "../../config/axios";
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
+import ConfirmButtons from "../../components/common/ConfirmButtons";
+
+import { Alert } from "react-native";
 
 const UpdateClassScreen = () => {
   const route = useRoute();
@@ -77,7 +80,34 @@ const UpdateClassScreen = () => {
     }
   };
 
-  const handleDeleteClass = async () => {};
+  const deleteClass = async () => {
+    try {
+      const ret = await client.delete(`/api/tutoring/${classInfo.tutoringId}`);
+
+      if (ret.status == 200) {
+        getClassList().then((ret) => {
+          dispatch(ret);
+          navigation.navigate("ClassListScreen");
+        });
+      }
+    } catch (err) {
+      console.log("delete class error: ", err);
+    }
+  };
+
+  const handleDeleteClass = () => {
+    Alert.alert("수업 삭제", "수업을 삭제하시겠습니까?", [
+      {
+        text: "취소",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "삭제",
+        onPress: deleteClass,
+      },
+    ]);
+  };
 
   useEffect(() => {
     const { dayTimeList } = classInfo;
@@ -133,7 +163,14 @@ const UpdateClassScreen = () => {
         </Wrapper>
       </MainLayout>
 
-      <BigButton onPress={handleUpdateClass} text="수업 정보 수정" />
+      <ConfirmButtons
+        cancelText="삭제"
+        confirmText={"수정"}
+        filled={true}
+        buttonColor={color.COLOR_MAIN}
+        onCancel={handleDeleteClass}
+        onConfirm={handleUpdateClass}
+      />
     </KeyboardAvoidingLayout>
   );
 };

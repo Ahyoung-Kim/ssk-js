@@ -9,15 +9,17 @@ const windowWidth = Dimensions.get("window").width;
 
 const ConfirmButtons = ({
   confirmText,
+  cancelText = "취소",
   buttonColor,
+  cancelButtonColor,
   filled,
   onCancel,
   onConfirm,
 }) => {
   return (
     <Container>
-      <Button onPress={onCancel}>
-        <ButtonText>취소</ButtonText>
+      <Button onPress={onCancel} buttonColor={cancelButtonColor}>
+        <ButtonText textColor={cancelButtonColor}>{cancelText}</ButtonText>
       </Button>
       <Button onPress={onConfirm} buttonColor={buttonColor} filled={filled}>
         <ButtonText textColor={filled ? "white" : buttonColor}>
