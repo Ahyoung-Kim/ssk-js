@@ -8,8 +8,6 @@ import {
   useRoute,
 } from "@react-navigation/native";
 
-import { Modal } from "react-native";
-
 import MainLayout from "../../components/common/MainLayout";
 import Calendar from "../../components/calendar/Calendar";
 import HwNotePreview from "../../components/homeworkNote/HwNotePreview";
@@ -58,10 +56,8 @@ const ClassInfoScreen = () => {
         `/api/tutoring/detail/${tutoringId}/${year}/${month}`
       );
 
-      // console.log(ret.status);
-      // console.log(ret.data);
-
       if (ret.status == 200) {
+        // console.log(ret.data);
         setClassInfo(ret.data);
       }
     } catch (err) {
@@ -90,17 +86,10 @@ const ClassInfoScreen = () => {
           <Loading />
         ) : (
           <>
-            {/* <SubLayout>
-            <InfroWrapper>
-              <TeacherInfo />
-              <StudentInfo />
-              <ClassInfo />
-            </InfroWrapper>
-          </SubLayout> */}
             <ClassDetailInfo classInfo={classInfo} />
 
             <Calendar
-              scheduleList={classInfo?.scheduleList}
+              classInfo={classInfo}
               onChangeYearMonth={(_year, _month) => {
                 if (_year !== year) {
                   setYear(_year);

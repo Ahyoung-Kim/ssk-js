@@ -27,6 +27,104 @@ export const timeFormatToDate = (timeFormat) => {
   return today;
 };
 
+export const makeMarkedDatesByTutoringIndex = (tutoringList) => {
+  const result = {};
+
+  if (tutoringList) {
+    for (let i = 0; i < tutoringList.length; i++) {
+      const scheduleList = tutoringList[i].scheduleList;
+
+      for (let j = 0; j < scheduleList.length; j++) {
+        const dateNum = scheduleList[j].date;
+        const target = result[dateNum];
+        if (!target) {
+          result[dateNum] = [i];
+        } else {
+          result[dateNum] = [...target, i];
+        }
+      }
+    }
+  }
+
+  return result;
+};
+
+export const calendarDays = (month, year, tutoringList) => {
+  // 이전 달
+  const prev = new Date(year, month - 1, 0);
+  // 선택한 연/달
+  const curr = new Date(year, month, 0);
+  // 다음 달
+  const next = new Date(year, month + 1, 0);
+  const prevLastDate = prev.getDate();
+  const prevLastDay = prev.getDay();
+  const currLastDate = curr.getDate();
+  const currLastDay = curr.getDay();
+
+  const result = [];
+  let index = 0;
+
+  const markedDates = makeMarkedDatesByTutoringIndex(tutoringList);
+
+  // 이전 달
+  for (let i = prevLastDay; i < 6 && i >= 0; i--) {
+    const num = prevLastDate - i;
+    const date = new Date(prev.getFullYear(), prev.getMonth(), num);
+    const day = date.getDay() + 1;
+    result.push({
+      date,
+      day,
+      num,
+      state: CalendarStates.prev,
+      mark: false,
+      tutoringIndices: [],
+    });
+    index++;
+  }
+
+  // 선택한 연/달
+  for (let i = 1; i <= currLastDate; i++) {
+    const day = (index % 7) + 1;
+    const num = i;
+    const state =
+      day === 1
+        ? CalendarStates.sun
+        : day === 7
+        ? CalendarStates.sat
+        : CalendarStates.weekday;
+    const date = new Date(curr.getFullYear(), curr.getMonth(), num);
+    const mark = markedDates[num] ? true : false;
+
+    result.push({
+      state,
+      day,
+      num,
+      date,
+      mark,
+      tutoringIndices: markedDates[num],
+    });
+    index++;
+  }
+
+  // 다음 달
+  for (let i = 1; i < 7 - currLastDay; i++) {
+    const date = new Date(next.getFullYear(), next.getMonth(), i);
+    const day = date.getDay() + 1;
+    const num = i;
+
+    result.push({
+      state: CalendarStates.next,
+      num,
+      date,
+      day,
+      mark: false,
+      tutoringIndices: [],
+    });
+  }
+
+  return result;
+};
+
 export const getTotalDays = (selectedMonth, selectedYear, scheduleList) => {
   const prev = new Date(selectedYear, selectedMonth - 1, 0);
   const curr = new Date(selectedYear, selectedMonth, 0);
@@ -74,6 +172,7 @@ export const getTotalDays = (selectedMonth, selectedYear, scheduleList) => {
     });
     index++;
   }
+
   // curr month
   for (let i = 1; i <= currLastDate; i++) {
     const day = index % 7;

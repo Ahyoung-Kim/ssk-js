@@ -12,9 +12,9 @@ import CalendarDatePicker from "./CalendarDatePicker";
 const Calendar = ({
   onChangeDate = () => {},
   onChangeYearMonth = () => {},
-  scheduleList,
+  tutoringList,
+  classInfo,
 }) => {
-  // console.log("Calendar lists: ", { dayTimeList, scheduleList });
   const today = new Date();
 
   const year = today.getFullYear();
@@ -125,7 +125,8 @@ const Calendar = ({
 
       {/* 캘린더 바디 */}
       <CalendarBody
-        scheduleList={scheduleList}
+        tutoringList={tutoringList}
+        classInfo={classInfo}
         selectedDate={selectedDate}
         selectedMonth={selectedMonth}
         selectedYear={selectedYear}

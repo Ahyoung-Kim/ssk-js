@@ -4,7 +4,12 @@ import styled, { css } from "styled-components/native";
 import { FlatList } from "react-native";
 import color from "../../common/color";
 import { CalendarStates, Days } from "../../constants/calendar";
-import { compareDates, dateFormat, getTotalDays } from "../../utils/date";
+import {
+  calendarDays,
+  compareDates,
+  dateFormat,
+  getTotalDays,
+} from "../../utils/date";
 import CalendarListBSheet from "./CalendarListBSheet";
 
 // 요일(월, 화, 수, 목, 금, 토, 일) 컴포넌트
@@ -32,7 +37,8 @@ const CalendarBody = ({
   selectedMonth,
   selectedYear,
   handlePressDate,
-  scheduleList,
+  tutoringList,
+  classInfo,
 }) => {
   const today = new Date();
   // 현재 월의 모든 날짜 보여주기 위한 배열 state
@@ -51,8 +57,19 @@ const CalendarBody = ({
     rbRef?.current?.open();
   };
 
-  const setInitialStates = () => {
-    const days = getTotalDays(selectedMonth, selectedYear, scheduleList);
+  const setTutoringListDays = () => {
+    const days = calendarDays(selectedMonth, selectedYear, tutoringList);
+    // console.log(days);
+    setTotalDays(days);
+    setSelectedItem(days[0]);
+  };
+
+  const setScheduleListDays = () => {
+    const days = getTotalDays(
+      selectedMonth,
+      selectedYear,
+      classInfo?.scheduleList
+    );
     // console.log(days);
 
     setTotalDays(days);
@@ -60,14 +77,22 @@ const CalendarBody = ({
   };
 
   useEffect(() => {
-    if (!scheduleList) {
-      setInitialStates();
+    if (!classInfo && !tutoringList) {
+      setScheduleListDays();
     }
   }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
-    setInitialStates();
-  }, [scheduleList]);
+    if (classInfo) {
+      setScheduleListDays();
+    }
+  }, [classInfo]);
+
+  useEffect(() => {
+    if (tutoringList) {
+      setTutoringListDays();
+    }
+  }, [tutoringList]);
 
   // 날짜 타일 렌더링 아이템
   const renderItem = ({ item }) => {
@@ -82,7 +107,14 @@ const CalendarBody = ({
 
         {item.mark ? (
           <TagView>
-            <Tag />
+            {classInfo ? (
+              <Tag tagColor={classInfo.color} />
+            ) : tutoringList ? (
+              item.tutoringIndices.map((tutoringIndex) => {
+                // console.log(tutoringList[tutoringIndex].color);
+                return <Tag tagColor={tutoringList[tutoringIndex].color} />;
+              })
+            ) : null}
           </TagView>
         ) : null}
       </CalendarDay>
@@ -121,8 +153,8 @@ const CalendarDay = styled.Pressable`
   flex: 1;
   height: ${({ height }) => (height ? height : "auto")};
   align-items: center;
-  padding-vertical: 10;
-  padding-horizontal: 5;
+  padding-vertical: 7;
+  padding-horizontal: 3;
   background-color: ${({ today, selected }) =>
     selected
       ? color.COLOR_CALENDAR_SELECTED
@@ -142,10 +174,11 @@ const CalendarDayText = styled.Text`
       return `${color.COLOR_LIGHTGRAY_TEXT}`;
     }
   }};
+  margin-bottom: 5;
 `;
 
 const TagView = styled.View`
-  //   background-color: orange;
+  // background-color: orange;
   width: 100%;
   //   height: 100%;
   flex-direction: row;
@@ -154,8 +187,8 @@ const TagView = styled.View`
 `;
 
 const Tag = styled.View`
-  width: 6;
-  height: 6;
+  width: 7;
+  height: 7;
   border-radius: 100;
   background-color: ${color.COLOR_MAIN};
   margin-horizontal: 3;
