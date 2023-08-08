@@ -17,6 +17,16 @@ export const compareDates = (date1, date2) => {
   return dateFormat(date1) === dateFormat(date2);
 };
 
+export const timeFormatToDate = (timeFormat) => {
+  const [hours, minutes] = timeFormat.split(":");
+  const today = new Date();
+
+  today.setHours(hours);
+  today.setMinutes(minutes);
+
+  return today;
+};
+
 export const getTotalDays = (selectedMonth, selectedYear, scheduleList) => {
   const prev = new Date(selectedYear, selectedMonth - 1, 0);
   const curr = new Date(selectedYear, selectedMonth, 0);

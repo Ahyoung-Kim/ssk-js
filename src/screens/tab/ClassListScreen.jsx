@@ -6,7 +6,6 @@ import MainLayout from "../../components/common/MainLayout";
 import CircleIconButton from "../../components/common/CircleIconButton";
 import ClassList from "../../components/common/ClassList";
 
-import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import EmptyClassList from "../../components/common/EmptyClassList";
@@ -14,41 +13,25 @@ import ApproveModal from "../../components/modal/ApproveModal";
 
 import useIsTutor from "../../hooks/useIsTutor";
 import { useNavigation } from "@react-navigation/native";
-import useClassList from "../../hooks/useClassList";
+
+import { useSelector, useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
+import useUser from "../../hooks/useUser";
 
 const ClassListScreen = () => {
+  const classList = useSelector((state) => state.classListReducer.classList);
+  const dispatch = useDispatch();
+
+  const user = useUser();
+
   const isTutor = useIsTutor();
-  // 학생 => [{ tutoringId, subject, tutorName }]
-  // 선생 => [{ tutoringId, subject, tuteeName }]
-  // const [classList, setClassList] = useState(null);
-  const classList = useClassList();
+
   const [loading, setLoading] = useState(false);
 
   // 수업 초대 수락 모달
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
-
-  // const getClassList = async () => {
-  //   try {
-  //     const ret = await client.get("/api/tutoring/list");
-  //     // console.log(ret.status);
-  //     // console.log(ret.data);
-  //     if (ret.status == 200) {
-  //       setClassList(ret.data);
-  //     }
-  //   } catch (err) {
-  //     console.log("get class list error: ", err);
-  //     if (err.response && err.response.status) {
-  //       const status = err.response.status;
-
-  //       if (status == 404) {
-  //         console.log("Class list doesn't exist");
-  //         setClassList([]);
-  //       }
-  //     }
-  //   }
-  // };
 
   const handlePressIcon = () => {
     if (isTutor) {
@@ -58,18 +41,24 @@ const ClassListScreen = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   getClassList().then(() => setLoading(false));
-  // }, []);
-
   useEffect(() => {
     if (!classList) {
       setLoading(true);
+      getClassList().then((ret) => {
+        dispatch(ret);
+      });
     } else {
       setLoading(false);
     }
   }, [classList]);
+
+  useEffect(() => {
+    setLoading(true);
+    getClassList().then((ret) => {
+      dispatch(ret);
+      setLoading(false);
+    });
+  }, [user]);
 
   return (
     <>

@@ -6,6 +6,7 @@ import Toast from "react-native-toast-message";
 
 import { storeData, getData } from "../../constants/asyncStorage";
 import moment from "moment";
+import { APIURL } from "../../config/key";
 
 const LoginForm = ({ successMessage, errorMessage }) => {
   const navigation = useNavigation();
@@ -35,17 +36,9 @@ const LoginForm = ({ successMessage, errorMessage }) => {
       userId: email,
       password: password,
     };
-    // console.log("보내기 전", loginData);
+
     try {
-      const response = await axios.post(
-        "http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/auth/login",
-        loginData
-      );
-      // await storeData("access-token", response.data.accessToken);
-      // console.log("response: ", response);
-      // console.log("login response data: ", response.data);
-      // const storage = await getData("access-token");
-      // console.log("스토리지", storage);
+      const response = await axios.post(`${APIURL}/api/auth/login`, loginData);
 
       if (response.status == 200) {
         await setStorageData(response.data);
@@ -53,7 +46,6 @@ const LoginForm = ({ successMessage, errorMessage }) => {
         setTimeout(() => {
           navigation.navigate("TabNavigator");
         }, 2000);
-        // await getStorageData();
       }
     } catch (error) {
       errorMessage();

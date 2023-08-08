@@ -7,15 +7,8 @@ import color from "../../common/color";
 import MainLayout from "../../components/common/MainLayout";
 import Calendar from "../../components/calendar/Calendar";
 import ClassList from "../../components/common/ClassList";
-import CircleIconButton from "../../components/common/CircleIconButton";
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
-
-  const navigateToCreateClass = () => {
-    navigation.navigate("CreateClassScreen");
-  };
-
   return (
     <>
       <MainLayout headerText={"홈"} headerType={"basic"}>
@@ -27,8 +20,6 @@ const HomeScreen = () => {
           {/* <ClassList /> */}
         </TodayClassView>
       </MainLayout>
-
-      <CircleIconButton name="plus" onPress={navigateToCreateClass} />
     </>
   );
 };
