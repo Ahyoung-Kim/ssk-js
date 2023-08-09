@@ -11,15 +11,13 @@ import TimePicker from "../common/TimePicker";
 import SelectTag from "../inputs/SelectTag";
 import UserInfo from "../common/UserInfo";
 
-import useIsTutor from "../../hooks/useIsTutor";
-
 const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit }) => {
   const today = new Date();
   today.setMinutes(0);
   const [startTime, setStartTime] = useState(today);
   const [endTime, setEndTime] = useState(today);
 
-  const [tag, setTag] = useState(tags.MAINBLUE);
+  const [tag, setTag] = useState(tags[1]);
   const [description, setDescription] = useState("");
 
   const handlePressButton = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styled from "styled-components/native";
 
@@ -21,8 +21,13 @@ import Loading from "../../components/common/Loading";
 import ClassDetailInfo from "../../components/classInfo/ClassDetailInfo";
 import useIsTutor from "../../hooks/useIsTutor";
 import CircleIconButton from "../../components/common/CircleIconButton";
+import UpdateColorBSheet from "../../components/classInfo/UpdateColorBSheet";
+
+import { useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
 
 const ClassInfoScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -38,6 +43,10 @@ const ClassInfoScreen = () => {
 
   const [classInfo, setClassInfo] = useState(null);
 
+  const [refetch, setRefetch] = useState(false);
+
+  const rbRef = useRef();
+
   const handlePressHwBtn = () => {
     navigation.navigate("HwListPage");
   };
@@ -45,9 +54,13 @@ const ClassInfoScreen = () => {
     navigation.navigate("ReviewListPage");
   };
   const handlePressCircleIcon = () => {
-    navigation.navigate("UpdateClassScreen", {
-      classInfo,
-    });
+    if (isTutor) {
+      navigation.navigate("UpdateClassScreen", {
+        classInfo,
+      });
+    } else {
+      rbRef?.current?.open();
+    }
   };
 
   const getClassInfo = async () => {
@@ -57,7 +70,7 @@ const ClassInfoScreen = () => {
       );
 
       if (ret.status == 200) {
-        // console.log(ret.data);
+        // console.log("class info: ", ret.data);
         setClassInfo(ret.data);
       }
     } catch (err) {
@@ -78,6 +91,16 @@ const ClassInfoScreen = () => {
       }
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (refetch) {
+      if (year && month && tutoringId) {
+        getClassInfo();
+        getClassList().then((ret) => dispatch(ret));
+      }
+      setRefetch(false);
+    }
+  }, [refetch]);
 
   return (
     <>
@@ -113,11 +136,14 @@ const ClassInfoScreen = () => {
         )}
       </MainLayout>
 
-      {isTutor && (
-        <CircleIconButton
-          name="cog"
-          onPress={handlePressCircleIcon}
-          size={18}
+      <CircleIconButton name="cog" onPress={handlePressCircleIcon} size={18} />
+
+      {!isTutor && classInfo && (
+        <UpdateColorBSheet
+          rbRef={rbRef}
+          tutoringId={classInfo.tutoringId}
+          colorKey={classInfo.color}
+          setRefetch={setRefetch}
         />
       )}
     </>

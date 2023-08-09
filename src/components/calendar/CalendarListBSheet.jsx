@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 
 import color from "../../common/color";
@@ -12,10 +12,15 @@ import useIsTutor from "../../hooks/useIsTutor";
 import CreateScheduleBSheet from "./CreateScheduleBSheet";
 import ScheduleDetailBSheet from "./ScheduleDetailBSheet";
 
+import { useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
+
 const CalendarListBSheet = ({ rbRef, selectedItem }) => {
   const isTutor = useIsTutor();
+  const dispatch = useDispatch();
 
   const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [refetch, setRefetch] = useState(false);
 
   const createScheduleRbRef = useRef();
   const scheduleRbRef = useRef();
@@ -29,6 +34,24 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
     scheduleRbRef?.current?.open();
   };
 
+  const dispatchData = async () => {
+    getClassList()
+      .then((ret) => {
+        dispatch(ret);
+      })
+      .then(() => {
+        setRefetch(false);
+        rbRef?.current?.close();
+        scheduleRbRef?.current?.close();
+      });
+  };
+
+  useEffect(() => {
+    if (refetch) {
+      dispatchData();
+    }
+  }, [refetch]);
+
   return (
     <>
       <BottomSheet
@@ -39,19 +62,22 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
       >
         <CalendarBSheetHeader date={selectedItem.date} edit={isTutor} />
 
-        {[0, 1, 2].map((item, idx) => (
-          <ScheduleItem
-            key={idx}
-            item={item}
-            handlePressScheduleItem={handlePressScheduleItem}
-          />
-        ))}
+        {[0, 1, 2].map((item) => {
+          return (
+            <ScheduleItem
+              key={item.tutoringId}
+              item={item}
+              handlePressScheduleItem={handlePressScheduleItem}
+            />
+          );
+        })}
 
         {/* 일정 추가 바텀시트 */}
         <CreateScheduleBSheet
           rbRef={createScheduleRbRef}
           date={selectedItem.date}
           edit={isTutor}
+          setRefetch={setRefetch}
         />
 
         {/* 일정 디테일 바텀시트 */}

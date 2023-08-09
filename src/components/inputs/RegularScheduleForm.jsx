@@ -14,7 +14,7 @@ const RegularScheduleForm = ({ days, setDays }) => {
   const [selectedDay, setSelectedDay] = useState(null);
 
   const today = new Date();
-
+  today.setMinutes(0);
   const [startTime, setStartTime] = useState(today);
   const [endTime, setEndTime] = useState(today);
 

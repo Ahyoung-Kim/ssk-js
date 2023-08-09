@@ -23,6 +23,7 @@ import { getClassList } from "../../redux/actions/classListAction";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
 
 import { Alert } from "react-native";
+import TagColorForm from "../../components/inputs/TagColorForm";
 
 const UpdateClassScreen = () => {
   const route = useRoute();
@@ -36,6 +37,8 @@ const UpdateClassScreen = () => {
   const [days, setDays] = useState(initialRegularDays);
   // 수업 시작일
   const [startDate, setStartDate] = useState(new Date(classInfo.startDate));
+  // tag color
+  const [tagColor, setTagColor] = useState(classInfo.color);
 
   const parseDays = () => {
     const ret = [];
@@ -59,11 +62,21 @@ const UpdateClassScreen = () => {
   const handleUpdateClass = async () => {
     const dayTimeList = parseDays();
 
+    if (!subject) {
+      Alert.alert("입력 오류", "과목 이름을 입력해주세요");
+      return;
+    }
+    if (dayTimeList.length == 0) {
+      Alert.alert("입력 오류", "정규 일정을 선택해주세요");
+      return;
+    }
+
     try {
       const ret = await client.put(`/api/tutoring/${classInfo.tutoringId}`, {
         subject,
         startDate: serverDateFormat(startDate),
         dayTimeList,
+        color: Number(tagColor),
       });
 
       if (ret.status == 200) {
@@ -160,6 +173,8 @@ const UpdateClassScreen = () => {
           />
 
           <RegularScheduleForm days={days} setDays={setDays} />
+
+          <TagColorForm tagColor={tagColor} setTagColor={setTagColor} />
         </Wrapper>
       </MainLayout>
 

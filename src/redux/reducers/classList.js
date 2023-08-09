@@ -28,6 +28,11 @@ export default function classListReducer(state = initialState, action) {
         ...state,
         classList: action.payload,
       };
+    case ClassListActionTypes.CLEAR_CLASS_LIST:
+      return {
+        ...state,
+        classList: action.payload,
+      };
     default:
       return state;
   }

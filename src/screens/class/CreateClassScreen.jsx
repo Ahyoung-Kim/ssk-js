@@ -19,6 +19,8 @@ import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
 
 import initialRegularDays from "../../constants/initialRegularDays";
+import tags from "../../common/tags";
+import TagColorForm from "../../components/inputs/TagColorForm";
 
 const CreateClassScreen = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,8 @@ const CreateClassScreen = () => {
   const [days, setDays] = useState(initialRegularDays);
   // 수업 시작일
   const [startDate, setStartDate] = useState(new Date());
+  // tag color
+  const [tagColor, setTagColor] = useState(1);
 
   const navigation = useNavigation();
 
@@ -78,6 +82,7 @@ const CreateClassScreen = () => {
         subject,
         startDate: serverDateFormat(startDate),
         dayTimeList,
+        color: Number(tagColor),
       };
 
       try {
@@ -125,6 +130,8 @@ const CreateClassScreen = () => {
           />
 
           <RegularScheduleForm days={days} setDays={setDays} />
+
+          <TagColorForm tagColor={tagColor} setTagColor={setTagColor} />
         </Wrapper>
       </MainLayout>
 
@@ -142,4 +149,5 @@ const Wrapper = styled.View`
   flex-direction: column;
   justify-content: flex-start;
   margin-vertical: 15;
+  // background-color: orange;
 `;

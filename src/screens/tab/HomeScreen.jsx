@@ -8,14 +8,15 @@ import MainLayout from "../../components/common/MainLayout";
 import Calendar from "../../components/calendar/Calendar";
 import ClassList from "../../components/common/ClassList";
 import client from "../../config/axios";
-import Loading from "../../components/common/Loading";
-import { makeMarkedDatesByTutoringIndex } from "../../utils/date";
+
+import useClassList from "../../hooks/useClassList";
 
 const HomeScreen = () => {
+  const classList = useClassList();
+
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
-  const [scheduleList, setScheduleList] = useState(null);
   const [tutoringList, setTutoringList] = useState(null);
 
   const getTutoringSchedules = async () => {
@@ -25,20 +26,17 @@ const HomeScreen = () => {
       );
 
       if (ret.status == 200) {
-        const data = ret.data;
-        // let list = [];
-
-        // for (let i = 0; i < data.length; i++) {
-        //   // console.log(data[i]);
-        //   list = [...list, ...data[i].scheduleList];
-        // }
-
-        // setScheduleList(list);
-
-        setTutoringList(data);
+        setTutoringList(ret.data);
       }
     } catch (err) {
       console.log("get tutoring schedules error", err);
+      if (err?.response?.status) {
+        const status = err?.response?.status;
+        if (status == 404) {
+          console.log("Tutoring list doesn't exist");
+          setTutoringList([]);
+        }
+      }
     }
   };
 
@@ -46,13 +44,12 @@ const HomeScreen = () => {
     if (year && month) {
       getTutoringSchedules();
     }
-  }, [year, month]);
+  }, [year, month, classList]);
 
   return (
     <>
       <MainLayout headerText={"홈"} headerType={"basic"}>
         <Calendar
-          // scheduleList={scheduleList}
           tutoringList={tutoringList}
           onChangeYearMonth={(_year, _month) => {
             if (_year !== year) {

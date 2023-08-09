@@ -14,15 +14,10 @@ import ApproveModal from "../../components/modal/ApproveModal";
 import useIsTutor from "../../hooks/useIsTutor";
 import { useNavigation } from "@react-navigation/native";
 
-import { useSelector, useDispatch } from "react-redux";
-import { getClassList } from "../../redux/actions/classListAction";
-import useUser from "../../hooks/useUser";
+import useClassList from "../../hooks/useClassList";
 
 const ClassListScreen = () => {
-  const classList = useSelector((state) => state.classListReducer.classList);
-  const dispatch = useDispatch();
-
-  const user = useUser();
+  const classList = useClassList();
 
   const isTutor = useIsTutor();
 
@@ -44,21 +39,10 @@ const ClassListScreen = () => {
   useEffect(() => {
     if (!classList) {
       setLoading(true);
-      getClassList().then((ret) => {
-        dispatch(ret);
-      });
     } else {
       setLoading(false);
     }
   }, [classList]);
-
-  useEffect(() => {
-    setLoading(true);
-    getClassList().then((ret) => {
-      dispatch(ret);
-      setLoading(false);
-    });
-  }, [user]);
 
   return (
     <>
