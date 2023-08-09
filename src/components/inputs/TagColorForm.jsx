@@ -26,13 +26,15 @@ const TagColorForm = ({ tagColor, setTagColor }) => {
           {openTags && (
             <>
               <TagList>
-                {Object.keys(tags).map((key) => (
-                  <TagItem
-                    key={tags[key]}
-                    tagColor={tags[key]}
-                    onPress={handlePressTagItem.bind(this, key)}
-                  />
-                ))}
+                {Object.keys(tags)
+                  .filter((key) => key != 0)
+                  .map((key) => (
+                    <TagItem
+                      key={tags[key]}
+                      tagColor={tags[key]}
+                      onPress={handlePressTagItem.bind(this, key)}
+                    />
+                  ))}
               </TagList>
             </>
           )}
