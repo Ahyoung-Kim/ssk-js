@@ -60,6 +60,7 @@ const CalendarBody = ({
 
   const setTutoringListDays = () => {
     const days = calendarDays(selectedMonth, selectedYear, tutoringList);
+
     // console.log(days);
     setTotalDays(days);
     setSelectedItem(days[0]);
@@ -112,7 +113,6 @@ const CalendarBody = ({
               <Tag tagColor={tags[classInfo?.color]} />
             ) : tutoringList ? (
               item.tutoringIndices.map((tutoringIndex) => {
-                // console.log(tutoringList[tutoringIndex].color);
                 return (
                   <Tag tagColor={tags[tutoringList[tutoringIndex]?.color]} />
                 );

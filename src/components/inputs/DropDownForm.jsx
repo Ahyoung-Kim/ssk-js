@@ -12,6 +12,7 @@ const DropDownForm = ({
   label,
   placeholder,
   list,
+  textKey,
   paddingHorizontal,
   menuHeight = 200,
 }) => {
@@ -27,6 +28,10 @@ const DropDownForm = ({
     setSelectedItem(item);
   };
 
+  if (!list || !textKey) {
+    return <></>;
+  }
+
   return (
     <>
       <InputContainer label={label} paddingHorizontal={paddingHorizontal}>
@@ -36,7 +41,7 @@ const DropDownForm = ({
             ellipsizeMode="tail"
             style={selectedItem ? {} : { color: color.COLOR_LIGHTGRAY_TEXT }}
           >
-            {selectedItem ? selectedItem : placeholder}
+            {selectedItem?.textKey ? selectedItem[textKey] : placeholder}
           </SelectedText>
 
           <FontAwesome5
@@ -51,7 +56,7 @@ const DropDownForm = ({
             <TouchableOpacity activeOpacity={1} style={{ paddingVertical: 5 }}>
               {list.map((item, idx) => (
                 <ListItem key={idx} onPress={handlePressItem.bind(this, item)}>
-                  {item}
+                  {item[textKey]}
                 </ListItem>
               ))}
             </TouchableOpacity>

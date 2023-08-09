@@ -9,10 +9,10 @@ import Calendar from "../../components/calendar/Calendar";
 import ClassList from "../../components/common/ClassList";
 import client from "../../config/axios";
 
-import { useSelector } from "react-redux";
+import useClassList from "../../hooks/useClassList";
 
 const HomeScreen = () => {
-  const classList = useSelector((state) => state.classListReducer.classList);
+  const classList = useClassList();
 
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());

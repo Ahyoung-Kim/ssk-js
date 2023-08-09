@@ -1,4 +1,5 @@
 export default {
+  0: "#0C9BFB",
   1: "#0C9BFB",
   2: "#EB4040",
   3: "#FFAD31",

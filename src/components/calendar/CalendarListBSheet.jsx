@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 
 import color from "../../common/color";
@@ -39,13 +39,15 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
       >
         <CalendarBSheetHeader date={selectedItem.date} edit={isTutor} />
 
-        {[0, 1, 2].map((item, idx) => (
-          <ScheduleItem
-            key={idx}
-            item={item}
-            handlePressScheduleItem={handlePressScheduleItem}
-          />
-        ))}
+        {[0, 1, 2].map((item) => {
+          return (
+            <ScheduleItem
+              key={item.tutoringId}
+              item={item}
+              handlePressScheduleItem={handlePressScheduleItem}
+            />
+          );
+        })}
 
         {/* 일정 추가 바텀시트 */}
         <CreateScheduleBSheet

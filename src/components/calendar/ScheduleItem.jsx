@@ -5,26 +5,24 @@ import color from "../../common/color";
 import { Pressable, StyleSheet, Platform } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import UserInfo from "../common/UserInfo";
+import tags from "../../common/tags";
 
-const ScheduleItem = ({
-  tagColor = color.COLOR_MAIN,
-  handlePressScheduleItem,
-  item,
-}) => {
+const ScheduleItem = ({ handlePressScheduleItem, item }) => {
+  // console.log(item);
   return (
     <>
       <Pressable
         style={styles.container}
         onPress={handlePressScheduleItem.bind(this, item)}
       >
-        <FontAwesome5 name="check" color={tagColor} size={20} />
+        <FontAwesome5 name="check" color={tags[item.color]} size={20} />
 
         <TimeContainer>
           <StartTime>18:00</StartTime>
-          <EndTime>~ 20:30</EndTime>
+          <EndTime>~ 21:00</EndTime>
         </TimeContainer>
 
-        <VerticalLine tagColor={tagColor} />
+        <VerticalLine tagColor={tags[item.color]} />
 
         <UserInfo />
       </Pressable>
@@ -81,6 +79,6 @@ const VerticalLine = styled.View`
   height: 100%;
   width: 5;
   border-radius: 100;
-  background-color: ${({ tagColor }) => tagColor};
+  background-color: ${({ tagColor }) => (tagColor ? tagColor : "black")};
   margin-horizontal: 15;
 `;
