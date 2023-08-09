@@ -9,22 +9,36 @@ import tags from "../../common/tags";
 
 const ScheduleItem = ({ handlePressScheduleItem, item }) => {
   // console.log(item);
+  const {
+    color: tagColor,
+    endTime,
+    startTime,
+    personName,
+    profileImageUrl,
+    subject,
+    tutoringId,
+  } = item;
+
   return (
     <>
       <Pressable
         style={styles.container}
         onPress={handlePressScheduleItem.bind(this, item)}
       >
-        <FontAwesome5 name="check" color={tags[item.color]} size={20} />
+        <FontAwesome5 name="check" color={tags[tagColor]} size={20} />
 
         <TimeContainer>
-          <StartTime>18:00</StartTime>
-          <EndTime>~ 21:00</EndTime>
+          <StartTime>{startTime}</StartTime>
+          <EndTime>~ {endTime}</EndTime>
         </TimeContainer>
 
-        <VerticalLine tagColor={tags[item.color]} />
+        <VerticalLine tagColor={tags[tagColor]} />
 
-        <UserInfo />
+        <UserInfo
+          name={personName}
+          profileImageUrl={profileImageUrl}
+          subject={subject}
+        />
       </Pressable>
     </>
   );

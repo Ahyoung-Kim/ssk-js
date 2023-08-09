@@ -14,6 +14,8 @@ import ScheduleDetailBSheet from "./ScheduleDetailBSheet";
 
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
+import client from "../../config/axios";
+import Loading from "../common/Loading";
 
 const CalendarListBSheet = ({ rbRef, selectedItem }) => {
   const isTutor = useIsTutor();
@@ -21,6 +23,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
 
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [refetch, setRefetch] = useState(false);
+  const [scheduleList, setScheduleList] = useState(null);
 
   const createScheduleRbRef = useRef();
   const scheduleRbRef = useRef();
@@ -46,11 +49,34 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
       });
   };
 
+  const getScheduleList = async () => {
+    const date = selectedItem.date;
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    try {
+      const ret = await client.get(`/api/schedule/${year}/${month}/${day}`);
+
+      if (ret.status == 200) {
+        // console.log(year, month, day);
+        // console.log(ret.data);
+        setScheduleList(ret.data);
+      }
+    } catch (err) {
+      console.log("CalendarListBsheet getScheduleList error: ", err);
+    }
+  };
+
   useEffect(() => {
     if (refetch) {
       dispatchData();
     }
   }, [refetch]);
+
+  useEffect(() => {
+    getScheduleList();
+  }, [selectedItem]);
 
   return (
     <>
@@ -62,15 +88,16 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
       >
         <CalendarBSheetHeader date={selectedItem.date} edit={isTutor} />
 
-        {[0, 1, 2].map((item) => {
-          return (
-            <ScheduleItem
-              key={item.tutoringId}
-              item={item}
-              handlePressScheduleItem={handlePressScheduleItem}
-            />
-          );
-        })}
+        {scheduleList &&
+          scheduleList.map((item) => {
+            return (
+              <ScheduleItem
+                key={item.tutoringId}
+                item={item}
+                handlePressScheduleItem={handlePressScheduleItem}
+              />
+            );
+          })}
 
         {/* 일정 추가 바텀시트 */}
         <CreateScheduleBSheet
@@ -81,12 +108,14 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
         />
 
         {/* 일정 디테일 바텀시트 */}
-        <ScheduleDetailBSheet
-          rbRef={scheduleRbRef}
-          schedule={selectedSchedule}
-          date={selectedItem.date}
-          edit={isTutor}
-        />
+        {selectedSchedule && (
+          <ScheduleDetailBSheet
+            rbRef={scheduleRbRef}
+            schedule={selectedSchedule}
+            date={selectedItem.date}
+            edit={isTutor}
+          />
+        )}
       </BottomSheet>
     </>
   );

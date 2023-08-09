@@ -10,7 +10,7 @@ const SelectTag = ({ tag, setTag }) => {
   const [openTags, setOpenTags] = useState(false);
 
   const handlePressTagItem = (tagKey) => {
-    setTag(tags[tagKey]);
+    setTag(tagKey);
     setOpenTags(false);
   };
 
@@ -19,19 +19,21 @@ const SelectTag = ({ tag, setTag }) => {
       <LeftBarContainer label="Tag" onPress={() => setOpenTags(!openTags)}>
         <TagContainer>
           <TagText>태그</TagText>
-          <TagCircle tag={tag} />
+          <TagCircle tag={tags[tag]} />
         </TagContainer>
       </LeftBarContainer>
 
       {openTags && (
         <TagList>
-          {Object.keys(tags).map((key) => (
-            <TagItem
-              key={key}
-              bgColor={tags[key]}
-              onPress={handlePressTagItem.bind(this, key)}
-            />
-          ))}
+          {Object.keys(tags)
+            .filter((key) => key != 0)
+            .map((key) => (
+              <TagItem
+                key={key}
+                bgColor={tags[key]}
+                onPress={handlePressTagItem.bind(this, key)}
+              />
+            ))}
         </TagList>
       )}
     </>

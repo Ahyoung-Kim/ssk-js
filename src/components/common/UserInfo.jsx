@@ -4,20 +4,31 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 
 import ProfileImage from "./ProfileImage";
+import useIsTutor from "../../hooks/useIsTutor";
 
 const UserInfo = ({
   profileImageUrl,
   subject = "과목",
   name = "학생/선생 이름",
 }) => {
+  const isTutor = useIsTutor();
+
   return (
     <>
       <UserInfoView>
-        <ProfileImage image={profileImageUrl} />
+        {name && (
+          <ProfileImageView>
+            <ProfileImage image={profileImageUrl} />
+          </ProfileImageView>
+        )}
 
         <TextView>
           <InfoBigText>{subject}</InfoBigText>
-          <InfoSmallText>{name}</InfoSmallText>
+          <InfoSmallText>
+            {name
+              ? name + " " + (isTutor ? "학생" : "선생님")
+              : "학생이 초대되지 않았습니다."}
+          </InfoSmallText>
         </TextView>
       </UserInfoView>
     </>
@@ -32,9 +43,11 @@ const UserInfoView = styled.View`
   align-items: center;
 `;
 
-const TextView = styled.View`
-  margin-left: 10;
+const ProfileImageView = styled.View`
+  margin-right: 10;
 `;
+
+const TextView = styled.View``;
 
 const InfoBigText = styled.Text`
   font-weight: bold;

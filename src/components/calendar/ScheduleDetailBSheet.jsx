@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -10,19 +10,37 @@ import LeftBarContainer from "../common/LeftBarContainer";
 import TimePicker from "../common/TimePicker";
 import SelectTag from "../inputs/SelectTag";
 import UserInfo from "../common/UserInfo";
+import { timeFormatToDate } from "../../utils/date";
 
 const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit }) => {
+  // console.log("schedule: ", schedule);
+  const {
+    color: tagColor,
+    endTime: originalEndTime,
+    startTime: originalStartTime,
+    personName,
+    profileImageUrl,
+    subject,
+    tutoringId,
+  } = schedule;
+
   const today = new Date();
   today.setMinutes(0);
   const [startTime, setStartTime] = useState(today);
   const [endTime, setEndTime] = useState(today);
 
-  const [tag, setTag] = useState(tags[1]);
+  const [tag, setTag] = useState(0);
   const [description, setDescription] = useState("");
 
   const handlePressButton = () => {
     rbRef?.current?.close();
   };
+
+  useEffect(() => {
+    setTag(tagColor);
+    setStartTime(timeFormatToDate(originalStartTime));
+    setEndTime(timeFormatToDate(originalEndTime));
+  }, [schedule]);
 
   return (
     <>
@@ -34,12 +52,12 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit }) => {
       >
         <CalendarBSheetHeader date={date} edit={edit} />
 
-        <LeftBarContainer label="Tutor">
-          <UserInfo />
-        </LeftBarContainer>
-
-        <LeftBarContainer label="Tutee">
-          <UserInfo />
+        <LeftBarContainer label="Info">
+          <UserInfo
+            profileImageUrl={profileImageUrl}
+            subject={subject}
+            name={personName}
+          />
         </LeftBarContainer>
 
         <TimePicker
