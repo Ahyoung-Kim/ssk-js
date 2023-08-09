@@ -14,20 +14,21 @@ import { dateToTimeFormat, serverDateFormat } from "../../utils/date";
 import useClassList from "../../hooks/useClassList";
 import { Alert } from "react-native";
 
-const CreateScheduleBSheet = ({ rbRef, date, edit }) => {
+const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
   const classList = useClassList();
 
   const today = new Date();
   today.setMinutes(0);
   const [startTime, setStartTime] = useState(today);
   const [endTime, setEndTime] = useState(today);
+  const [tutoringId, setTutoringId] = useState("");
 
   // 일정 등록 버튼
   const handlePressButton = async () => {
     try {
       // tutoringId, date(YYYY-MM-DD), startTime(TT:mm), endTime(TT:mm)
       const data = {
-        tutoringId: "",
+        tutoringId,
         date: serverDateFormat(date),
         startTime: dateToTimeFormat(startTime),
         endTime: dateToTimeFormat(endTime),
@@ -37,7 +38,7 @@ const CreateScheduleBSheet = ({ rbRef, date, edit }) => {
 
       if (ret.status == 200) {
         Alert.alert("일정 등록", "일정이 등록되었습니다.");
-        rbRef?.current?.close();
+        setRefetch(true);
       }
     } catch (err) {
       console.log("일정 등록 api 실패: ", err);
@@ -67,6 +68,8 @@ const CreateScheduleBSheet = ({ rbRef, date, edit }) => {
           list={classList}
           textKey={"subject"}
           paddingHorizontal={0}
+          menuHeight={160}
+          onPressItem={(item) => setTutoringId(item.tutoringId)}
         />
 
         <TimePickerContainer>

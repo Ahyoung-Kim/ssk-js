@@ -15,6 +15,7 @@ const DropDownForm = ({
   textKey,
   paddingHorizontal,
   menuHeight = 200,
+  onPressItem = () => {},
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -26,6 +27,7 @@ const DropDownForm = ({
   const handlePressItem = (item) => {
     setIsOpenMenu(false);
     setSelectedItem(item);
+    onPressItem(item);
   };
 
   if (!list || !textKey) {
@@ -39,9 +41,13 @@ const DropDownForm = ({
           <SelectedText
             numberOfLines={1}
             ellipsizeMode="tail"
-            style={selectedItem ? {} : { color: color.COLOR_LIGHTGRAY_TEXT }}
+            style={
+              selectedItem
+                ? { fontWeight: "bold" }
+                : { color: color.COLOR_LIGHTGRAY_TEXT }
+            }
           >
-            {selectedItem?.textKey ? selectedItem[textKey] : placeholder}
+            {selectedItem?.[textKey] ? selectedItem[textKey] : placeholder}
           </SelectedText>
 
           <FontAwesome5
@@ -56,7 +62,7 @@ const DropDownForm = ({
             <TouchableOpacity activeOpacity={1} style={{ paddingVertical: 5 }}>
               {list.map((item, idx) => (
                 <ListItem key={idx} onPress={handlePressItem.bind(this, item)}>
-                  {item[textKey]}
+                  <ListItemText>{item[textKey]}</ListItemText>
                 </ListItem>
               ))}
             </TouchableOpacity>
@@ -102,9 +108,12 @@ const ListContainer = styled.ScrollView`
   padding-horizontal: 15;
 `;
 
-const ListItem = styled.Text`
+const ListItem = styled.TouchableOpacity`
   //   background-color: orange;
   width: 100%;
   padding-vertical: 10;
+`;
+
+const ListItemText = styled.Text`
   font-size: 16;
 `;
