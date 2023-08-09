@@ -3,6 +3,7 @@ import ClassListActionTypes from "../actions/types/ClassListActionTypes";
 // Default State
 const initialState = {
   classList: null,
+  todayClassList: null,
 };
 
 // Reducer
@@ -11,7 +12,8 @@ export default function classListReducer(state = initialState, action) {
     case ClassListActionTypes.GET_CLASS_LSIT:
       return {
         ...state,
-        classList: action.payload,
+        classList: action.classList,
+        todayClassList: action.todayClassList,
       };
     case ClassListActionTypes.CREATE_CLASS:
       return {
