@@ -149,4 +149,5 @@ const Wrapper = styled.View`
   flex-direction: column;
   justify-content: flex-start;
   margin-vertical: 15;
+  // background-color: orange;
 `;

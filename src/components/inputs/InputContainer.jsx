@@ -4,13 +4,18 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 import InputLabel from "./InputLabel";
 
-const InputContainer = ({ children, label, paddingHorizontal = 15 }) => {
+const InputContainer = ({
+  children,
+  label,
+  paddingHorizontal = 15,
+  height = 40,
+}) => {
   return (
     <>
       <Container paddingHorizontal={paddingHorizontal}>
         {label && <InputLabel label={label} />}
 
-        <Contents>{children}</Contents>
+        <Contents height={height}>{children}</Contents>
       </Container>
     </>
   );
@@ -19,7 +24,7 @@ const InputContainer = ({ children, label, paddingHorizontal = 15 }) => {
 export default InputContainer;
 
 const Container = styled.View`
-  // background-color: orange;
+  // background-color: aqua;
   width: 100%;
   padding-horizontal: ${({ paddingHorizontal }) => paddingHorizontal};
   margin-vertical: 7;
@@ -27,6 +32,6 @@ const Container = styled.View`
 `;
 
 const Contents = styled.View`
-  height: 40;
+  ${({ height }) => height && `height: ${height};`}
   width: 100%;
 `;

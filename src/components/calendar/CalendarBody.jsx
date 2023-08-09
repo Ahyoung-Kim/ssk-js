@@ -11,6 +11,7 @@ import {
   getTotalDays,
 } from "../../utils/date";
 import CalendarListBSheet from "./CalendarListBSheet";
+import tags from "../../common/tags";
 
 // 요일(월, 화, 수, 목, 금, 토, 일) 컴포넌트
 const CalendarDays = () => {
@@ -108,11 +109,13 @@ const CalendarBody = ({
         {item.mark ? (
           <TagView>
             {classInfo ? (
-              <Tag tagColor={classInfo.color} />
+              <Tag tagColor={tags[classInfo?.color]} />
             ) : tutoringList ? (
               item.tutoringIndices.map((tutoringIndex) => {
                 // console.log(tutoringList[tutoringIndex].color);
-                return <Tag tagColor={tutoringList[tutoringIndex].color} />;
+                return (
+                  <Tag tagColor={tags[tutoringList[tutoringIndex]?.color]} />
+                );
               })
             ) : null}
           </TagView>
@@ -190,7 +193,7 @@ const Tag = styled.View`
   width: 7;
   height: 7;
   border-radius: 100;
-  background-color: ${color.COLOR_MAIN};
+  background-color: ${({ tagColor }) => tagColor};
   margin-horizontal: 3;
   margin-vertical: 5;
 `;

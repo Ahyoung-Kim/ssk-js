@@ -57,7 +57,6 @@ const ClassInfoScreen = () => {
       );
 
       if (ret.status == 200) {
-        // console.log(ret.data);
         setClassInfo(ret.data);
       }
     } catch (err) {

@@ -8,10 +8,12 @@ import MainLayout from "../../components/common/MainLayout";
 import Calendar from "../../components/calendar/Calendar";
 import ClassList from "../../components/common/ClassList";
 import client from "../../config/axios";
-import Loading from "../../components/common/Loading";
-import { makeMarkedDatesByTutoringIndex } from "../../utils/date";
+
+import { useSelector } from "react-redux";
 
 const HomeScreen = () => {
+  const classList = useSelector((state) => state.classListReducer.classList);
+
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
@@ -42,7 +44,7 @@ const HomeScreen = () => {
     if (year && month) {
       getTutoringSchedules();
     }
-  }, [year, month]);
+  }, [year, month, classList]);
 
   return (
     <>

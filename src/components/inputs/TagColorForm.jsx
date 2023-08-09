@@ -16,7 +16,7 @@ const TagColorForm = ({ tagColor, setTagColor }) => {
 
   return (
     <>
-      <InputContainer label={"색상"}>
+      <InputContainer label={"색상"} height={null}>
         <TagContainer>
           <TagColorButton onPress={() => setOpenTags(!openTags)}>
             <TagText>태그</TagText>
@@ -45,7 +45,7 @@ const TagColorForm = ({ tagColor, setTagColor }) => {
 export default TagColorForm;
 
 const TagContainer = styled.View`
-  //   background-color: orange;
+  // background-color: orange;
   width: 100%;
   position: relative;
   padding-vertical: 3;
