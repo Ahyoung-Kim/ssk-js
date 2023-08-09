@@ -3,10 +3,10 @@ import React from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-const EmptyClassList = () => {
+const EmptyClassList = ({ schedule = false }) => {
   return (
     <Container>
-      <Text>수업 목록이 없습니다.</Text>
+      <Text>{schedule ? "일정" : "수업"} 목록이 없습니다.</Text>
     </Container>
   );
 };

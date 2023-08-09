@@ -12,10 +12,17 @@ import useIsTutor from "../../hooks/useIsTutor";
 
 const ClassItem = ({ classItem }) => {
   const isTutor = useIsTutor();
-  const { profileImageUrl, subject, tutoringId, tuteeName, tutorName } =
-    classItem;
+  const {
+    profileImageUrl,
+    subject,
+    tutoringId,
+    tuteeName,
+    tutorName,
+    personName,
+  } = classItem;
 
   const navigation = useNavigation();
+  const name = personName || tuteeName || tutorName;
 
   const handlePressClassItem = () => {
     navigation.navigate("ClassInfoScreen", { tutoringId });
@@ -34,10 +41,8 @@ const ClassItem = ({ classItem }) => {
           <UserBigText>{subject}</UserBigText>
 
           <UserSmallText>
-            {!isTutor
-              ? tutorName + " 선생님"
-              : tuteeName
-              ? tuteeName + " 학생"
+            {name
+              ? `${name} ` + (isTutor ? "학생" : "선생님")
               : "학생이 초대되지 않았습니다."}
           </UserSmallText>
         </UserTextView>

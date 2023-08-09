@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -10,19 +10,67 @@ import LeftBarContainer from "../common/LeftBarContainer";
 import TimePicker from "../common/TimePicker";
 import SelectTag from "../inputs/SelectTag";
 import UserInfo from "../common/UserInfo";
+import { serverDateFormat, timeFormatToDate } from "../../utils/date";
 
-const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit }) => {
+import { Alert } from "react-native";
+import client from "../../config/axios";
+import DatePickerForm from "../inputs/DatePickerForm";
+
+const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
+  // console.log("schedule: ", schedule);
+  const {
+    color: tagColor,
+    endTime,
+    startTime,
+    personName,
+    profileImageUrl,
+    subject,
+    tutoringId,
+  } = schedule;
+
   const today = new Date();
   today.setMinutes(0);
-  const [startTime, setStartTime] = useState(today);
-  const [endTime, setEndTime] = useState(today);
+  const [startTimeWant, setStartTimeWant] = useState(today);
+  const [endTimeWant, setEndTimeWant] = useState(today);
+  const [dateWant, setDateWant] = useState(today);
 
-  const [tag, setTag] = useState(tags[1]);
+  const [tag, setTag] = useState(0);
   const [description, setDescription] = useState("");
 
-  const handlePressButton = () => {
-    rbRef?.current?.close();
+  const handleUpdateSchedule = async () => {
+    try {
+      const ret = await client.put("/api/schedule", {
+        tutoringId,
+        date: serverDateFormat(date),
+        startTime,
+        endTime,
+        dateWant: null,
+        startTimeWant,
+        endTimeWant,
+      });
+
+      if (ret.status == 200) {
+        Alert.alert("일정 편집", "일정 정보가 편집되었습니다.");
+        rbRef?.current?.close();
+      }
+    } catch (err) {
+      console.log("update schedule error: ", err);
+      const status = err?.response?.status;
+
+      if (status == 409) {
+        // Conflict
+        console.log("create schedule: conflict");
+        Alert.alert("일정 편집 실패", "해당 시간에 중복되는 수업이 있습니다.");
+      }
+    }
   };
+
+  useEffect(() => {
+    setTag(tagColor);
+    setStartTimeWant(timeFormatToDate(startTime));
+    setEndTimeWant(timeFormatToDate(endTime));
+    setDateWant(date);
+  }, [schedule]);
 
   return (
     <>
@@ -30,23 +78,31 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit }) => {
         rbRef={rbRef}
         heightPercentage={0.9}
         button={edit ? "편집" : null}
-        handlePressButton={handlePressButton}
+        handlePressButton={handleUpdateSchedule}
       >
         <CalendarBSheetHeader date={date} edit={edit} />
 
-        <LeftBarContainer label="Tutor">
-          <UserInfo />
+        <LeftBarContainer label="Info">
+          <UserInfo
+            profileImageUrl={profileImageUrl}
+            subject={subject}
+            name={personName}
+          />
         </LeftBarContainer>
 
-        <LeftBarContainer label="Tutee">
-          <UserInfo />
-        </LeftBarContainer>
+        <DatePickerForm
+          label="Date"
+          date={dateWant}
+          setDate={setDateWant}
+          leftBar={true}
+          edit={edit}
+        />
 
         <TimePicker
-          startTime={startTime}
-          setStartTime={setStartTime}
-          endTime={endTime}
-          setEndTime={setEndTime}
+          startTime={startTimeWant}
+          setStartTime={setStartTimeWant}
+          endTime={endTimeWant}
+          setEndTime={setEndTimeWant}
           clickable={edit}
         />
 
@@ -66,7 +122,7 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit }) => {
           )}
         </LeftBarContainer>
 
-        <SelectTag tag={tag} setTag={setTag} />
+        <SelectTag tag={tag} setTag={setTag} edit={false} />
       </BottomSheet>
     </>
   );

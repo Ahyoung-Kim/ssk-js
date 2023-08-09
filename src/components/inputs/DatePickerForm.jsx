@@ -9,8 +9,15 @@ import { Platform } from "react-native";
 
 import InputContainer from "./InputContainer";
 import DatePicker from "../common/DatePicker";
+import LeftBarContainer from "../common/LeftBarContainer";
 
-const DatePickerForm = ({ label, date, setDate }) => {
+const DatePickerForm = ({
+  label,
+  date,
+  setDate,
+  leftBar = false,
+  edit = true,
+}) => {
   //   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
@@ -24,10 +31,24 @@ const DatePickerForm = ({ label, date, setDate }) => {
     }
   };
 
+  const handlePressDate = () => {
+    if (edit) {
+      setShowPicker(!showPicker);
+    }
+  };
+
+  const Component = ({ children }) => {
+    if (leftBar) {
+      return <LeftBarContainer label={label}>{children}</LeftBarContainer>;
+    } else {
+      return <InputContainer label={label}>{children}</InputContainer>;
+    }
+  };
+
   return (
     <>
-      <InputContainer label={label}>
-        <Container onPress={() => setShowPicker(!showPicker)}>
+      <Component label={label}>
+        <Container leftBar={leftBar} onPress={handlePressDate}>
           <DateText>{dateFormat(date)}</DateText>
 
           <FontAwesome5
@@ -36,7 +57,7 @@ const DatePickerForm = ({ label, date, setDate }) => {
             size={16}
           />
         </Container>
-      </InputContainer>
+      </Component>
 
       {showPicker && (
         <DatePicker date={date} setDate={setDate} onChange={handleChangeDate} />
@@ -49,7 +70,7 @@ export default DatePickerForm;
 
 const Container = styled.Pressable`
   background-color: white;
-  height: 100%;
+  height: ${({ leftBar }) => (leftBar ? 40 : "100%")};
   width: 100%;
   border-radius: 5;
   border-color: ${color.COLOR_MAIN};

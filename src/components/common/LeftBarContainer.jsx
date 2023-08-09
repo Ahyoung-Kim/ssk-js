@@ -32,6 +32,6 @@ const Container = styled.Pressable`
 const Label = styled.Text`
   color: ${color.COLOR_MAIN};
   font-weight: bold;
-  font-size: 14;
+  font-size: 16;
   margin-bottom: 7;
 `;

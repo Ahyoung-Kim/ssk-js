@@ -10,9 +10,15 @@ import ClassList from "../../components/common/ClassList";
 import client from "../../config/axios";
 
 import useClassList from "../../hooks/useClassList";
+import Loading from "../../components/common/Loading";
+
+import { useSelector } from "react-redux";
 
 const HomeScreen = () => {
   const classList = useClassList();
+  const todayClassList = useSelector(
+    (state) => state.classListReducer.todayClassList
+  );
 
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
@@ -49,22 +55,26 @@ const HomeScreen = () => {
   return (
     <>
       <MainLayout headerText={"홈"} headerType={"basic"}>
-        <Calendar
-          tutoringList={tutoringList}
-          onChangeYearMonth={(_year, _month) => {
-            if (_year !== year) {
-              setYear(_year);
-            }
-            if (_month !== month) {
-              setMonth(_month);
-            }
-          }}
-        />
+        {tutoringList ? (
+          <Calendar
+            tutoringList={tutoringList}
+            onChangeYearMonth={(_year, _month) => {
+              if (_year !== year) {
+                setYear(_year);
+              }
+              if (_month !== month) {
+                setMonth(_month);
+              }
+            }}
+          />
+        ) : (
+          <Loading />
+        )}
 
         <TodayClassView>
           <TodayClassText>오늘 수업</TodayClassText>
 
-          {/* <ClassList /> */}
+          <ClassList classList={todayClassList} />
         </TodayClassView>
       </MainLayout>
     </>
