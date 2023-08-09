@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
 import client from "../../config/axios";
 import Loading from "../common/Loading";
+import EmptyClassList from "../common/EmptyClassList";
 
 const CalendarListBSheet = ({ rbRef, selectedItem }) => {
   const isTutor = useIsTutor();
@@ -89,15 +90,21 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
         <CalendarBSheetHeader date={selectedItem.date} edit={isTutor} />
 
         {scheduleList &&
-          scheduleList.map((item) => {
-            return (
-              <ScheduleItem
-                key={item.tutoringId}
-                item={item}
-                handlePressScheduleItem={handlePressScheduleItem}
-              />
-            );
-          })}
+          (scheduleList.length > 0 ? (
+            scheduleList.map((item) => {
+              return (
+                <ScheduleItem
+                  key={item.tutoringId}
+                  item={item}
+                  handlePressScheduleItem={handlePressScheduleItem}
+                />
+              );
+            })
+          ) : (
+            <>
+              <EmptyClassList schedule={true} />
+            </>
+          ))}
 
         {/* 일정 추가 바텀시트 */}
         <CreateScheduleBSheet

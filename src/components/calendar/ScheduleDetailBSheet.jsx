@@ -95,6 +95,7 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
           date={dateWant}
           setDate={setDateWant}
           leftBar={true}
+          edit={edit}
         />
 
         <TimePicker

@@ -11,7 +11,13 @@ import InputContainer from "./InputContainer";
 import DatePicker from "../common/DatePicker";
 import LeftBarContainer from "../common/LeftBarContainer";
 
-const DatePickerForm = ({ label, date, setDate, leftBar = false }) => {
+const DatePickerForm = ({
+  label,
+  date,
+  setDate,
+  leftBar = false,
+  edit = true,
+}) => {
   //   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
@@ -22,6 +28,12 @@ const DatePickerForm = ({ label, date, setDate, leftBar = false }) => {
 
     if (Platform.OS === "android") {
       setShowPicker(false);
+    }
+  };
+
+  const handlePressDate = () => {
+    if (edit) {
+      setShowPicker(!showPicker);
     }
   };
 
@@ -36,7 +48,7 @@ const DatePickerForm = ({ label, date, setDate, leftBar = false }) => {
   return (
     <>
       <Component label={label}>
-        <Container leftBar={leftBar} onPress={() => setShowPicker(!showPicker)}>
+        <Container leftBar={leftBar} onPress={handlePressDate}>
           <DateText>{dateFormat(date)}</DateText>
 
           <FontAwesome5
