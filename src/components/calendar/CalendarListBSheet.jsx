@@ -44,8 +44,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
       })
       .then(() => {
         setRefetch(false);
-        rbRef?.current?.close();
-        scheduleRbRef?.current?.close();
+        // rbRef?.current?.close();
       });
   };
 
@@ -70,6 +69,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
 
   useEffect(() => {
     if (refetch) {
+      getScheduleList();
       dispatchData();
     }
   }, [refetch]);
@@ -114,6 +114,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
             schedule={selectedSchedule}
             date={selectedItem.date}
             edit={isTutor}
+            setRefetch={setRefetch}
           />
         )}
       </BottomSheet>

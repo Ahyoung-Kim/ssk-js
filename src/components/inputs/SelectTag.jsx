@@ -6,8 +6,14 @@ import color from "../../common/color";
 import LeftBarContainer from "../common/LeftBarContainer";
 import tags from "../../common/tags";
 
-const SelectTag = ({ tag, setTag }) => {
+const SelectTag = ({ tag, setTag, edit = true }) => {
   const [openTags, setOpenTags] = useState(false);
+
+  const handlePressTag = () => {
+    if (edit) {
+      setOpenTags(!openTags);
+    }
+  };
 
   const handlePressTagItem = (tagKey) => {
     setTag(tagKey);
@@ -16,7 +22,7 @@ const SelectTag = ({ tag, setTag }) => {
 
   return (
     <>
-      <LeftBarContainer label="Tag" onPress={() => setOpenTags(!openTags)}>
+      <LeftBarContainer label="Tag" onPress={handlePressTag}>
         <TagContainer>
           <TagText>태그</TagText>
           <TagCircle tag={tags[tag]} />

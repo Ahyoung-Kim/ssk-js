@@ -39,6 +39,7 @@ const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
       if (ret.status == 200) {
         Alert.alert("일정 등록", "일정이 등록되었습니다.");
         setRefetch(true);
+        rbRef?.current?.close();
       }
     } catch (err) {
       console.log("일정 등록 api 실패: ", err);
