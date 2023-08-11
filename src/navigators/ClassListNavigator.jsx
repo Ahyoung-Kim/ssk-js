@@ -8,6 +8,8 @@ import ReviewListPage from "../pages/review/ReviewListPage";
 import HwFeedPage from "../pages/Hw/HwFeedPage";
 import CreateClassScreen from "../screens/class/CreateClassScreen";
 import UpdateClassScreen from "../screens/class/UpdateClassScreen";
+import HwListScreen from "../screens/note/HwListScreen";
+import ReviewListScreen from "../screens/note/ReviewListScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +50,16 @@ const ClassListNavigator = () => {
       <Stack.Screen
         name="UpdateClassScreen"
         component={UpdateClassScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="HwListScreen"
+        component={HwListScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ReviewListScreen"
+        component={ReviewListScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

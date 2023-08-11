@@ -30,7 +30,10 @@ const CreateReviewScreen = () => {
         headerType={"back"}
         bgColor="white"
       >
-        <NoteHeader type="basic" text={dateFormat(date)} />
+        <NoteHeader
+          type="basic"
+          text={date ? dateFormat(date) : "복습 노트 추가"}
+        />
 
         <TextInputForm
           label="복습 내용"

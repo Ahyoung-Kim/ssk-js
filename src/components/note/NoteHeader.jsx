@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Entypo, Ionicons } from "@expo/vector-icons";
 
 // type: basic, date, setting, pen, settingAndPen
 const NoteHeader = ({
@@ -70,6 +70,36 @@ const NoteHeader = ({
           <>
             <TouchableArea onPress={handlePressLeftButton}>
               <FontAwesome5 name="cog" size={iconSize} color={iconColor} />
+            </TouchableArea>
+            {children}
+            <TouchableArea onPress={handlePressRightButton}>
+              <FontAwesome5 name="edit" size={iconSize} color={iconColor} />
+            </TouchableArea>
+          </>
+        );
+      case "delete":
+        return (
+          <>
+            <TouchableArea onPress={handlePressLeftButton}>
+              <FontAwesome5
+                name="trash-alt"
+                size={iconSize}
+                color={iconColor}
+              />
+            </TouchableArea>
+            {children}
+            <NonTouchableArea />
+          </>
+        );
+      case "deleteAndWrite":
+        return (
+          <>
+            <TouchableArea onPress={handlePressLeftButton}>
+              <FontAwesome5
+                name="trash-alt"
+                size={iconSize}
+                color={iconColor}
+              />
             </TouchableArea>
             {children}
             <TouchableArea onPress={handlePressRightButton}>
