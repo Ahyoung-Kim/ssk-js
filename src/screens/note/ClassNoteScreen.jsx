@@ -27,7 +27,7 @@ const SettingIcon = ({ onPress }) => {
 
 const ClassNoteScreen = () => {
   const route = useRoute();
-  const { date, noteId } = route.params; // noteId 필요
+  const { date, noteId, tutoringId } = route.params; // noteId 필요
 
   const isTutor = useIsTutor();
 
@@ -79,7 +79,12 @@ const ClassNoteScreen = () => {
       )}
 
       {/* 진도 복, 숙제 노트, 복습 노트 생성 바텀시트 */}
-      <CreateNoteBSheet rbRef={rbRef} />
+      <CreateNoteBSheet
+        rbRef={rbRef}
+        date={date}
+        noteId={noteId}
+        tutoringId={tutoringId}
+      />
     </>
   );
 };

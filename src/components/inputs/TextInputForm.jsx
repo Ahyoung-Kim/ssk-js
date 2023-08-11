@@ -1,13 +1,34 @@
 import React from "react";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 import color from "../../common/color";
 import InputContainer from "./InputContainer";
 
-const TextInputForm = ({ label, value, onChangeText, placeholder }) => {
+const TextInputForm = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  height,
+  multiline = false,
+}) => {
   return (
     <>
-      <InputContainer label={label}>
-        <InputForm value={value} onChangeText={onChangeText} placeholder={placeholder} />
+      <InputContainer label={label} height={height}>
+        <InputForm
+          multiline={multiline}
+          textAlignVertical="top"
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          style={
+            multiline
+              ? {
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                }
+              : {}
+          }
+        />
       </InputContainer>
     </>
   );

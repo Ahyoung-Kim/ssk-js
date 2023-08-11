@@ -8,12 +8,16 @@ import BottomSheet from "../common/BottomSheet";
 import { dh } from "../../common/windowSize";
 import { useNavigation } from "@react-navigation/native";
 
-const CreateNoteBSheet = ({ rbRef }) => {
+const CreateNoteBSheet = ({ rbRef, date, noteId, tutoringId }) => {
   const navigation = useNavigation();
 
   const onPress = (screenName) => {
     rbRef?.current?.close();
-    navigation.navigate(screenName);
+    navigation.navigate(screenName, {
+      date,
+      noteId,
+      tutoringId,
+    });
   };
 
   return (
