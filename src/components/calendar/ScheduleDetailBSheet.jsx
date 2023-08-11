@@ -10,7 +10,11 @@ import LeftBarContainer from "../common/LeftBarContainer";
 import TimePicker from "../common/TimePicker";
 import SelectTag from "../inputs/SelectTag";
 import UserInfo from "../common/UserInfo";
-import { serverDateFormat, timeFormatToDate } from "../../utils/date";
+import {
+  dateToTimeFormat,
+  serverDateFormat,
+  timeFormatToDate,
+} from "../../utils/date";
 
 import { Alert } from "react-native";
 import client from "../../config/axios";
@@ -38,16 +42,17 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
   const [description, setDescription] = useState("");
 
   const handleUpdateSchedule = async () => {
+    const body = {
+      tutoringId,
+      date: serverDateFormat(date),
+      startTime,
+      endTime,
+      dateWant: serverDateFormat(dateWant),
+      startTimeWant: dateToTimeFormat(startTimeWant),
+      endTimeWant: dateToTimeFormat(endTimeWant),
+    };
     try {
-      const ret = await client.put("/api/schedule", {
-        tutoringId,
-        date: serverDateFormat(date),
-        startTime,
-        endTime,
-        dateWant: null,
-        startTimeWant,
-        endTimeWant,
-      });
+      const ret = await client.put("/api/schedule", body);
 
       if (ret.status == 200) {
         Alert.alert("일정 편집", "일정 정보가 편집되었습니다.");
