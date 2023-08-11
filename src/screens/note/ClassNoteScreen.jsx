@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -15,6 +15,7 @@ import CircleIconButton from "../../components/common/CircleIconButton";
 import CreateNoteBSheet from "../../components/note/CreateNoteBSheet";
 import HwList from "../../components/note/HwList";
 import ReviewList from "../../components/note/ReviewList";
+import ConfirmButtons from "../../components/common/ConfirmButtons";
 
 const SettingIcon = ({ onPress }) => {
   return (
@@ -34,6 +35,28 @@ const ClassNoteScreen = () => {
   const isTutor = useIsTutor();
 
   const rbRef = useRef();
+
+  const navigation = useNavigation();
+
+  const [selectedHwList, setSelectedHwList] = useState([]);
+  const [selectedReviewList, setSelectedReviewList] = useState([]);
+
+  const [hwEditMode, setHwEditMode] = useState(false);
+  const [reviewEditMode, setReviewEditMode] = useState(false);
+
+  const onPressSettingIcon = (isReview) => {
+    if (isReview) {
+      setReviewEditMode(!reviewEditMode);
+      if (hwEditMode) {
+        setHwEditMode(false);
+      }
+    } else {
+      setHwEditMode(!hwEditMode);
+      if (reviewEditMode) {
+        setReviewEditMode(false);
+      }
+    }
+  };
 
   return (
     <>
@@ -56,32 +79,55 @@ const ClassNoteScreen = () => {
             <LeftBarContainer
               navigate={true}
               label={"숙제 노트"}
-              rightIconComponent={<SettingIcon onPress={() => {}} />}
+              rightIconComponent={
+                <SettingIcon onPress={onPressSettingIcon.bind(this, false)} />
+              }
+              onLabelPress={() => navigation.navigate("HwListScreen")}
             />
 
-            <HwList />
+            <HwList
+              editMode={hwEditMode}
+              selectedList={selectedHwList}
+              setSelectedList={setSelectedHwList}
+            />
           </Wrapper>
 
           <Wrapper>
             <LeftBarContainer
               navigate={true}
               label={"복습 노트"}
-              rightIconComponent={<SettingIcon onPress={() => {}} />}
+              rightIconComponent={
+                <SettingIcon onPress={onPressSettingIcon.bind(this, true)} />
+              }
+              onLabelPress={() => navigation.navigate("ReviewListScreen")}
             />
 
-            <ReviewList />
+            <ReviewList
+              editMode={reviewEditMode}
+              selectedList={selectedReviewList}
+              setSelectedList={setSelectedReviewList}
+            />
           </Wrapper>
         </Contents>
       </MainLayout>
 
-      {isTutor && (
-        <CircleIconButton
-          size={16}
-          name="pen"
-          onPress={() => {
-            rbRef?.current?.open();
-          }}
+      {hwEditMode || reviewEditMode ? (
+        <ConfirmButtons
+          confirmText={"삭제"}
+          buttonColor={color.COLOR_RED_TEXT}
+          onCancel={() => {}}
+          onConfirm={() => {}}
         />
+      ) : (
+        isTutor && (
+          <CircleIconButton
+            size={16}
+            name="pen"
+            onPress={() => {
+              rbRef?.current?.open();
+            }}
+          />
+        )
       )}
 
       {/* 진도 복, 숙제 노트, 복습 노트 생성 바텀시트 */}

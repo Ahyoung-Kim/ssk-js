@@ -18,7 +18,7 @@ const HwListScreen = () => {
       <MainLayout headerText={"숙제 노트"} headerType={"back"}>
         <NoteHeader
           text={"숙제 목록"}
-          type={"settingAndWrite"}
+          type={"deleteAndWrite"}
           handlePressLeftButton={() => {
             setEditMode(!editMode);
           }}

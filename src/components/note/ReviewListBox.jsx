@@ -23,7 +23,7 @@ const ReviewListBox = () => {
   const navigation = useNavigation();
 
   const onPressMoreButton = () => {
-    navigation.navigate("ReviewListPage");
+    navigation.navigate("ReviewListScreen");
   };
 
   return (

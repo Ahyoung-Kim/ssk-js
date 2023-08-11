@@ -5,11 +5,19 @@ import color from "../../common/color";
 
 import { Ionicons } from "@expo/vector-icons";
 
-const ReviewItem = () => {
+const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
   const [click, setClick] = useState(false);
+  const [selected, setSelected] = useState(false);
 
   const onPressClickBox = () => {
-    setClick(!click);
+    if (editMode) {
+      setSelected(!selected);
+      onPressItem(data);
+    } else {
+      if (!completed) {
+        setClick(!click);
+      }
+    }
   };
 
   return (
@@ -18,14 +26,25 @@ const ReviewItem = () => {
         <Wraaper>
           <Dot />
           <ReviewName>지수와 로그 - 로그함수 응용</ReviewName>
+
+          {editMode && <EditWrapper />}
         </Wraaper>
 
         <CheckBox onPress={onPressClickBox}>
-          <Ionicons
-            name={click ? "checkbox" : "checkbox-outline"}
-            color={color.COLOR_MAIN}
-            size={20}
-          />
+          {editMode ? (
+            <Ionicons
+              name={selected ? "checkmark-circle" : "checkmark-circle-outline"}
+              color={color.COLOR_RED_TEXT}
+              size={20}
+            />
+          ) : (
+            <Ionicons
+              name={click ? "checkbox" : "checkbox-outline"}
+              color={color.COLOR_MAIN}
+              size={20}
+              style={completed ? { opacity: 0 } : {}}
+            />
+          )}
         </CheckBox>
       </Container>
     </>
@@ -48,6 +67,16 @@ const Container = styled.View`
 const Wraaper = styled.View`
   flex-direction: row;
   align-items: center;
+`;
+
+const EditWrapper = styled.View`
+  background-color: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
 `;
 
 const Dot = styled.View`
