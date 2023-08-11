@@ -82,7 +82,9 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
     console.log(body);
 
     try {
-      const ret = await client.delete("/api/schedule", body);
+      const ret = await client.delete("/api/schedule", {
+        data: body,
+      });
 
       if (ret.status == 200) {
         setRefetch(true);

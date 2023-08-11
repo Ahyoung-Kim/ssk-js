@@ -79,6 +79,12 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
     getScheduleList();
   }, [selectedItem]);
 
+  useEffect(() => {
+    if (!selectedSchedule && scheduleList && scheduleList.length > 0) {
+      setSelectedSchedule(scheduleList[0]);
+    }
+  }, [scheduleList]);
+
   return (
     <>
       <BottomSheet
