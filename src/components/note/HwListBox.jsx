@@ -22,7 +22,7 @@ const HwListBox = () => {
   const navigation = useNavigation();
 
   const onPressMoreButton = () => {
-    navigation.navigate("HwListPage");
+    navigation.navigate("HwListScreen");
   };
 
   return (
