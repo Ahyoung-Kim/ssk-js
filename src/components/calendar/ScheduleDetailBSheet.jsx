@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 
 import styled from "styled-components/native";
-import color from "../../common/color";
-import tags from "../../common/tags";
 
 import BottomSheet from "../common/BottomSheet";
 import CalendarBSheetHeader from "./CalendarBSheetHeader";
@@ -10,13 +8,18 @@ import LeftBarContainer from "../common/LeftBarContainer";
 import TimePicker from "../common/TimePicker";
 import SelectTag from "../inputs/SelectTag";
 import UserInfo from "../common/UserInfo";
-import { serverDateFormat, timeFormatToDate } from "../../utils/date";
+import { timeFormatToDate } from "../../utils/date";
+import UpdateScheduleBSheet from "./UpdateScheduleBSheet";
+import { useNavigation } from "@react-navigation/native";
 
-import { Alert } from "react-native";
-import client from "../../config/axios";
-import DatePickerForm from "../inputs/DatePickerForm";
-
-const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
+const ScheduleDetailBSheet = ({
+  rbRef,
+  schedule,
+  date,
+  edit,
+  setRefetch,
+  classListRbRef,
+}) => {
   // console.log("schedule: ", schedule);
   const {
     color: tagColor,
@@ -28,59 +31,37 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
     tutoringId,
   } = schedule;
 
-  const today = new Date();
-  today.setMinutes(0);
-  const [startTimeWant, setStartTimeWant] = useState(today);
-  const [endTimeWant, setEndTimeWant] = useState(today);
-  const [dateWant, setDateWant] = useState(today);
+  const updateScheduleRbRef = useRef();
 
-  const [tag, setTag] = useState(0);
-  const [description, setDescription] = useState("");
+  const navigation = useNavigation();
 
-  const handleUpdateSchedule = async () => {
-    try {
-      const ret = await client.put("/api/schedule", {
-        tutoringId,
-        date: serverDateFormat(date),
-        startTime,
-        endTime,
-        dateWant: null,
-        startTimeWant,
-        endTimeWant,
-      });
-
-      if (ret.status == 200) {
-        Alert.alert("일정 편집", "일정 정보가 편집되었습니다.");
-        rbRef?.current?.close();
-      }
-    } catch (err) {
-      console.log("update schedule error: ", err);
-      const status = err?.response?.status;
-
-      if (status == 409) {
-        // Conflict
-        console.log("create schedule: conflict");
-        Alert.alert("일정 편집 실패", "해당 시간에 중복되는 수업이 있습니다.");
-      }
-    }
+  const handlePressEdit = () => {
+    updateScheduleRbRef?.current?.open();
   };
 
-  useEffect(() => {
-    setTag(tagColor);
-    setStartTimeWant(timeFormatToDate(startTime));
-    setEndTimeWant(timeFormatToDate(endTime));
-    setDateWant(date);
-  }, [schedule]);
+  const handlePressButton = () => {
+    classListRbRef?.current?.close();
+    rbRef?.current?.close();
+    navigation.navigate("ClassNoteScreen", {
+      date,
+      tutoringId,
+    });
+  };
 
   return (
     <>
       <BottomSheet
         rbRef={rbRef}
-        heightPercentage={0.9}
-        button={edit ? "편집" : null}
-        handlePressButton={handleUpdateSchedule}
+        heightPercentage={0.6}
+        button="진도 노트"
+        handlePressButton={handlePressButton}
+        onClose={() => {}}
       >
-        <CalendarBSheetHeader date={date} edit={edit} />
+        <CalendarBSheetHeader
+          date={date}
+          edit={edit}
+          handlePressEdit={handlePressEdit}
+        />
 
         <LeftBarContainer label="Info">
           <UserInfo
@@ -90,55 +71,36 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
           />
         </LeftBarContainer>
 
-        <DatePickerForm
-          label="Date"
-          date={dateWant}
-          setDate={setDateWant}
-          leftBar={true}
-          edit={edit}
-        />
-
         <TimePicker
-          startTime={startTimeWant}
-          setStartTime={setStartTimeWant}
-          endTime={endTimeWant}
-          setEndTime={setEndTimeWant}
-          clickable={edit}
+          startTime={timeFormatToDate(startTime)}
+          endTime={timeFormatToDate(endTime)}
+          clickable={false}
         />
 
         <LeftBarContainer label="Description">
-          {edit ? (
-            <DescriptionInput
-              multiline={true} //여러줄 입력가능
-              textAlignVertical="top" //처음부터 시작 (기본값은 center)
-              placeholder="내용을 입력하세요."
-              value={description}
-              onChangeText={setDescription}
-            />
-          ) : (
-            <DescriptionText>
-              디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션
-            </DescriptionText>
-          )}
+          <DescriptionText>
+            디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션
+          </DescriptionText>
         </LeftBarContainer>
 
-        <SelectTag tag={tag} setTag={setTag} edit={false} />
+        <SelectTag tag={tagColor} edit={false} />
+
+        {/* 일정 수정 바텀시트 */}
+        {edit && (
+          <UpdateScheduleBSheet
+            rbRef={updateScheduleRbRef}
+            scheduleRbRef={rbRef}
+            schedule={schedule}
+            date={date}
+            setRefetch={setRefetch}
+          />
+        )}
       </BottomSheet>
     </>
   );
 };
 
 export default ScheduleDetailBSheet;
-
-const DescriptionInput = styled.TextInput`
-  background-color: ${color.COLOR_WHITE_BACKGROUND};
-  border-width: 1;
-  border-color: ${color.COLOR_GRAY_BORDER};
-  width: 100%;
-  height: 150;
-  border-radius: 5;
-  padding: 7px;
-`;
 
 const DescriptionText = styled.Text`
   // font-weight: bold;

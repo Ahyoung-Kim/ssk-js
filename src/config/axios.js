@@ -13,6 +13,9 @@ const requestHandler = async (config) => {
   // AsyncStorage 에서 accessToken 가져와 헤더에 넣는 작업
   const token = await getData("accessToken");
   config.headers["Authorization"] = `Bearer ${token}`;
+
+  // console.log("클라이언트 config: ", config);
+
   return config;
 };
 

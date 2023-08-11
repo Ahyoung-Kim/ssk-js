@@ -25,6 +25,8 @@ import UpdateColorBSheet from "../../components/classInfo/UpdateColorBSheet";
 
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
+import HwListBox from "../../components/note/HwListBox";
+import ReviewListBox from "../../components/note/ReviewListBox";
 
 const ClassInfoScreen = () => {
   const dispatch = useDispatch();
@@ -124,14 +126,19 @@ const ClassInfoScreen = () => {
               }}
             />
 
-            <SubLayout>
+            {/* <SubLayout>
               <TouchableArea onPress={handlePressHwBtn}>
                 <HwNotePreview />
               </TouchableArea>
               <TouchableArea onPress={handlePressReviewBtn}>
                 <ReviewNotePreview />
               </TouchableArea>
-            </SubLayout>
+            </SubLayout> */}
+            <ListWrapper>
+              <HwListBox />
+
+              <ReviewListBox />
+            </ListWrapper>
           </>
         )}
       </MainLayout>
@@ -169,4 +176,9 @@ const InfroWrapper = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-vertical: 25;
+`;
+
+const ListWrapper = styled.View`
+  margin-top: 20;
+  padding-horizontal: 15;
 `;

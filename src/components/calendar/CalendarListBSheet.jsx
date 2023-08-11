@@ -79,6 +79,12 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
     getScheduleList();
   }, [selectedItem]);
 
+  useEffect(() => {
+    if (!selectedSchedule && scheduleList && scheduleList.length > 0) {
+      setSelectedSchedule(scheduleList[0]);
+    }
+  }, [scheduleList]);
+
   return (
     <>
       <BottomSheet
@@ -87,7 +93,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
         button={isTutor ? "일정 추가" : null}
         handlePressButton={handlePressButton}
       >
-        <CalendarBSheetHeader date={selectedItem.date} edit={isTutor} />
+        <CalendarBSheetHeader date={selectedItem.date} />
 
         {scheduleList &&
           (scheduleList.length > 0 ? (
@@ -118,6 +124,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
         {selectedSchedule && (
           <ScheduleDetailBSheet
             rbRef={scheduleRbRef}
+            classListRbRef={rbRef}
             schedule={selectedSchedule}
             date={selectedItem.date}
             edit={isTutor}

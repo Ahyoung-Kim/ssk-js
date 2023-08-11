@@ -1,28 +1,32 @@
 import React from "react";
-import styled from "styled-components/native";
-import { TouchableOpacity } from "react-native";
 
 import RBSheet from "react-native-raw-bottom-sheet";
-import color from "../../common/color";
-import BigButton from "./BigButton";
+import { TouchableOpacity } from "react-native";
 
+import styled from "styled-components/native";
+import color from "../../common/color";
 import { dh } from "../../common/windowSize";
 
-const BottomSheet = ({
+import ConfirmButtons from "./ConfirmButtons";
+
+const ConfirmBtnBottomSheet = ({
   children,
   rbRef,
   heightPercentage = 0.5,
-  height,
   onClose = () => {},
-  button = null, // 버튼 텍스트
-  handlePressButton = () => {},
-  // confirmButton = null,
+  cancelText = "취소",
+  confirmText = "확인",
+  filled = false,
+  buttonColor,
+  cancelButtonColor,
+  onCancel = () => {},
+  onConfirm = () => {},
 }) => {
   return (
     <>
       <RBSheet
         ref={rbRef}
-        height={height ? height : dh * heightPercentage}
+        height={dh * heightPercentage}
         onClose={onClose}
         closeOnDragDown={true}
         closeOnPressMask={true}
@@ -43,7 +47,7 @@ const BottomSheet = ({
         <Contents scrollEnabled={true}>
           <TouchableOpacity
             style={{
-              paddingBottom: button ? dh * 0.07 + 80 : dh * 0.07,
+              paddingBottom: dh * 0.07 + 80,
               height: "100%",
               width: "100%",
               justifyContent: "center",
@@ -55,15 +59,21 @@ const BottomSheet = ({
           </TouchableOpacity>
         </Contents>
 
-        {button ? (
-          <BigButton text={button} onPress={handlePressButton} />
-        ) : null}
+        <ConfirmButtons
+          cancelText={cancelText}
+          confirmText={confirmText}
+          filled={filled}
+          buttonColor={buttonColor}
+          cancelButtonColor={cancelButtonColor}
+          onCancel={onCancel}
+          onConfirm={onConfirm}
+        />
       </RBSheet>
     </>
   );
 };
 
-export default BottomSheet;
+export default ConfirmBtnBottomSheet;
 
 const Contents = styled.ScrollView`
   height: 100%;

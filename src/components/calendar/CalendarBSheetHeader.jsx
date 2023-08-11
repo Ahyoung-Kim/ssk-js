@@ -38,4 +38,4 @@ const HeaderText = styled.Text`
   font-size: 22;
 `;
 
-const EditButton = styled.Pressable``;
+const EditButton = styled.TouchableOpacity``;

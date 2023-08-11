@@ -13,8 +13,10 @@ import useClassList from "../../hooks/useClassList";
 import Loading from "../../components/common/Loading";
 
 import { useSelector } from "react-redux";
+import useUser from "../../hooks/useUser";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+  const user = useUser();
   const classList = useClassList();
   const todayClassList = useSelector(
     (state) => state.classListReducer.todayClassList
@@ -50,7 +52,7 @@ const HomeScreen = () => {
     if (year && month) {
       getTutoringSchedules();
     }
-  }, [year, month, classList]);
+  }, [year, month, classList, user]);
 
   return (
     <>

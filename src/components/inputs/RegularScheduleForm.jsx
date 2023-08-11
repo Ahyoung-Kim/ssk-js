@@ -123,7 +123,10 @@ const RegularScheduleForm = ({ days, setDays }) => {
                     style={{ marginRight: 5 }}
                     color={color.COLOR_GRAY_TEXT}
                   />
-                  <SelectedText highlight={selectedDay === day}>
+                  <SelectedText
+                    highlight={selectedDay === day}
+                    onPress={handleDayPress.bind(this, day)}
+                  >
                     {days[day].text} -{" "}
                     {days[day].startTime
                       ? dateToTimeFormat(days[day].startTime)

@@ -9,10 +9,11 @@ const InputContainer = ({
   label,
   paddingHorizontal = 15,
   height = 40,
+  width = "100%",
 }) => {
   return (
     <>
-      <Container paddingHorizontal={paddingHorizontal}>
+      <Container paddingHorizontal={paddingHorizontal} width={width}>
         {label && <InputLabel label={label} />}
 
         <Contents height={height}>{children}</Contents>
@@ -25,7 +26,7 @@ export default InputContainer;
 
 const Container = styled.View`
   // background-color: aqua;
-  width: 100%;
+  width: ${({ width }) => width};
   padding-horizontal: ${({ paddingHorizontal }) => paddingHorizontal};
   margin-vertical: 7;
   z-index: 1;

@@ -63,7 +63,6 @@ const CalendarBody = ({
 
     // console.log(days);
     setTotalDays(days);
-    setSelectedItem(days[0]);
   };
 
   const setScheduleListDays = () => {
@@ -75,7 +74,6 @@ const CalendarBody = ({
     // console.log(days);
 
     setTotalDays(days);
-    setSelectedItem(days[0]);
   };
 
   useEffect(() => {
@@ -83,6 +81,12 @@ const CalendarBody = ({
       setScheduleListDays();
     }
   }, [selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    if (!selectedItem && totalDays && totalDays.length > 0) {
+      setSelectedItem(totalDays[0]);
+    }
+  }, [totalDays]);
 
   useEffect(() => {
     if (classInfo) {

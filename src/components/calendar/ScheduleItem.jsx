@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
 
 const TimeContainer = styled.View`
   margin-left: 15;
+  // background-color: orange;
+  width: 52;
 `;
 
 const StartTime = styled.Text`

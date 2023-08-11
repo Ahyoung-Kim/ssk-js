@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import BottomSheet from "../common/BottomSheet";
+import ConfirmBtnBottomSheet from "../common/ConfirmBtnBottomSheet";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { Platform, View } from "react-native";
-import ConfirmButtons from "../common/ConfirmButtons";
 import color from "../../common/color";
 
 const Container = ({ children, onBSheetClose, setIsConfirmed }) => {
@@ -31,15 +30,21 @@ const Container = ({ children, onBSheetClose, setIsConfirmed }) => {
     return <>{children}</>;
   } else {
     return (
-      <BottomSheet rbRef={ref} heightPercentage={0.4} onClose={onClose}>
-        <View>{children}</View>
-        <ConfirmButtons
-          confirmText={"선택"}
+      <>
+        <ConfirmBtnBottomSheet
+          rbRef={ref}
+          heightPercentage={0.4}
+          onClose={onClose}
+          cancelText="취소"
+          confirmText="선택"
+          filled={true}
           buttonColor={color.COLOR_MAIN}
           onCancel={onCancel}
           onConfirm={onConfirm}
-        />
-      </BottomSheet>
+        >
+          <View>{children}</View>
+        </ConfirmBtnBottomSheet>
+      </>
     );
   }
 };
