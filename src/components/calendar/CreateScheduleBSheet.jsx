@@ -21,10 +21,15 @@ const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
   today.setMinutes(0);
   const [startTime, setStartTime] = useState(today);
   const [endTime, setEndTime] = useState(today);
-  const [tutoringId, setTutoringId] = useState("");
+  const [tutoringId, setTutoringId] = useState(null);
 
   // 일정 등록 버튼
   const handlePressButton = async () => {
+    if (!tutoringId) {
+      Alert.alert("수업을 선택해주세요!");
+      return;
+    }
+
     try {
       // tutoringId, date(YYYY-MM-DD), startTime(TT:mm), endTime(TT:mm)
       const data = {
@@ -61,7 +66,7 @@ const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
         button="일정 등록"
         handlePressButton={handlePressButton}
       >
-        <CalendarBSheetHeader date={date} edit={edit} />
+        <CalendarBSheetHeader date={date} />
 
         <DropDownForm
           label="수업 선택"

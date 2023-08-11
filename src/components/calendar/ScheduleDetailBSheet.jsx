@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 import tags from "../../common/tags";
 
-import BottomSheet from "../common/BottomSheet";
+import ConfirmBtnBottomSheet from "../common/ConfirmBtnBottomSheet";
 import CalendarBSheetHeader from "./CalendarBSheetHeader";
 import LeftBarContainer from "../common/LeftBarContainer";
 import TimePicker from "../common/TimePicker";
@@ -56,6 +56,7 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
 
       if (ret.status == 200) {
         Alert.alert("일정 편집", "일정 정보가 편집되었습니다.");
+        setRefetch(true);
         rbRef?.current?.close();
       }
     } catch (err) {
@@ -70,6 +71,42 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
     }
   };
 
+  const deleteSchedule = async () => {
+    const body = {
+      tutoringId,
+      date: serverDateFormat(date),
+      startTime,
+      endTime,
+    };
+
+    console.log(body);
+
+    try {
+      const ret = await client.delete("/api/schedule", body);
+
+      if (ret.status == 200) {
+        setRefetch(true);
+        rbRef?.current?.close();
+      }
+    } catch (err) {
+      console.log("delete schedule err: ", err);
+    }
+  };
+
+  const handleDeleteSchedule = () => {
+    Alert.alert("삭제", "해당 일정을 삭제하시겠습니까?", [
+      {
+        text: "취소",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "삭제",
+        onPress: deleteSchedule,
+      },
+    ]);
+  };
+
   useEffect(() => {
     setTag(tagColor);
     setStartTimeWant(timeFormatToDate(startTime));
@@ -79,11 +116,15 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
 
   return (
     <>
-      <BottomSheet
+      <ConfirmBtnBottomSheet
         rbRef={rbRef}
         heightPercentage={0.9}
-        button={edit ? "편집" : null}
-        handlePressButton={handleUpdateSchedule}
+        cancelText="삭제"
+        confirmText="편집"
+        filled={true}
+        buttonColor={color.COLOR_MAIN}
+        onCancel={handleDeleteSchedule}
+        onConfirm={handleUpdateSchedule}
       >
         <CalendarBSheetHeader date={date} edit={edit} />
 
@@ -128,7 +169,7 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
         </LeftBarContainer>
 
         <SelectTag tag={tag} setTag={setTag} edit={false} />
-      </BottomSheet>
+      </ConfirmBtnBottomSheet>
     </>
   );
 };

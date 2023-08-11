@@ -40,13 +40,14 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 20;
-  padding-horizontal: 20;
+  padding-bottom: 25;
+  padding-horizontal: 15;
+  background-color: white;
 `;
 
 const Button = styled.Pressable`
   width: 48%;
-  height: 40;
+  height: 41;
   align-items: center;
   justify-content: center;
   background-color: ${({ buttonColor, filled }) =>

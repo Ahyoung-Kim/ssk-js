@@ -25,7 +25,12 @@ const ClassItem = ({ classItem }) => {
   const name = personName || tuteeName || tutorName;
 
   const handlePressClassItem = () => {
-    navigation.navigate("ClassInfoScreen", { tutoringId });
+    // navigation.navigate("ClassInfoScreen", { tutoringId });
+    navigation.navigate("ClassList", {
+      screen: "ClassInfoScreen",
+      params: { tutoringId },
+      initial: false,
+    });
   };
 
   return (
