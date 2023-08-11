@@ -12,6 +12,7 @@ const BottomSheet = ({
   children,
   rbRef,
   heightPercentage = 0.5,
+  height,
   onClose = () => {},
   button = null, // 버튼 텍스트
   handlePressButton = () => {},
@@ -21,7 +22,7 @@ const BottomSheet = ({
     <>
       <RBSheet
         ref={rbRef}
-        height={dh * heightPercentage}
+        height={height ? height : dh * heightPercentage}
         onClose={onClose}
         closeOnDragDown={true}
         closeOnPressMask={true}

@@ -10,8 +10,16 @@ import SelectTag from "../inputs/SelectTag";
 import UserInfo from "../common/UserInfo";
 import { timeFormatToDate } from "../../utils/date";
 import UpdateScheduleBSheet from "./UpdateScheduleBSheet";
+import { useNavigation } from "@react-navigation/native";
 
-const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
+const ScheduleDetailBSheet = ({
+  rbRef,
+  schedule,
+  date,
+  edit,
+  setRefetch,
+  classListRbRef,
+}) => {
   // console.log("schedule: ", schedule);
   const {
     color: tagColor,
@@ -25,8 +33,18 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
 
   const updateScheduleRbRef = useRef();
 
+  const navigation = useNavigation();
+
   const handlePressEdit = () => {
     updateScheduleRbRef?.current?.open();
+  };
+
+  const handlePressButton = () => {
+    classListRbRef?.current?.close();
+    rbRef?.current?.close();
+    navigation.navigate("ClassNoteScreen", {
+      date,
+    });
   };
 
   return (
@@ -35,7 +53,7 @@ const ScheduleDetailBSheet = ({ rbRef, schedule, date, edit, setRefetch }) => {
         rbRef={rbRef}
         heightPercentage={0.6}
         button="진도 노트"
-        handlePressButton={() => {}}
+        handlePressButton={handlePressButton}
         onClose={() => {}}
       >
         <CalendarBSheetHeader

@@ -124,6 +124,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
         {selectedSchedule && (
           <ScheduleDetailBSheet
             rbRef={scheduleRbRef}
+            classListRbRef={rbRef}
             schedule={selectedSchedule}
             date={selectedItem.date}
             edit={isTutor}
