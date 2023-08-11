@@ -107,7 +107,7 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-vertical: 10;
+  padding-vertical: 5;
 `;
 
 const HeaderText = styled.Text`
