@@ -13,6 +13,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import useIsTutor from "../../hooks/useIsTutor";
 import CircleIconButton from "../../components/common/CircleIconButton";
 import CreateNoteBSheet from "../../components/note/CreateNoteBSheet";
+import HwList from "../../components/note/HwList";
+import ReviewList from "../../components/note/ReviewList";
 
 const SettingIcon = ({ onPress }) => {
   return (
@@ -56,6 +58,8 @@ const ClassNoteScreen = () => {
               label={"숙제 노트"}
               rightIconComponent={<SettingIcon onPress={() => {}} />}
             />
+
+            <HwList />
           </Wrapper>
 
           <Wrapper>
@@ -64,6 +68,8 @@ const ClassNoteScreen = () => {
               label={"복습 노트"}
               rightIconComponent={<SettingIcon onPress={() => {}} />}
             />
+
+            <ReviewList />
           </Wrapper>
         </Contents>
       </MainLayout>
@@ -102,4 +108,6 @@ const ProgressText = styled.Text`
   line-height: 24;
 `;
 
-const Wrapper = styled.View``;
+const Wrapper = styled.View`
+  margin-top: 20;
+`;

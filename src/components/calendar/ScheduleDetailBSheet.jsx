@@ -44,6 +44,7 @@ const ScheduleDetailBSheet = ({
     rbRef?.current?.close();
     navigation.navigate("ClassNoteScreen", {
       date,
+      tutoringId,
     });
   };
 
