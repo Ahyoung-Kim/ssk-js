@@ -9,8 +9,8 @@ import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
-import CircleIconButton from "../../components/common/CircleIconButton";
 import ReviewListBSheet from "./ReviewListBSheet";
+import { useRoute } from "@react-navigation/native";
 
 const ReviewListContainer = ({ children, text }) => {
   const [open, setOpen] = useState(true);
@@ -38,6 +38,9 @@ const ReviewListContainer = ({ children, text }) => {
 };
 
 const ReviewListScreen = () => {
+  const route = useRoute();
+  const { tutoringId } = route.params;
+
   const [editMode, setEditMode] = useState(false);
 
   const [selectedList, setSelectedList] = useState([]);
@@ -46,10 +49,15 @@ const ReviewListScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"복습 노트"} headerType={"back"}>
+      <MainLayout
+        headerText={"복습 노트"}
+        headerLeftType={"back"}
+        headerRightType={"setting"}
+        handlePressHeaderRight={() => rbRef?.current?.open()}
+      >
         <NoteHeader
           text={"복습 목록"}
-          type={"deleteAndWrite"}
+          type={"delete"}
           handlePressLeftButton={() => setEditMode(!editMode)}
         />
 
@@ -73,7 +81,7 @@ const ReviewListScreen = () => {
         </Container>
       </MainLayout>
 
-      {editMode ? (
+      {editMode && (
         <ConfirmButtons
           cancelText="취소"
           confirmText={"삭제"}
@@ -83,16 +91,9 @@ const ReviewListScreen = () => {
           onConfirm={() => {}}
           buttonColor={color.COLOR_RED_TEXT}
         />
-      ) : (
-        <CircleIconButton
-          name="cog"
-          onPress={() => {
-            rbRef?.current?.open();
-          }}
-        />
       )}
 
-      <ReviewListBSheet rbRef={rbRef} />
+      <ReviewListBSheet rbRef={rbRef} tutoringId={tutoringId} />
     </>
   );
 };

@@ -3,11 +3,7 @@ import React from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { Dimensions } from "react-native";
-
-const windowWidth = Dimensions.get("window").width;
-
-const ConfirmButtons = ({
+const ModalConfirmButtons = ({
   confirmText,
   cancelText = "취소",
   buttonColor,
@@ -17,32 +13,30 @@ const ConfirmButtons = ({
   onConfirm,
 }) => {
   return (
-    <Container>
-      <Button onPress={onCancel} buttonColor={cancelButtonColor}>
-        <ButtonText textColor={cancelButtonColor}>{cancelText}</ButtonText>
-      </Button>
-      <Button onPress={onConfirm} buttonColor={buttonColor} filled={filled}>
-        <ButtonText textColor={filled ? "white" : buttonColor}>
-          {confirmText}
-        </ButtonText>
-      </Button>
-    </Container>
+    <>
+      <Container>
+        <Button onPress={onCancel} buttonColor={cancelButtonColor}>
+          <ButtonText textColor={cancelButtonColor}>{cancelText}</ButtonText>
+        </Button>
+        <Button onPress={onConfirm} buttonColor={buttonColor} filled={filled}>
+          <ButtonText textColor={filled ? "white" : buttonColor}>
+            {confirmText}
+          </ButtonText>
+        </Button>
+      </Container>
+    </>
   );
 };
 
-export default ConfirmButtons;
+export default ModalConfirmButtons;
 
 const Container = styled.View`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: ${windowWidth};
+  width: 100%;
+  //   background-color: orange;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 30;
-  padding-horizontal: 15;
-  background-color: white;
+  margin-top: 40;
 `;
 
 const Button = styled.Pressable`

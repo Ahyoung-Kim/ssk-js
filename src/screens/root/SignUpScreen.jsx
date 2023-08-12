@@ -42,27 +42,20 @@ const SignUpScreen = () => {
   }, []);
 
   let pageComponent;
-  switch(page) {
+  switch (page) {
     case "RolePage":
       pageComponent = (
         <>
-          <SignUpTitle>
-            1. 가입 유형 선택하기
-          </SignUpTitle>
-          <RolePage
-            role={role}
-            setRole={setRole}
-          />
+          <SignUpTitle>1. 가입 유형 선택하기</SignUpTitle>
+          <RolePage role={role} setRole={setRole} />
         </>
-      )
+      );
       break;
     case "BasicInfoPage":
       pageComponent = (
         <>
           {!isKeyboardShown && (
-            <SignUpTitle>
-              2. 로그인 정보 기입하기
-            </SignUpTitle>
+            <SignUpTitle>2. 로그인 정보 기입하기</SignUpTitle>
           )}
           <BasicInfoPage
             email={email}
@@ -74,12 +67,10 @@ const SignUpScreen = () => {
             isKeyboardShown={isKeyboardShown}
           />
         </>
-      )
+      );
       break;
     case "CompletePage":
-      pageComponent = (
-        <CompletePage />
-      )
+      pageComponent = <CompletePage />;
       break;
     default:
       break;
@@ -87,15 +78,11 @@ const SignUpScreen = () => {
 
   return (
     <Layout>
-      <Header text="회원가입" type="withBack"/>
+      <Header headerText="회원가입" />
       <Margin size={30} />
-      {!isKeyboardShown && (
-        <SignUpProgressCircle page={page}/>
-      )}
+      {!isKeyboardShown && <SignUpProgressCircle page={page} />}
       <Margin size={10} />
-      <ComponentWrapper>
-        {pageComponent}
-      </ComponentWrapper>
+      <ComponentWrapper>{pageComponent}</ComponentWrapper>
       {!isKeyboardShown && (
         <ButtonWrapper>
           <ProgressButton
@@ -103,7 +90,7 @@ const SignUpScreen = () => {
             email={email}
             password={password}
             name={name}
-            page={page} 
+            page={page}
             setPage={setPage}
           />
         </ButtonWrapper>

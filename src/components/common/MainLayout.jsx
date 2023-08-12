@@ -10,9 +10,13 @@ import useAxiosInterceptors from "../../hooks/useAxiosInterceptors";
 const MainLayout = ({
   children,
   headerText,
-  headerType,
+
   handleRefresh,
   bgColor = color.COLOR_GRAY_BACKGROUND,
+  headerLeftType,
+  headerRightType,
+  handlePressHeaderLeft,
+  handlePressHeaderRight,
 }) => {
   useAxiosInterceptors();
 
@@ -29,7 +33,13 @@ const MainLayout = ({
 
   return (
     <Wrapper>
-      <Header text={headerText} type={headerType} />
+      <Header
+        headerText={headerText}
+        headerLeftType={headerLeftType}
+        headerRightType={headerRightType}
+        handlePressHeaderLeft={handlePressHeaderLeft}
+        handlePressHeaderRight={handlePressHeaderRight}
+      />
       <Inner
         bgColor={bgColor}
         refreshControl={
@@ -60,5 +70,5 @@ const Contents = styled.View`
   width: 100%;
   flex: 1;
   background-color: ${({ bgColor }) => bgColor};
-  padding-bottom: 100;
+  padding-bottom: 200;
 `;

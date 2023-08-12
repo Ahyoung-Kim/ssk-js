@@ -1,10 +1,21 @@
 import React from "react";
+
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
-const Header = ({ text, type }) => {
+const Header = ({
+  headerText,
+  headerLeftType,
+  headerRightType,
+  handlePressHeaderLeft = () => {},
+  handlePressHeaderRight = () => {},
+}) => {
   const navigation = useNavigation(); // 네비게이션
 
   // 이전 버튼 핸들링
@@ -12,54 +23,71 @@ const Header = ({ text, type }) => {
     navigation.goBack();
   };
 
-  // 유형 별 헤더
-  let component;
-  switch (type) {
-    case "basic": // 제목만
-      component = (
-        <>
-          <UntouchableArea />
-          <Text>{text}</Text>
-          <UntouchableArea />
-        </>
-      );
-      break;
-    case "back": // 뒤로가기 버튼
-      component = (
-        <>
+  const makeComponent = (type, onPress) => {
+    switch (type) {
+      case "back": // 백 버튼
+        return (
           <TouchableArea onPress={handleBackButton}>
             <Ionicons name="chevron-back-outline" size={30} color="#fff" />
           </TouchableArea>
-          <Text>{text}</Text>
-          <UntouchableArea />
-        </>
-      );
-      break;
-    case "nextBack": // 이전, 다음 버튼
-      component = (
-        <>
+        );
+      case "prev": // 이전
+        return (
           <TouchableArea onPress={handleBackButton}>
             <Ionicons name="caret-back" size={30} color="#fff" />
           </TouchableArea>
-          <Text>{text}</Text>
-          <TouchableArea>
+        );
+      case "next": // 다음
+        return (
+          <TouchableArea onPress={onPress}>
             <Ionicons name="caret-forward" size={30} color="#fff" />
           </TouchableArea>
-        </>
-      );
-      break;
-    default:
-      component = (
-        <>
-          <UntouchableArea />
-          <Text>{text}</Text>
-          <UntouchableArea />
-        </>
-      );
-      break;
-  }
+        );
+      case "setting": // 톱니바퀴
+        return (
+          <TouchableArea onPress={onPress}>
+            <FontAwesome5 name="cog" size={22} color="#fff" />
+          </TouchableArea>
+        );
+      case "bell": // 종 모양(알림)
+        return (
+          <TouchableArea onPress={onPress}>
+            <MaterialCommunityIcons name="bell" size={26} color="#fff" />
+          </TouchableArea>
+        );
+      case "pen": // 펜슬
+        return (
+          <TouchableArea onPress={onPress}>
+            <FontAwesome5 name="pen" size={20} color="#fff" />
+          </TouchableArea>
+        );
+      case "basic":
+        return (
+          <>
+            <UntouchableArea />
+          </>
+        );
+      default:
+        return (
+          <>
+            <UntouchableArea />
+          </>
+        );
+    }
+  };
 
-  return <HeaderWrapper>{component}</HeaderWrapper>;
+  const leftComponent = makeComponent(headerLeftType, handlePressHeaderLeft);
+  const rightComponent = makeComponent(headerRightType, handlePressHeaderRight);
+
+  return (
+    <>
+      <HeaderWrapper>
+        {leftComponent}
+        <Text>{headerText}</Text>
+        {rightComponent}
+      </HeaderWrapper>
+    </>
+  );
 };
 
 export default Header;
@@ -86,9 +114,10 @@ const TouchableArea = styled.TouchableOpacity`
   height: 30px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   activeopacity: 0.8;
+  // background-color: orange;
 `;
 
 const UntouchableArea = styled.View`

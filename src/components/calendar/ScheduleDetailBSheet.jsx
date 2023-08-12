@@ -29,6 +29,7 @@ const ScheduleDetailBSheet = ({
     profileImageUrl,
     subject,
     tutoringId,
+    noteId,
   } = schedule;
 
   const updateScheduleRbRef = useRef();
@@ -45,6 +46,8 @@ const ScheduleDetailBSheet = ({
     navigation.navigate("ClassNoteScreen", {
       date,
       tutoringId,
+      noteId,
+      startTime,
     });
   };
 

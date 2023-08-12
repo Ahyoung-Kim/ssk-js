@@ -5,16 +5,13 @@ import color from "../../common/color";
 import { pickImage } from "../../constants/imagePicker";
 
 const ImageUpdateButton = ({ setImage }) => {
-
   const handleButton = () => {
-    pickImage({setImage});
+    pickImage({ setImage });
   };
 
   return (
     <Button onPress={handleButton}>
-      <ButtonText>
-        프로필 사진 수정
-      </ButtonText>
+      <ButtonText>프로필 사진 수정</ButtonText>
     </Button>
   );
 };

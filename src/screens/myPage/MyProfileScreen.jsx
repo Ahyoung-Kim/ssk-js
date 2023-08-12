@@ -5,18 +5,24 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 import { getData } from "../../constants/asyncStorage";
 
-import WhiteLayout from "../../components/common/WhiteLayout";
+import MainLayout from "../../components/common/MainLayout";
 import ProfileImage from "../../components/common/ProfileImage";
 import ProfileInfo from "../../components/myPage/ProfileInfo";
 import ImageUpdateButton from "../../components/myPage/ImageUpdateButton";
 import ConfirmModal from "../../components/common/ConfirmModal";
+import useUser from "../../hooks/useUser";
 
 const MyProfileScreen = () => {
+  const user = useUser();
+
   const [isOpened, setIsOpened] = useState(false);
+
   const [image, setImage] = useState(null);
+
   const [nickName, setNickName] = useState("");
   const [role, setRole] = useState("");
-  const [email, setEmail] = useState("eagle625@naver.com");
+  const [email, setEmail] = useState("");
+
   const [newName, setNewName] = useState("");
 
   const updateNickName = async () => {
@@ -67,16 +73,31 @@ const MyProfileScreen = () => {
     fetchData();
   }, [isOpened]);
 
+  useEffect(() => {
+    if (user) {
+      setNickName(user.name);
+      setEmail(user.userId);
+      setRole(user.role);
+    }
+  }, [user]);
+
   return (
     <>
-      <WhiteLayout headerText={"내 정보"} headerType={"back"}>
+      <MainLayout
+        bgColor={color.COLOR_WHITE_BACKGROUND}
+        headerText={"내 정보"}
+        headerLeftType={"back"}
+      >
         <ProfileImageWrapper>
           <ProfileImage size={120} image={image} />
+
           <ImageUpdateButton setImage={setImage} />
+
           <DefaultImageButton>
             <DefaultImageText>기본 이미지로 변경</DefaultImageText>
           </DefaultImageButton>
         </ProfileImageWrapper>
+
         <ContentWrapper>
           <ProfileInfo
             headerText="이름"
@@ -86,6 +107,7 @@ const MyProfileScreen = () => {
           <ProfileInfo headerText="Tutor/Tutee" contentText={role} />
           <ProfileInfo headerText="이메일" contentText={email} />
         </ContentWrapper>
+
         {isOpened && (
           <ConfirmModal
             modalText="변경할 이름을 입력해주세요."
@@ -97,7 +119,7 @@ const MyProfileScreen = () => {
             setNewValue={setNewName}
           />
         )}
-      </WhiteLayout>
+      </MainLayout>
     </>
   );
 };

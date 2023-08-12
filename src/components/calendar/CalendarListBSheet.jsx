@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
 import client from "../../config/axios";
 import Loading from "../common/Loading";
-import EmptyClassList from "../common/EmptyClassList";
+import EmptyMessage from "../common/EmptyMessage";
 
 const CalendarListBSheet = ({ rbRef, selectedItem }) => {
   const isTutor = useIsTutor();
@@ -108,7 +108,7 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
             })
           ) : (
             <>
-              <EmptyClassList schedule={true} />
+              <EmptyMessage message={"수업 목록이 없습니다."} />
             </>
           ))}
 

@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { FontAwesome5, Entypo, Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Entypo, Ionicons, Feather } from "@expo/vector-icons";
 
 // type: basic, date, setting, pen, settingAndPen
 const NoteHeader = ({
@@ -104,6 +104,16 @@ const NoteHeader = ({
             {children}
             <TouchableArea onPress={handlePressRightButton}>
               <FontAwesome5 name="edit" size={iconSize} color={iconColor} />
+            </TouchableArea>
+          </>
+        );
+      case "plus":
+        return (
+          <>
+            <NonTouchableArea />
+            {children}
+            <TouchableArea onPress={handlePressRightButton}>
+              <Feather name="plus-circle" size={22} color={iconColor} />
             </TouchableArea>
           </>
         );

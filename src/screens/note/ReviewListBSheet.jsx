@@ -5,19 +5,21 @@ import { useNavigation } from "@react-navigation/native";
 import BottomSheet from "../../components/common/BottomSheet";
 import { dh } from "../../common/windowSize";
 
-const ReviewListBSheet = ({ rbRef, tutoringId, noteId }) => {
+const ReviewListBSheet = ({ rbRef, tutoringId }) => {
   const navigation = useNavigation();
 
   const goCreateReviewScreen = () => {
     rbRef?.current?.close();
     navigation.navigate("CreateReviewScreen", {
       tutoringId,
-      noteId,
     });
   };
 
-  const goCreateTagScreen = () => {
+  const goReviewTagListScreenn = () => {
     rbRef?.current?.close();
+    navigation.navigate("ReviewTagListScreen", {
+      tutoringId,
+    });
   };
 
   return (
@@ -27,7 +29,7 @@ const ReviewListBSheet = ({ rbRef, tutoringId, noteId }) => {
           <Text>복습 노트 추가</Text>
         </TouchableArea>
 
-        <TouchableArea onPress={goCreateTagScreen}>
+        <TouchableArea onPress={goReviewTagListScreenn}>
           <Text>복습 태그 관리</Text>
         </TouchableArea>
       </BottomSheet>

@@ -99,7 +99,7 @@ const MyPageScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"마이 페이지"} headerType={"basic"}>
+      <MainLayout headerText={"마이 페이지"}>
         <MyPageButton
           type="PROFILE"
           nickname={user?.name}

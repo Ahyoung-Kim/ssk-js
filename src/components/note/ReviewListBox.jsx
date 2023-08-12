@@ -19,11 +19,13 @@ const EachReview = () => {
   );
 };
 
-const ReviewListBox = () => {
+const ReviewListBox = ({ tutoringId }) => {
   const navigation = useNavigation();
 
   const onPressMoreButton = () => {
-    navigation.navigate("ReviewListScreen");
+    navigation.navigate("ReviewListScreen", {
+      tutoringId,
+    });
   };
 
   return (

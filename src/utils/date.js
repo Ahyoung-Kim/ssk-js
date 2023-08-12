@@ -27,6 +27,18 @@ export const timeFormatToDate = (timeFormat) => {
   return today;
 };
 
+export const tutoringTimeFormat = (date, startTime) => {
+  // "tutoringTime":"2023-06-13T15:30:00"
+  const dateObj = new Date(date);
+
+  const [hours, minutes] = startTime.split(":");
+
+  dateObj.setHours(hours);
+  dateObj.setMinutes(minutes);
+
+  return moment(dateObj).format("YYYY-MM-DDTHH:mm:SS");
+};
+
 export const makeMarkedDatesByTutoringIndex = (tutoringList) => {
   const result = {};
 

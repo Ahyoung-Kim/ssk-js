@@ -14,6 +14,8 @@ import Loading from "../../components/common/Loading";
 
 import { useSelector } from "react-redux";
 import useUser from "../../hooks/useUser";
+import EmptyMessage from "../../components/common/EmptyMessage";
+import LeftBarContainer from "../../components/common/LeftBarContainer";
 
 const HomeScreen = ({ navigation }) => {
   const user = useUser();
@@ -56,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <>
-      <MainLayout headerText={"홈"} headerType={"basic"}>
+      <MainLayout headerText={"홈"}>
         {tutoringList ? (
           <Calendar
             tutoringList={tutoringList}
@@ -74,9 +76,18 @@ const HomeScreen = ({ navigation }) => {
         )}
 
         <TodayClassView>
-          <TodayClassText>오늘 수업</TodayClassText>
+          <TodayClassTextWrapper>
+            <LeftBarContainer label={"오늘 수업"} />
+          </TodayClassTextWrapper>
 
-          <ClassList classList={todayClassList} />
+          {todayClassList && todayClassList.length > 0 ? (
+            <ClassList classList={todayClassList} />
+          ) : (
+            <EmptyMessage
+              paddingVertical={15}
+              message="예정된 수업이 없습니다."
+            />
+          )}
         </TodayClassView>
       </MainLayout>
     </>
@@ -89,6 +100,12 @@ const TodayClassView = styled.View`
   // background-color: orange;
   margin-vertical: 15;
 `;
+
+const TodayClassTextWrapper = styled.View`
+  padding-horizontal: 15;
+  padding-vertical: 5;
+`;
+
 const TodayClassText = styled.Text`
   font-size: 16;
   font-weight: bold;

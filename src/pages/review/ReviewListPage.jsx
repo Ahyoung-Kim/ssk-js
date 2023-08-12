@@ -21,7 +21,7 @@ const ReviewListPage = () => {
   };
   return (
     <KeyboardAvoidingLayout>
-      <MainLayout headerText={"복습 노트"} headerType={"back"}>
+      <MainLayout headerText={"복습 노트"} headerLeftType={"back"}>
         <InnerWrapper>
           <NoteTop />
           <ContinuingReview />
@@ -29,7 +29,12 @@ const ReviewListPage = () => {
         </InnerWrapper>
         <InputWrapper>
           <Container>
-            <TextInput style={styles.inputField} value={task} onChangeText={(text) => setTask(text)} placeholder={"Write a task"} />
+            <TextInput
+              style={styles.inputField}
+              value={task}
+              onChangeText={(text) => setTask(text)}
+              placeholder={"Write a task"}
+            />
           </Container>
           <TouchableOpacity onPress={() => handleAddTask(task)}>
             <View style={styles.button}>
