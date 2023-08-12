@@ -135,7 +135,11 @@ const ClassNoteScreen = () => {
                 rightIconComponent={
                   <SettingIcon onPress={onPressSettingIcon.bind(this, true)} />
                 }
-                onLabelPress={() => navigation.navigate("ReviewListScreen")}
+                onLabelPress={() =>
+                  navigation.navigate("ReviewListScreen", {
+                    tutoringId,
+                  })
+                }
               />
 
               <ReviewList

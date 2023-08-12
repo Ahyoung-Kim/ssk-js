@@ -10,6 +10,7 @@ import NoteHeader from "../../components/note/NoteHeader";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
 import ReviewListBSheet from "./ReviewListBSheet";
+import { useRoute } from "@react-navigation/native";
 
 const ReviewListContainer = ({ children, text }) => {
   const [open, setOpen] = useState(true);
@@ -37,6 +38,9 @@ const ReviewListContainer = ({ children, text }) => {
 };
 
 const ReviewListScreen = () => {
+  const route = useRoute();
+  const { tutoringId } = route.params;
+
   const [editMode, setEditMode] = useState(false);
 
   const [selectedList, setSelectedList] = useState([]);
@@ -89,7 +93,7 @@ const ReviewListScreen = () => {
         />
       )}
 
-      <ReviewListBSheet rbRef={rbRef} />
+      <ReviewListBSheet rbRef={rbRef} tutoringId={tutoringId} />
     </>
   );
 };

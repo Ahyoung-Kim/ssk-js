@@ -137,7 +137,7 @@ const ClassInfoScreen = () => {
             <ListWrapper>
               <HwListBox />
 
-              <ReviewListBox />
+              <ReviewListBox tutoringId={tutoringId} />
             </ListWrapper>
           </>
         )}

@@ -8,6 +8,7 @@ import CreateProgressScreen from "../screens/note/CreateProgressScreen";
 import CreateReviewScreen from "../screens/note/CreateReviewScreen";
 import HwListScreen from "../screens/note/HwListScreen";
 import ReviewListScreen from "../screens/note/ReviewListScreen";
+import ReviewTagListScreen from "../screens/note/ReviewTagListScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ export const ClassNoteNavigator = () => {
         component={ReviewListScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="ReviewTagListScreen"
+        component={ReviewTagListScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
@@ -89,6 +95,11 @@ export default [
   {
     name: "ReviewListScreen",
     component: ReviewListScreen,
+    options: { headerShown: false },
+  },
+  {
+    name: "ReviewTagListScreen",
+    component: ReviewTagListScreen,
     options: { headerShown: false },
   },
 ];
