@@ -8,13 +8,13 @@ import ClassList from "../../components/common/ClassList";
 
 import Loading from "../../components/common/Loading";
 import ErrorMessage from "../../components/common/ErrorMessage";
-import EmptyClassList from "../../components/common/EmptyClassList";
 import ApproveModal from "../../components/modal/ApproveModal";
 
 import useIsTutor from "../../hooks/useIsTutor";
 import { useNavigation } from "@react-navigation/native";
 
 import useClassList from "../../hooks/useClassList";
+import EmptyMessage from "../../components/common/EmptyMessage";
 
 const ClassListScreen = () => {
   const classList = useClassList();
@@ -52,7 +52,7 @@ const ClassListScreen = () => {
         ) : classList ? (
           <ClassListWrapper>
             {classList.length === 0 ? (
-              <EmptyClassList />
+              <EmptyMessage message={"수업 목록이 없습니다."} />
             ) : (
               <ClassList classList={classList} />
             )}

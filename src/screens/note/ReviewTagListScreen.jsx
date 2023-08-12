@@ -9,6 +9,7 @@ import NoteHeader from "../../components/note/NoteHeader";
 import TextInputForm from "../../components/inputs/TextInputForm";
 import ReviewTagItem from "../../components/note/ReviewTagItem";
 import client from "../../config/axios";
+import EmptyMessage from "../../components/common/EmptyMessage";
 
 const ReviewTagListScreen = () => {
   const route = useRoute();
@@ -105,7 +106,7 @@ const ReviewTagListScreen = () => {
               ))}
             </TagList>
           ) : (
-            <EmptyText>태그 목록이 없습니다.</EmptyText>
+            <EmptyMessage message={"태그 목록이 없습니다."} />
           )}
         </Contents>
       </MainLayout>

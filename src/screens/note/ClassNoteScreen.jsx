@@ -17,6 +17,7 @@ import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
 import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
+import EmptyMessage from "../../components/common/EmptyMessage";
 
 const SettingIcon = ({ onPress }) => {
   return (
@@ -151,7 +152,7 @@ const ClassNoteScreen = () => {
           </Contents>
         ) : (
           <>
-            <EmptyText>작성된 수업 일지가 없습니다.</EmptyText>
+            <EmptyMessage message="작성된 수업 일지가 없습니다." />
           </>
         )}
       </MainLayout>
