@@ -6,10 +6,23 @@ import color from "../../common/color";
 import { SafeAreaView } from "react-native";
 import Header from "./Header";
 
-const MainLayout = ({ children, headerText, headerType }) => {
+const WhiteLayout = ({
+  children,
+  headerText,
+  headerLeftType,
+  headerRightType,
+  handlePressHeaderLeft,
+  handlePressHeaderRight,
+}) => {
   return (
     <Wrapper>
-      <Header text={headerText} type={headerType} />
+      <Header
+        headerText={headerText}
+        headerLeftType={headerLeftType}
+        headerRightType={headerRightType}
+        handlePressHeaderLeft={handlePressHeaderLeft}
+        handlePressHeaderRight={handlePressHeaderRight}
+      />
       <Inner>
         <Contents>{children}</Contents>
       </Inner>
@@ -17,7 +30,7 @@ const MainLayout = ({ children, headerText, headerType }) => {
   );
 };
 
-export default MainLayout;
+export default WhiteLayout;
 
 const Wrapper = styled(SafeAreaView)`
   width: 100%;

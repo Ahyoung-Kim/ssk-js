@@ -46,7 +46,7 @@ const ClassListScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"수업 목록"} headerType={"basic"}>
+      <MainLayout headerText={"수업 목록"}>
         {loading ? (
           <Loading />
         ) : classList ? (

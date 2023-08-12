@@ -114,7 +114,11 @@ const CreateClassScreen = () => {
 
   return (
     <KeyboardAvoidingLayout>
-      <MainLayout headerText={"수업 생성"} headerType={"back"} bgColor="white">
+      <MainLayout
+        headerText={"수업 생성"}
+        headerLeftType={"back"}
+        bgColor="white"
+      >
         <Wrapper>
           <TextInputForm
             label="과목 이름"

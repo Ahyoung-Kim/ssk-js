@@ -14,7 +14,7 @@ const HwListPage = () => {
   };
   return (
     <>
-      <MainLayout headerText={"숙제 노트"} headerType={"back"}>
+      <MainLayout headerText={"숙제 노트"} headerLeftType={"back"}>
         <TopWrapper>
           <Ionicons name="create-outline" size={32} color="#B0B0B0" />
           <BoldText>숙제 목록</BoldText>

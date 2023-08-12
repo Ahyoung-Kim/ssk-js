@@ -34,7 +34,7 @@ const CreateHwScreen = () => {
     <KeyboardAvoidingLayout>
       <MainLayout
         headerText={"숙제 노트 추가"}
-        headerType={"back"}
+        headerLeftType={"back"}
         bgColor="white"
       >
         <NoteHeader type="basic" text={dateFormat(date)} />

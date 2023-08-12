@@ -106,7 +106,7 @@ const ClassInfoScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"수업 정보"} headerType={"back"}>
+      <MainLayout headerText={"수업 정보"} headerLeftType={"back"}>
         {!classInfo ? (
           <Loading />
         ) : (

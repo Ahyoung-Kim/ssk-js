@@ -63,7 +63,7 @@ const ClassNoteScreen = () => {
       <MainLayout
         bgColor={color.COLOR_WHITE_BACKGROUND}
         headerText={"수업 일지"}
-        headerType={"back"}
+        headerLeftType={"back"}
       >
         <NoteHeader text={dateFormat(date)} type="date" />
 
@@ -126,6 +126,7 @@ const ClassNoteScreen = () => {
             onPress={() => {
               rbRef?.current?.open();
             }}
+            isTabNavigator={false}
           />
         )
       )}

@@ -155,7 +155,7 @@ const UpdateClassScreen = () => {
     <KeyboardAvoidingLayout>
       <MainLayout
         headerText={"수업 정보 수정"}
-        headerType={"back"}
+        headerLeftType={"back"}
         bgColor="white"
       >
         <Wrapper>

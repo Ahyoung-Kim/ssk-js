@@ -24,7 +24,7 @@ const CreateProgressScreen = ({}) => {
       <MainLayout
         bgColor="white"
         headerText={"진도 보고 작성"}
-        headerType={"back"}
+        headerLeftType={"back"}
       >
         <NoteHeader type="basic" text={dateFormat(date)} />
         <Container>

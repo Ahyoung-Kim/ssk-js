@@ -1,17 +1,10 @@
 import React from "react";
-
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
-const Header = ({
-  headerText,
-  headerLeftType,
-  headerRightType,
-  handlePressHeaderLeft = () => {},
-  handlePressHeaderRight = () => {},
-}) => {
+const Header = ({ text, type }) => {
   const navigation = useNavigation(); // 네비게이션
 
   // 이전 버튼 핸들링
@@ -19,65 +12,54 @@ const Header = ({
     navigation.goBack();
   };
 
-  const makeComponent = (type, onPress) => {
-    switch (type) {
-      case "back":
-        return (
+  // 유형 별 헤더
+  let component;
+  switch (type) {
+    case "basic": // 제목만
+      component = (
+        <>
+          <UntouchableArea />
+          <Text>{text}</Text>
+          <UntouchableArea />
+        </>
+      );
+      break;
+    case "back": // 뒤로가기 버튼
+      component = (
+        <>
           <TouchableArea onPress={handleBackButton}>
             <Ionicons name="chevron-back-outline" size={30} color="#fff" />
           </TouchableArea>
-        );
-      case "prev":
-        return (
+          <Text>{text}</Text>
+          <UntouchableArea />
+        </>
+      );
+      break;
+    case "nextBack": // 이전, 다음 버튼
+      component = (
+        <>
           <TouchableArea onPress={handleBackButton}>
             <Ionicons name="caret-back" size={30} color="#fff" />
           </TouchableArea>
-        );
-      case "next":
-        return (
-          <TouchableArea onPress={onPress}>
+          <Text>{text}</Text>
+          <TouchableArea>
             <Ionicons name="caret-forward" size={30} color="#fff" />
           </TouchableArea>
-        );
-      case "setting":
-        return (
-          <TouchableArea onPress={onPress}>
-            <FontAwesome5 name="cog" size={30} color="#fff" />
-          </TouchableArea>
-        );
-      case "bell":
-        return (
-          <TouchableArea onPress={onPress}>
-            <FontAwesome5 name="bell" size={30} color="#fff" />
-          </TouchableArea>
-        );
-      case "basic":
-        return (
-          <>
-            <UntouchableArea />
-          </>
-        );
-      default:
-        return (
-          <>
-            <UntouchableArea />
-          </>
-        );
-    }
-  };
+        </>
+      );
+      break;
+    default:
+      component = (
+        <>
+          <UntouchableArea />
+          <Text>{text}</Text>
+          <UntouchableArea />
+        </>
+      );
+      break;
+  }
 
-  const leftComponent = makeComponent(headerLeftType, handlePressHeaderLeft);
-  const rightComponent = makeComponent(headerRightType, handlePressHeaderRight);
-
-  return (
-    <>
-      <HeaderWrapper>
-        {leftComponent}
-        <Text>{headerText}</Text>
-        {rightComponent}
-      </HeaderWrapper>
-    </>
-  );
+  return <HeaderWrapper>{component}</HeaderWrapper>;
 };
 
 export default Header;

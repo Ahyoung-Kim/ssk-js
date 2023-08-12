@@ -16,7 +16,7 @@ const ReviewListBSheet = ({ rbRef, tutoringId, noteId }) => {
     });
   };
 
-  const goCreateTagScreen = () => {
+  const goSettingReviewTagScreen = () => {
     rbRef?.current?.close();
   };
 
@@ -27,7 +27,7 @@ const ReviewListBSheet = ({ rbRef, tutoringId, noteId }) => {
           <Text>복습 노트 추가</Text>
         </TouchableArea>
 
-        <TouchableArea onPress={goCreateTagScreen}>
+        <TouchableArea onPress={goSettingReviewTagScreen}>
           <Text>복습 태그 관리</Text>
         </TouchableArea>
       </BottomSheet>

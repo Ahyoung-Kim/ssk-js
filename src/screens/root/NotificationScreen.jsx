@@ -6,7 +6,7 @@ import * as Notifications from "expo-notifications";
 
 import { getData } from "../../constants/asyncStorage";
 
-import WhiteLayout from "../../components/common/WhiteLayout";
+import MainLayout from "../../components/common/MainLayout";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -145,7 +145,7 @@ const NotificationScreen = () => {
   }, []);
 
   return (
-    <WhiteLayout headerText="알림" headerType="back">
+    <MainLayout bgColor={"white"} headerText="알림" headerLeftType="back">
       <NotificationButton
         onPress={async () => {
           await sendPushNotification(expoPushToken);
@@ -153,7 +153,7 @@ const NotificationScreen = () => {
       >
         <ButtonText>토큰 내놔</ButtonText>
       </NotificationButton>
-    </WhiteLayout>
+    </MainLayout>
   );
 };
 

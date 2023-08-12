@@ -5,12 +5,10 @@ import PageWrapper from "../../components/common/PageWrapper";
 import Header from "../../components/common/Header";
 
 const OnBoardingScreen = () => {
-
-
   return (
     <Layout>
       <PageWrapper>
-        <Header text="온보딩 화면" type="basic"/>
+        <Header headerText="온보딩 화면" />
       </PageWrapper>
     </Layout>
   );

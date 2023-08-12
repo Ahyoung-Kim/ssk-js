@@ -27,7 +27,7 @@ const CreateReviewScreen = () => {
     <KeyboardAvoidingLayout>
       <MainLayout
         headerText={"복습 노트 추가"}
-        headerType={"back"}
+        headerLeftType={"back"}
         bgColor="white"
       >
         <NoteHeader

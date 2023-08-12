@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 import { getData } from "../../constants/asyncStorage";
 
-import WhiteLayout from "../../components/common/WhiteLayout";
+import MainLayout from "../../components/common/MainLayout";
 import ProfileImage from "../../components/common/ProfileImage";
 import ProfileInfo from "../../components/myPage/ProfileInfo";
 import ImageUpdateButton from "../../components/myPage/ImageUpdateButton";
@@ -69,7 +69,11 @@ const MyProfileScreen = () => {
 
   return (
     <>
-      <WhiteLayout headerText={"내 정보"} headerType={"back"}>
+      <MainLayout
+        bgColor={color.COLOR_WHITE_BACKGROUND}
+        headerText={"내 정보"}
+        headerLeftType={"back"}
+      >
         <ProfileImageWrapper>
           <ProfileImage size={120} image={image} />
           <ImageUpdateButton setImage={setImage} />
@@ -97,7 +101,7 @@ const MyProfileScreen = () => {
             setNewValue={setNewName}
           />
         )}
-      </WhiteLayout>
+      </MainLayout>
     </>
   );
 };

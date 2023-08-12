@@ -46,7 +46,7 @@ const ReviewListScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"복습 노트"} headerType={"back"}>
+      <MainLayout headerText={"복습 노트"} headerLeftType={"back"}>
         <NoteHeader
           text={"복습 목록"}
           type={"deleteAndWrite"}

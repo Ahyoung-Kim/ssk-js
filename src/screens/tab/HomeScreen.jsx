@@ -56,7 +56,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <>
-      <MainLayout headerText={"홈"} headerType={"basic"}>
+      <MainLayout headerText={"홈"}>
         {tutoringList ? (
           <Calendar
             tutoringList={tutoringList}
