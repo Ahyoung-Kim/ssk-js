@@ -10,13 +10,19 @@ import ProfileImage from "../../components/common/ProfileImage";
 import ProfileInfo from "../../components/myPage/ProfileInfo";
 import ImageUpdateButton from "../../components/myPage/ImageUpdateButton";
 import ConfirmModal from "../../components/common/ConfirmModal";
+import useUser from "../../hooks/useUser";
 
 const MyProfileScreen = () => {
+  const user = useUser();
+
   const [isOpened, setIsOpened] = useState(false);
+
   const [image, setImage] = useState(null);
+
   const [nickName, setNickName] = useState("");
   const [role, setRole] = useState("");
-  const [email, setEmail] = useState("eagle625@naver.com");
+  const [email, setEmail] = useState("");
+
   const [newName, setNewName] = useState("");
 
   const updateNickName = async () => {
@@ -67,6 +73,14 @@ const MyProfileScreen = () => {
     fetchData();
   }, [isOpened]);
 
+  useEffect(() => {
+    if (user) {
+      setNickName(user.name);
+      setEmail(user.userId);
+      setRole(user.role);
+    }
+  }, [user]);
+
   return (
     <>
       <MainLayout
@@ -76,11 +90,14 @@ const MyProfileScreen = () => {
       >
         <ProfileImageWrapper>
           <ProfileImage size={120} image={image} />
+
           <ImageUpdateButton setImage={setImage} />
+
           <DefaultImageButton>
             <DefaultImageText>기본 이미지로 변경</DefaultImageText>
           </DefaultImageButton>
         </ProfileImageWrapper>
+
         <ContentWrapper>
           <ProfileInfo
             headerText="이름"
@@ -90,6 +107,7 @@ const MyProfileScreen = () => {
           <ProfileInfo headerText="Tutor/Tutee" contentText={role} />
           <ProfileInfo headerText="이메일" contentText={email} />
         </ContentWrapper>
+
         {isOpened && (
           <ConfirmModal
             modalText="변경할 이름을 입력해주세요."
