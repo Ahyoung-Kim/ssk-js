@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -15,6 +15,14 @@ const HwFrequencyForm = ({ frequency, setFrequency }) => {
       setFrequency([...frequency, day]);
     }
   };
+
+  useEffect(() => {
+    if (frequency.length == 0) {
+      for (key in days) {
+        days[key].selected = false;
+      }
+    }
+  }, [frequency]);
 
   return (
     <>

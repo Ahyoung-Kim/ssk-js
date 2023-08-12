@@ -40,7 +40,7 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 25;
+  padding-bottom: 30;
   padding-horizontal: 15;
   background-color: white;
 `;

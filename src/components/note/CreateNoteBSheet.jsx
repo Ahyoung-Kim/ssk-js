@@ -7,13 +7,45 @@ import BottomSheet from "../common/BottomSheet";
 
 import { dh } from "../../common/windowSize";
 import { useNavigation } from "@react-navigation/native";
+import { timeFormatToDate, tutoringTimeFormat } from "../../utils/date";
 
-const CreateNoteBSheet = ({ rbRef, date, noteId, tutoringId }) => {
+const CreateNoteBSheet = ({
+  rbRef,
+  date,
+  noteId,
+  tutoringId,
+  progress,
+  startTime,
+}) => {
   const navigation = useNavigation();
 
-  const onPress = (screenName) => {
+  const goCreateProgressScreen = () => {
+    const tutoringTime = tutoringTimeFormat(date, startTime);
+    // console.log(tutoringTime);
     rbRef?.current?.close();
-    navigation.navigate(screenName, {
+    navigation.navigate("CreateProgressScreen", {
+      date,
+      noteId,
+      tutoringId,
+      prevStates: {
+        progress,
+        tutoringTime,
+      },
+    });
+  };
+
+  const goCreateHwScreen = () => {
+    rbRef?.current?.close();
+    navigation.navigate("CreateHwScreen", {
+      date,
+      noteId,
+      tutoringId,
+    });
+  };
+
+  const goCreateReviewScreen = () => {
+    rbRef?.current?.close();
+    navigation.navigate("CreateReviewScreen", {
       date,
       noteId,
       tutoringId,
@@ -22,15 +54,21 @@ const CreateNoteBSheet = ({ rbRef, date, noteId, tutoringId }) => {
 
   return (
     <>
-      <BottomSheet rbRef={rbRef} heightPercentage={0.25}>
-        <TouchableArea onPress={onPress.bind(this, "CreateProgressScreen")}>
+      <BottomSheet rbRef={rbRef} heightPercentage={0.3}>
+        {!progress && (
+          <TouchableArea onPress={goCreateProgressScreen}>
+            <Text>수업 일지 생성</Text>
+          </TouchableArea>
+        )}
+
+        <TouchableArea onPress={goCreateProgressScreen}>
           <Text>진도 보고 작성</Text>
         </TouchableArea>
-        <TouchableArea onPress={onPress.bind(this, "CreateHwScreen")}>
-          <Text>숙제 노트 추가</Text>
+        <TouchableArea onPress={goCreateHwScreen}>
+          <Text>숙제 노트 작성</Text>
         </TouchableArea>
-        <TouchableArea onPress={onPress.bind(this, "CreateReviewScreen")}>
-          <Text>복습 노트 추가</Text>
+        <TouchableArea onPress={goCreateReviewScreen}>
+          <Text>복습 노트 작성</Text>
         </TouchableArea>
       </BottomSheet>
     </>

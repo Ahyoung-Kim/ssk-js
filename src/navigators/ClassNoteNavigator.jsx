@@ -18,6 +18,12 @@ export const ClassNoteNavigator = () => {
         name="ClassNoteScreen"
         component={ClassNoteScreen}
         options={{ headerShown: false }}
+        initialParams={{
+          date: new Date(),
+          noteId: 0,
+          tutoringId: 0,
+          startTime: "00:00",
+        }}
       />
       <Stack.Screen
         name="CreateProgressScreen"
@@ -53,6 +59,12 @@ export default [
     name: "ClassNoteScreen",
     component: ClassNoteScreen,
     options: { headerShown: false },
+    initialParams: {
+      date: new Date(),
+      noteId: 0,
+      tutoringId: 0,
+      startTime: "00:00",
+    },
   },
   {
     name: "CreateProgressScreen",

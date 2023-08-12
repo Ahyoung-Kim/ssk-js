@@ -58,6 +58,7 @@ const RootNavigator = () => {
           name={screen.name}
           component={screen.component}
           options={screen.options}
+          initialParams={screen.initialParams}
         />
       ))}
     </Stack.Navigator>

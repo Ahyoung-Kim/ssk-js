@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -15,6 +15,8 @@ import CreateNoteBSheet from "../../components/note/CreateNoteBSheet";
 import HwList from "../../components/note/HwList";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
+import client from "../../config/axios";
+import Loading from "../../components/common/Loading";
 
 const SettingIcon = ({ onPress }) => {
   return (
@@ -29,13 +31,16 @@ const SettingIcon = ({ onPress }) => {
 
 const ClassNoteScreen = () => {
   const route = useRoute();
-  const { date, noteId, tutoringId } = route.params; // noteId 필요
+  const { date, noteId, tutoringId, startTime } = route.params; // noteId 필요
 
   const isTutor = useIsTutor();
 
   const rbRef = useRef();
 
   const navigation = useNavigation();
+
+  const [noteInfo, setNoteInfo] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [selectedHwList, setSelectedHwList] = useState([]);
   const [selectedReviewList, setSelectedReviewList] = useState([]);
@@ -57,6 +62,31 @@ const ClassNoteScreen = () => {
     }
   };
 
+  const getNoteInfo = async () => {
+    setLoading(true);
+    try {
+      const ret = await client.get(`/api/note/detail/${noteId}`);
+
+      if (ret.status == 200) {
+        // console.log(ret.data);
+        setNoteInfo(ret.data);
+      }
+    } catch (err) {
+      console.log("get note info error: ", err);
+      const status = err?.response?.status;
+
+      if (status == 404) {
+        // Not found
+        setNoteInfo(null);
+      }
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getNoteInfo();
+  }, [noteId]);
+
   return (
     <>
       <MainLayout
@@ -68,48 +98,58 @@ const ClassNoteScreen = () => {
       >
         <NoteHeader text={dateFormat(date)} type="date" />
 
-        <Contents>
-          <LeftBarContainer label={"진도 보고"}>
-            <ProgressText>
-              재작년 6월 고1 국어 모의고사 문제를 풀이했습니다.{"\n"}마저 다
-              풀지 못한 문제들은 30일 수업 때 마무리할 계획입니다.
-            </ProgressText>
-          </LeftBarContainer>
+        {loading ? (
+          <>
+            <Loading />
+          </>
+        ) : noteInfo ? (
+          <Contents>
+            <LeftBarContainer label={"진도 보고"}>
+              <ProgressText>
+                재작년 6월 고1 국어 모의고사 문제를 풀이했습니다.{"\n"}마저 다
+                풀지 못한 문제들은 30일 수업 때 마무리할 계획입니다.
+              </ProgressText>
+            </LeftBarContainer>
 
-          <Wrapper>
-            <LeftBarContainer
-              navigate={true}
-              label={"숙제 노트"}
-              rightIconComponent={
-                <SettingIcon onPress={onPressSettingIcon.bind(this, false)} />
-              }
-              onLabelPress={() => navigation.navigate("HwListScreen")}
-            />
+            <Wrapper>
+              <LeftBarContainer
+                navigate={true}
+                label={"숙제 노트"}
+                rightIconComponent={
+                  <SettingIcon onPress={onPressSettingIcon.bind(this, false)} />
+                }
+                onLabelPress={() => navigation.navigate("HwListScreen")}
+              />
 
-            <HwList
-              editMode={hwEditMode}
-              selectedList={selectedHwList}
-              setSelectedList={setSelectedHwList}
-            />
-          </Wrapper>
+              <HwList
+                editMode={hwEditMode}
+                selectedList={selectedHwList}
+                setSelectedList={setSelectedHwList}
+              />
+            </Wrapper>
 
-          <Wrapper>
-            <LeftBarContainer
-              navigate={true}
-              label={"복습 노트"}
-              rightIconComponent={
-                <SettingIcon onPress={onPressSettingIcon.bind(this, true)} />
-              }
-              onLabelPress={() => navigation.navigate("ReviewListScreen")}
-            />
+            <Wrapper>
+              <LeftBarContainer
+                navigate={true}
+                label={"복습 노트"}
+                rightIconComponent={
+                  <SettingIcon onPress={onPressSettingIcon.bind(this, true)} />
+                }
+                onLabelPress={() => navigation.navigate("ReviewListScreen")}
+              />
 
-            <ReviewList
-              editMode={reviewEditMode}
-              selectedList={selectedReviewList}
-              setSelectedList={setSelectedReviewList}
-            />
-          </Wrapper>
-        </Contents>
+              <ReviewList
+                editMode={reviewEditMode}
+                selectedList={selectedReviewList}
+                setSelectedList={setSelectedReviewList}
+              />
+            </Wrapper>
+          </Contents>
+        ) : (
+          <>
+            <EmptyText>작성된 수업 일지가 없습니다.</EmptyText>
+          </>
+        )}
       </MainLayout>
 
       {hwEditMode ||
@@ -128,6 +168,8 @@ const ClassNoteScreen = () => {
         date={date}
         noteId={noteId}
         tutoringId={tutoringId}
+        progress={noteInfo?.progress}
+        startTime={startTime}
       />
     </>
   );
@@ -148,4 +190,13 @@ const ProgressText = styled.Text`
 
 const Wrapper = styled.View`
   margin-top: 20;
+`;
+
+const EmptyText = styled.Text`
+  font-size: 16;
+  font-weight: bold;
+  color: ${color.COLOR_GRAY_TEXT};
+  text-align: center;
+  width: 100%;
+  padding-vertical: 50;
 `;

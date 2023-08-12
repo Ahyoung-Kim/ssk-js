@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { useRoute } from "@react-navigation/native";
-
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Alert } from "react-native";
 import { dateFormat } from "../../utils/date";
 
 import MainLayout from "../../components/common/MainLayout";
@@ -12,12 +12,41 @@ import TextInputForm from "../../components/inputs/TextInputForm";
 import NoteHeader from "../../components/note/NoteHeader";
 import KeyboardAvoidingLayout from "../../components/common/KeyboardAvoidingLayout";
 import BigButton from "../../components/common/BigButton";
+import PrevNextButtons from "../../components/common/PrevNextButtons";
 
 const CreateProgressScreen = ({}) => {
+  const navigation = useNavigation();
   const route = useRoute();
-  const { date, noteId, tutoringId } = route.params;
+  const {
+    date,
+    noteId,
+    tutoringId,
+    prevStates: { progress: progressData, tutoringTime },
+  } = route.params;
 
   const [progress, setProgress] = useState("");
+
+  const onPressNext = () => {
+    if (!progress) {
+      Alert.alert("진도 보고 내용을 작성해주세요!");
+      return;
+    }
+    navigation.navigate("CreateHwScreen", {
+      date,
+      noteId,
+      tutoringId,
+      prevStates: {
+        progress,
+        tutoringTime,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (progressData) {
+      setProgress(progressData);
+    }
+  }, [progressData]);
 
   return (
     <KeyboardAvoidingLayout>
@@ -39,7 +68,11 @@ const CreateProgressScreen = ({}) => {
         </Container>
       </MainLayout>
 
-      <BigButton onPress={() => {}} text="진도 보고 작성" />
+      {progressData ? (
+        <BigButton onPress={() => {}} text="진도 보고 작성" />
+      ) : (
+        <PrevNextButtons onPressNext={onPressNext} />
+      )}
     </KeyboardAvoidingLayout>
   );
 };
@@ -47,5 +80,5 @@ const CreateProgressScreen = ({}) => {
 export default CreateProgressScreen;
 
 const Container = styled.View`
-  //   background-color: orange;
+  // background-color: orange;
 `;
