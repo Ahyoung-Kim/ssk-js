@@ -21,12 +21,12 @@ import Loading from "../../components/common/Loading";
 import ClassDetailInfo from "../../components/classInfo/ClassDetailInfo";
 import useIsTutor from "../../hooks/useIsTutor";
 import CircleIconButton from "../../components/common/CircleIconButton";
-import UpdateColorBSheet from "../../components/classInfo/UpdateColorBSheet";
 
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
 import HwListBox from "../../components/note/HwListBox";
 import ReviewListBox from "../../components/note/ReviewListBox";
+import TuteeClassInfoBSheet from "../../components/classInfo/TuteeClassInfoBSheet";
 
 const ClassInfoScreen = () => {
   const dispatch = useDispatch();
@@ -146,10 +146,9 @@ const ClassInfoScreen = () => {
       <CircleIconButton name="cog" onPress={handlePressCircleIcon} size={18} />
 
       {!isTutor && classInfo && (
-        <UpdateColorBSheet
+        <TuteeClassInfoBSheet
           rbRef={rbRef}
-          tutoringId={classInfo.tutoringId}
-          colorKey={classInfo.color}
+          classInfo={classInfo}
           setRefetch={setRefetch}
         />
       )}
