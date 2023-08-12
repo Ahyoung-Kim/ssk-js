@@ -44,7 +44,7 @@ const EachReviewItem = ({ review, onPressXButton }) => {
 const CreateReviewScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { date, noteId, tutoringId, prevStates } = route.params;
+  const { date, tutoringId, prevStates } = route.params;
 
   // console.log("prevStates: ", prevStates);
   const [reviewList, setReviewList] = useState([]);
@@ -97,15 +97,47 @@ const CreateReviewScreen = () => {
       const ret = await client.post(`/api/note`, body);
 
       if (ret.status == 200) {
+        // TODO: ret.data 에서 noteId 가져오기
         Alert.alert("수업 일지가 등록되었습니다!");
         navigation.navigate("ClassNoteScreen", {
           date,
-          noteId,
+          noteId: null,
           tutoringId,
         });
       }
     } catch (err) {
       console.log("create class note error: ", err);
+    }
+  };
+
+  const handleCreateReview = async () => {
+    if (!body) {
+      Alert.alert("복습 내용을 입력해주세요!");
+      return;
+    }
+    if (!tag) {
+      Alert.alert("복습 태그를 선택해주세요!");
+      return;
+    }
+
+    try {
+      const data = {
+        tutoringId,
+        body,
+        tagId: tag.id,
+      };
+
+      // console.log(data);
+
+      const ret = await client.post("/api/review", data);
+
+      if (ret.status == 200) {
+        navigation.navigate("ReviewListScreen", {
+          tutoringId,
+        });
+      }
+    } catch (err) {
+      console.log("create review error: ", err);
     }
   };
 
@@ -192,7 +224,7 @@ const CreateReviewScreen = () => {
       {prevStates ? (
         <BigButton onPress={handleCreateClassNote} text="수업 일지 생성" />
       ) : (
-        <BigButton onPress={() => {}} text="복습 노트 추가" />
+        <BigButton onPress={handleCreateReview} text="복습 노트 추가" />
       )}
     </KeyboardAvoidingLayout>
   );

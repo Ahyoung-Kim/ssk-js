@@ -69,7 +69,7 @@ const AssignmentItem = ({
 const CreateHwScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { date, noteId, tutoringId, prevStates } = route.params;
+  const { date, tutoringId, prevStates } = route.params;
 
   const [assignmentList, setAssignmentList] = useState([]);
   // 숙제 내용
@@ -121,7 +121,6 @@ const CreateHwScreen = () => {
     };
     navigation.navigate("CreateReviewScreen", {
       date,
-      noteId,
       tutoringId,
       prevStates: nextStates,
     });

@@ -38,7 +38,6 @@ const CreateNoteBSheet = ({
     rbRef?.current?.close();
     navigation.navigate("CreateHwScreen", {
       date,
-      noteId,
       tutoringId,
     });
   };
@@ -47,7 +46,6 @@ const CreateNoteBSheet = ({
     rbRef?.current?.close();
     navigation.navigate("CreateReviewScreen", {
       date,
-      noteId,
       tutoringId,
     });
   };
