@@ -21,6 +21,7 @@ const HwItem = ({
       setSelected(!selected);
       onPressItem(data);
     } else {
+      navigation.navigate("HomeworkScreen");
     }
   };
 
