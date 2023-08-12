@@ -70,5 +70,5 @@ const Contents = styled.View`
   width: 100%;
   flex: 1;
   background-color: ${({ bgColor }) => bgColor};
-  padding-bottom: 100;
+  padding-bottom: 200;
 `;

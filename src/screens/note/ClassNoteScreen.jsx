@@ -11,7 +11,6 @@ import { dateFormat } from "../../utils/date";
 import LeftBarContainer from "../../components/common/LeftBarContainer";
 import { FontAwesome5 } from "@expo/vector-icons";
 import useIsTutor from "../../hooks/useIsTutor";
-import CircleIconButton from "../../components/common/CircleIconButton";
 import CreateNoteBSheet from "../../components/note/CreateNoteBSheet";
 import HwList from "../../components/note/HwList";
 import ReviewList from "../../components/note/ReviewList";
@@ -64,6 +63,8 @@ const ClassNoteScreen = () => {
         bgColor={color.COLOR_WHITE_BACKGROUND}
         headerText={"수업 일지"}
         headerLeftType={"back"}
+        headerRightType={isTutor ? "pen" : null}
+        handlePressHeaderRight={() => rbRef?.current?.open()}
       >
         <NoteHeader text={dateFormat(date)} type="date" />
 
@@ -111,25 +112,15 @@ const ClassNoteScreen = () => {
         </Contents>
       </MainLayout>
 
-      {hwEditMode || reviewEditMode ? (
-        <ConfirmButtons
-          confirmText={"삭제"}
-          buttonColor={color.COLOR_RED_TEXT}
-          onCancel={() => {}}
-          onConfirm={() => {}}
-        />
-      ) : (
-        isTutor && (
-          <CircleIconButton
-            size={16}
-            name="pen"
-            onPress={() => {
-              rbRef?.current?.open();
-            }}
-            isTabNavigator={false}
+      {hwEditMode ||
+        (reviewEditMode && (
+          <ConfirmButtons
+            confirmText={"삭제"}
+            buttonColor={color.COLOR_RED_TEXT}
+            onCancel={() => {}}
+            onConfirm={() => {}}
           />
-        )
-      )}
+        ))}
 
       {/* 진도 복, 숙제 노트, 복습 노트 생성 바텀시트 */}
       <CreateNoteBSheet

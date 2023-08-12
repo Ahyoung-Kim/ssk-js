@@ -3,7 +3,11 @@ import React from "react";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import {
+  Ionicons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 const Header = ({
   headerText,
@@ -21,34 +25,40 @@ const Header = ({
 
   const makeComponent = (type, onPress) => {
     switch (type) {
-      case "back":
+      case "back": // 백 버튼
         return (
           <TouchableArea onPress={handleBackButton}>
             <Ionicons name="chevron-back-outline" size={30} color="#fff" />
           </TouchableArea>
         );
-      case "prev":
+      case "prev": // 이전
         return (
           <TouchableArea onPress={handleBackButton}>
             <Ionicons name="caret-back" size={30} color="#fff" />
           </TouchableArea>
         );
-      case "next":
+      case "next": // 다음
         return (
           <TouchableArea onPress={onPress}>
             <Ionicons name="caret-forward" size={30} color="#fff" />
           </TouchableArea>
         );
-      case "setting":
+      case "setting": // 톱니바퀴
         return (
           <TouchableArea onPress={onPress}>
-            <FontAwesome5 name="cog" size={30} color="#fff" />
+            <FontAwesome5 name="cog" size={22} color="#fff" />
           </TouchableArea>
         );
-      case "bell":
+      case "bell": // 종 모양(알림)
         return (
           <TouchableArea onPress={onPress}>
-            <FontAwesome5 name="bell" size={30} color="#fff" />
+            <MaterialCommunityIcons name="bell" size={26} color="#fff" />
+          </TouchableArea>
+        );
+      case "pen": // 펜슬
+        return (
+          <TouchableArea onPress={onPress}>
+            <FontAwesome5 name="pen" size={20} color="#fff" />
           </TouchableArea>
         );
       case "basic":
@@ -104,9 +114,10 @@ const TouchableArea = styled.TouchableOpacity`
   height: 30px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   activeopacity: 0.8;
+  // background-color: orange;
 `;
 
 const UntouchableArea = styled.View`

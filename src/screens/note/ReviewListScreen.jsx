@@ -9,7 +9,6 @@ import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
-import CircleIconButton from "../../components/common/CircleIconButton";
 import ReviewListBSheet from "./ReviewListBSheet";
 
 const ReviewListContainer = ({ children, text }) => {
@@ -46,10 +45,15 @@ const ReviewListScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"복습 노트"} headerLeftType={"back"}>
+      <MainLayout
+        headerText={"복습 노트"}
+        headerLeftType={"back"}
+        headerRightType={"setting"}
+        handlePressHeaderRight={() => rbRef?.current?.open()}
+      >
         <NoteHeader
           text={"복습 목록"}
-          type={"deleteAndWrite"}
+          type={"delete"}
           handlePressLeftButton={() => setEditMode(!editMode)}
         />
 
@@ -73,7 +77,7 @@ const ReviewListScreen = () => {
         </Container>
       </MainLayout>
 
-      {editMode ? (
+      {editMode && (
         <ConfirmButtons
           cancelText="취소"
           confirmText={"삭제"}
@@ -82,13 +86,6 @@ const ReviewListScreen = () => {
           }}
           onConfirm={() => {}}
           buttonColor={color.COLOR_RED_TEXT}
-        />
-      ) : (
-        <CircleIconButton
-          name="cog"
-          onPress={() => {
-            rbRef?.current?.open();
-          }}
         />
       )}
 
