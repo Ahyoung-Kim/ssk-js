@@ -7,19 +7,22 @@ import ClassInfoBoxContainer from "./ClassInfoBoxContainer";
 
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import EmptyMessage from "../common/EmptyMessage";
+import ReviewNameWithTag from "./ReviewNameWithTag";
 
-const EachReview = () => {
+const EachReview = ({ review }) => {
+  const { body, id, isCompleted, tagId, tagName } = review;
+
   return (
     <>
       <EachReviewContainer>
-        <Dot />
-        <ReviewName>복습 내용이 들어갈 부분</ReviewName>
+        <ReviewNameWithTag tagId={tagId} tagName={tagName} body={body} />
       </EachReviewContainer>
     </>
   );
 };
 
-const ReviewListBox = ({ tutoringId }) => {
+const ReviewListBox = ({ tutoringId, reviewList }) => {
   const navigation = useNavigation();
 
   const onPressMoreButton = () => {
@@ -28,17 +31,25 @@ const ReviewListBox = ({ tutoringId }) => {
     });
   };
 
+  if (!reviewList) {
+    return;
+  }
+
   return (
     <>
       <ClassInfoBoxContainer
         name="복습 노트"
         onPressMoreButton={onPressMoreButton}
       >
-        <FlatList
-          keyExtractor={(item, idx) => `reviewbox_${idx}`}
-          data={[1, 2, 3]}
-          renderItem={({ item }) => <EachReview data={item} />}
-        />
+        {reviewList.length == 0 ? (
+          <EmptyMessage paddingVertical={20} message="복습 목록이 없습니다!" />
+        ) : (
+          <FlatList
+            keyExtractor={(item, idx) => `reviewbox_${item.id}`}
+            data={reviewList}
+            renderItem={({ item }) => <EachReview review={item} />}
+          />
+        )}
       </ClassInfoBoxContainer>
     </>
   );

@@ -9,12 +9,7 @@ import { TouchableOpacity } from "react-native";
 import { dw } from "../../common/windowSize";
 import Carousel from "../common/Carousel";
 
-const EvaluationType = {
-  NONE: "none",
-  CRICLE: "circle",
-  TRIANGLE: "triangle",
-  X: "x",
-};
+import { EvaluationType } from "../../constants/assignmentEvaluation";
 
 const HwFeedItem = () => {
   const [evaluation, setEvaluation] = useState(EvaluationType.NONE);

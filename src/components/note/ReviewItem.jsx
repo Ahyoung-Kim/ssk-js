@@ -4,9 +4,12 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 
 import { Ionicons } from "@expo/vector-icons";
+import ReviewNameWithTag from "./ReviewNameWithTag";
 
 const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
-  const [click, setClick] = useState(false);
+  const { body, id, isCompleted, noteId, tagId, tagName } = data;
+
+  const [click, setClick] = useState(isCompleted);
   const [selected, setSelected] = useState(false);
 
   const onPressClickBox = () => {
@@ -24,8 +27,7 @@ const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
     <>
       <Container>
         <Wraaper>
-          <Dot />
-          <ReviewName>지수와 로그 - 로그함수 응용</ReviewName>
+          <ReviewNameWithTag tagId={tagId} body={body} tagName={tagName} />
 
           {editMode && <EditWrapper />}
         </Wraaper>
@@ -77,18 +79,6 @@ const EditWrapper = styled.View`
   z-index: 10;
   width: 100%;
   height: 100%;
-`;
-
-const Dot = styled.View`
-  width: 10;
-  height: 10;
-  border-radius: 100;
-  background-color: ${color.COLOR_MAIN};
-`;
-
-const ReviewName = styled.Text`
-  font-size: 16;
-  margin-left: 10;
 `;
 
 const CheckBox = styled.Pressable``;

@@ -1,19 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled, { css } from "styled-components/native";
 import color from "../../common/color";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import days from "../../constants/days";
+import { proceedingPercentage } from "../../utils/assignment";
 
-const HwItem = ({
-  data,
-  proceeding = "70%",
-  editMode,
-  onPressItem = () => {},
-}) => {
+const HwItem = ({ data, editMode, onPressItem = () => {} }) => {
+  // console.log("assignment : ", data);
+  const {
+    body,
+    amount,
+    count,
+    endDate,
+    frequency,
+    goalCount,
+    id,
+    isCompleted,
+    noteId,
+    startDate,
+  } = data;
+
   const navigation = useNavigation();
 
+  const [proceeding, setProceeding] = useState(0);
   const [selected, setSelected] = useState(false);
 
   const onPress = () => {
@@ -24,6 +36,12 @@ const HwItem = ({
       navigation.navigate("HomeworkScreen");
     }
   };
+
+  useEffect(() => {
+    const proceeding = proceedingPercentage(count, goalCount);
+    // console.log(proceeding);
+    setProceeding(proceeding);
+  }, [data]);
 
   return (
     <>
@@ -42,11 +60,17 @@ const HwItem = ({
         }
       >
         <Wrapper>
-          <HwName>블랙라벨 15문제</HwName>
+          <HwName>{body}</HwName>
 
           <DateWrapper>
-            <DateDuration>2023년 8월 1일 ~ 2023년 8월 2일</DateDuration>
-            <Frequency>매주 월요일 제출</Frequency>
+            <DateDuration>
+              {startDate} ~ {endDate}
+            </DateDuration>
+            <Frequency>
+              매주
+              {frequency.map((day) => ` ${days[day].text} `)}
+              제출
+            </Frequency>
           </DateWrapper>
 
           <StatusBar>

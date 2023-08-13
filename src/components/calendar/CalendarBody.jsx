@@ -14,7 +14,7 @@ import CalendarListBSheet from "./CalendarListBSheet";
 import tags from "../../common/tags";
 
 // 요일(월, 화, 수, 목, 금, 토, 일) 컴포넌트
-const CalendarDays = () => {
+export const CalendarDays = () => {
   const renderItem = ({ item }) => {
     return (
       <CalendarDay>
@@ -152,11 +152,11 @@ const CalendarBody = ({
 
 export default CalendarBody;
 
-const Container = styled.View`
+export const Container = styled.View`
   width: 100%;
 `;
 
-const CalendarDay = styled.Pressable`
+export const CalendarDay = styled.Pressable`
   flex: 1;
   height: ${({ height }) => (height ? height : "auto")};
   align-items: center;
@@ -170,7 +170,7 @@ const CalendarDay = styled.Pressable`
       : color.COLOR_WHITE_BACKGROUND};
 `;
 
-const CalendarDayText = styled.Text`
+export const CalendarDayText = styled.Text`
   font-weight: 600;
   color: ${({ state }) => {
     if (state === CalendarStates.sun) {
@@ -184,7 +184,7 @@ const CalendarDayText = styled.Text`
   margin-bottom: 5;
 `;
 
-const TagView = styled.View`
+export const TagView = styled.View`
   // background-color: orange;
   width: 100%;
   //   height: 100%;
@@ -193,7 +193,7 @@ const TagView = styled.View`
   flex-wrap: wrap;
 `;
 
-const Tag = styled.View`
+export const Tag = styled.View`
   width: 7;
   height: 7;
   border-radius: 100;

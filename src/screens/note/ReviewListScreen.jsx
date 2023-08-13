@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -10,7 +10,8 @@ import NoteHeader from "../../components/note/NoteHeader";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
 import ReviewListBSheet from "./ReviewListBSheet";
-import { useRoute } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
+import client from "../../config/axios";
 
 const ReviewListContainer = ({ children, text }) => {
   const [open, setOpen] = useState(true);
@@ -41,11 +42,39 @@ const ReviewListScreen = () => {
   const route = useRoute();
   const { tutoringId } = route.params;
 
+  const isFocused = useIsFocused();
+
   const [editMode, setEditMode] = useState(false);
 
   const [selectedList, setSelectedList] = useState([]);
+  const [reviewList, setReviewList] = useState([]);
 
   const rbRef = useRef();
+
+  const getReviewList = async () => {
+    try {
+      const ret = await client.post("/api/review/list", {
+        tutoringId,
+      });
+
+      if (ret.status == 200) {
+        setReviewList(ret.data);
+      }
+    } catch (err) {
+      console.log("get review list error: ", err);
+      const status = err?.response?.status;
+
+      if (status == 404) {
+        setReviewList([]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      getReviewList();
+    }
+  }, [tutoringId, isFocused]);
 
   return (
     <>
@@ -58,12 +87,17 @@ const ReviewListScreen = () => {
         <NoteHeader
           text={"복습 목록"}
           type={"delete"}
-          handlePressLeftButton={() => setEditMode(!editMode)}
+          handlePressLeftButton={() => {
+            if (reviewList && reviewList.length > 0) {
+              setEditMode(!editMode);
+            }
+          }}
         />
 
         <Container>
           <ReviewListContainer text={"진행 중인 복습"}>
             <ReviewList
+              reviewList={reviewList}
               editMode={editMode}
               selectedList={selectedList}
               setSelectedList={setSelectedList}
@@ -72,6 +106,7 @@ const ReviewListScreen = () => {
 
           <ReviewListContainer text={"완료된 복습"}>
             <ReviewList
+              reviewList={[]}
               editMode={editMode}
               selectedList={selectedList}
               setSelectedList={setSelectedList}

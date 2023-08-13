@@ -8,6 +8,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import CalendarHeader from "./CalendarHeader";
 import CalendarBody from "./CalendarBody";
 import CalendarDatePicker from "./CalendarDatePicker";
+import NoteCalendarBody from "./NoteCalendarBody";
 
 const Calendar = ({
   onChangeDate = () => {},
@@ -32,6 +33,7 @@ const Calendar = ({
 
   // 달력 모드: 일지 달력 or 일정 달력
   const [scheduleMode, setScheduleMode] = useState(true);
+  const [noteListInfo, setNoteListInfo] = useState([]);
 
   // 헤더 chevron 아이콘 클릭 시 실행되는 이벤트 함수
   // 월 이동
@@ -91,6 +93,26 @@ const Calendar = ({
     onChangeYearMonth(selectedYear, selectedMonth);
   }, [selectedMonth, selectedYear]);
 
+  useEffect(() => {
+    if (tutoringList && !classInfo) {
+      setNoteListInfo(
+        tutoringList
+          .filter((tutoring) => tutoring.noteList.length > 0)
+          .map((tutoring) => ({
+            color: tutoring.color,
+            noteList: tutoring.noteList,
+          }))
+      );
+    } else if (!tutoringList && classInfo) {
+      setNoteListInfo([
+        {
+          color: classInfo.color,
+          noteList: classInfo.noteList,
+        },
+      ]);
+    }
+  }, [tutoringList, classInfo]);
+
   return (
     <Container>
       {/* 년 & 월 보여주는 캘린더 헤더 */}
@@ -108,13 +130,13 @@ const Calendar = ({
           onPress={() => setScheduleMode(!scheduleMode)}
         >
           <FontAwesome5
-            name="calendar-alt"
+            name={scheduleMode ? "book" : "calendar-alt"}
             size={12}
             color={color.COLOR_LAVENDER}
             style={{ marginRight: 3 }}
           />
           <ButtonText btnColor={color.COLOR_LAVENDER}>
-            {scheduleMode ? "일지" : "일정"} 달력
+            {scheduleMode ? "일지" : "일정"} 보기
           </ButtonText>
         </Button>
         {/* 오늘 날짜로 이동하는 버튼 */}
@@ -124,15 +146,26 @@ const Calendar = ({
       </ButtonWrapper>
 
       {/* 캘린더 바디 */}
-      <CalendarBody
-        tutoringList={tutoringList}
-        classInfo={classInfo}
-        selectedDate={selectedDate}
-        selectedMonth={selectedMonth}
-        selectedYear={selectedYear}
-        handlePressDate={handlePressDate}
-        handleMoveMonth={handleMoveMonth}
-      />
+      {scheduleMode ? (
+        <CalendarBody
+          tutoringList={tutoringList}
+          classInfo={classInfo}
+          selectedDate={selectedDate}
+          selectedMonth={selectedMonth}
+          selectedYear={selectedYear}
+          handlePressDate={handlePressDate}
+          handleMoveMonth={handleMoveMonth}
+        />
+      ) : (
+        <NoteCalendarBody
+          noteListInfo={noteListInfo}
+          selectedDate={selectedDate}
+          selectedMonth={selectedMonth}
+          selectedYear={selectedYear}
+          handlePressDate={handlePressDate}
+          handleMoveMonth={handleMoveMonth}
+        />
+      )}
 
       {/* 캘린더 Date Picker 컴포넌트 */}
       {showPicker && (

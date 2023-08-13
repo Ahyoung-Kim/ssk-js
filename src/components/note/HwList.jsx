@@ -6,8 +6,14 @@ import color from "../../common/color";
 import { FlatList, StyleSheet } from "react-native";
 
 import HwItem from "./HwItem";
+import EmptyMessage from "../common/EmptyMessage";
 
-const HwList = ({ editMode = false, selectedList, setSelectedList }) => {
+const HwList = ({
+  hwList,
+  editMode = false,
+  selectedList,
+  setSelectedList,
+}) => {
   const onPressItem = (data) => {
     if (selectedList.includes(data)) {
       setSelectedList(selectedList.filter((el) => el != data));
@@ -16,16 +22,24 @@ const HwList = ({ editMode = false, selectedList, setSelectedList }) => {
     }
   };
 
+  if (!hwList) {
+    return <></>;
+  }
+
   return (
     <>
-      <FlatList
-        style={styles.container}
-        data={[0, 1]}
-        keyExtractor={(item, idx) => `hw_${idx}`}
-        renderItem={({ item }) => (
-          <HwItem onPressItem={onPressItem} editMode={editMode} data={item} />
-        )}
-      />
+      {hwList.length == 0 ? (
+        <EmptyMessage paddingVertical={15} message={"숙제 목록이 없습니다!"} />
+      ) : (
+        <FlatList
+          style={styles.container}
+          data={hwList}
+          keyExtractor={(item, idx) => `hw_${idx}`}
+          renderItem={({ item }) => (
+            <HwItem onPressItem={onPressItem} editMode={editMode} data={item} />
+          )}
+        />
+      )}
     </>
   );
 };

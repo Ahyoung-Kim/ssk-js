@@ -23,6 +23,7 @@ import { FontAwesome5, MaterialIcons, Feather } from "@expo/vector-icons";
 import { Alert, TouchableOpacity } from "react-native";
 
 import days from "../../constants/days";
+import client from "../../config/axios";
 
 const AssignmentItem = ({
   body,
@@ -126,6 +127,32 @@ const CreateHwScreen = () => {
     });
   };
 
+  const handleCreateAssignment = async () => {
+    try {
+      const data = {
+        tutoringId,
+        body,
+        frequency,
+        startDate: serverDateFormat(startDate),
+        endDate: serverDateFormat(endDate),
+        amount,
+      };
+      // console.log(data);
+
+      const ret = await client.post("/api/assignment", data);
+
+      if (ret.status == 200) {
+        setTimeout(() => {
+          navigation.navigate("HwListScreen", {
+            tutoringId,
+          });
+        }, 500);
+      }
+    } catch (err) {
+      console.log("create assighment error: ", err);
+    }
+  };
+
   return (
     <KeyboardAvoidingLayout>
       <MainLayout
@@ -192,7 +219,7 @@ const CreateHwScreen = () => {
       {prevStates ? (
         <PrevNextButtons onPressNext={onPressNext} />
       ) : (
-        <BigButton onPress={() => {}} text={"숙제 노트 추가"} />
+        <BigButton onPress={handleCreateAssignment} text={"숙제 노트 추가"} />
       )}
     </KeyboardAvoidingLayout>
   );

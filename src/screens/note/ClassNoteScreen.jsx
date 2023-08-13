@@ -3,7 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { useRoute, useNavigation } from "@react-navigation/native";
+import {
+  useRoute,
+  useNavigation,
+  useIsFocused,
+} from "@react-navigation/native";
 
 import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
@@ -35,6 +39,7 @@ const ClassNoteScreen = () => {
   const { date, noteId, tutoringId, startTime } = route.params; // noteId 필요
 
   const isTutor = useIsTutor();
+  const isFocused = useIsFocused();
 
   const rbRef = useRef();
 
@@ -69,7 +74,7 @@ const ClassNoteScreen = () => {
       const ret = await client.get(`/api/note/detail/${noteId}`);
 
       if (ret.status == 200) {
-        // console.log(ret.data);
+        // console.log("note info: ", ret.data);
         setNoteInfo(ret.data);
       }
     } catch (err) {
@@ -85,8 +90,10 @@ const ClassNoteScreen = () => {
   };
 
   useEffect(() => {
-    getNoteInfo();
-  }, [noteId]);
+    if (isFocused) {
+      getNoteInfo();
+    }
+  }, [noteId, isFocused]);
 
   return (
     <>
@@ -97,7 +104,7 @@ const ClassNoteScreen = () => {
         headerRightType={isTutor ? "pen" : null}
         handlePressHeaderRight={() => rbRef?.current?.open()}
       >
-        <NoteHeader text={dateFormat(date)} type="date" />
+        <NoteHeader text={dateFormat(date)} type="basic" />
 
         {loading ? (
           <>
@@ -106,10 +113,7 @@ const ClassNoteScreen = () => {
         ) : noteInfo ? (
           <Contents>
             <LeftBarContainer label={"진도 보고"}>
-              <ProgressText>
-                재작년 6월 고1 국어 모의고사 문제를 풀이했습니다.{"\n"}마저 다
-                풀지 못한 문제들은 30일 수업 때 마무리할 계획입니다.
-              </ProgressText>
+              <ProgressText>{noteInfo.progress}</ProgressText>
             </LeftBarContainer>
 
             <Wrapper>
@@ -117,12 +121,24 @@ const ClassNoteScreen = () => {
                 navigate={true}
                 label={"숙제 노트"}
                 rightIconComponent={
-                  <SettingIcon onPress={onPressSettingIcon.bind(this, false)} />
+                  noteInfo.assignmentList &&
+                  noteInfo.assignmentList.length > 0 ? (
+                    <SettingIcon
+                      onPress={onPressSettingIcon.bind(this, false)}
+                    />
+                  ) : (
+                    <></>
+                  )
                 }
-                onLabelPress={() => navigation.navigate("HwListScreen")}
+                onLabelPress={() =>
+                  navigation.navigate("HwListScreen", {
+                    tutoringId,
+                  })
+                }
               />
 
               <HwList
+                hwList={noteInfo.assignmentList}
                 editMode={hwEditMode}
                 selectedList={selectedHwList}
                 setSelectedList={setSelectedHwList}
@@ -134,7 +150,13 @@ const ClassNoteScreen = () => {
                 navigate={true}
                 label={"복습 노트"}
                 rightIconComponent={
-                  <SettingIcon onPress={onPressSettingIcon.bind(this, true)} />
+                  noteInfo.reviewList && noteInfo.reviewList.length > 0 ? (
+                    <SettingIcon
+                      onPress={onPressSettingIcon.bind(this, true)}
+                    />
+                  ) : (
+                    <></>
+                  )
                 }
                 onLabelPress={() =>
                   navigation.navigate("ReviewListScreen", {
@@ -144,6 +166,7 @@ const ClassNoteScreen = () => {
               />
 
               <ReviewList
+                reviewList={noteInfo.reviewList}
                 editMode={reviewEditMode}
                 selectedList={selectedReviewList}
                 setSelectedList={setSelectedReviewList}

@@ -93,15 +93,17 @@ const CreateReviewScreen = () => {
     };
 
     // console.log("create body: ", body);
+
     try {
       const ret = await client.post(`/api/note`, body);
 
       if (ret.status == 200) {
         // TODO: ret.data 에서 noteId 가져오기
-        Alert.alert("수업 일지가 등록되었습니다!");
+        const noteId = ret.data;
+        // Alert.alert("수업 일지가 등록되었습니다!");
         navigation.navigate("ClassNoteScreen", {
           date,
-          noteId: null,
+          noteId,
           tutoringId,
         });
       }

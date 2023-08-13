@@ -135,9 +135,15 @@ const ClassInfoScreen = () => {
               </TouchableArea>
             </SubLayout> */}
             <ListWrapper>
-              <HwListBox />
+              <HwListBox
+                assignmentList={classInfo && classInfo.assignmentList}
+                tutoringId={tutoringId}
+              />
 
-              <ReviewListBox tutoringId={tutoringId} />
+              <ReviewListBox
+                reviewList={classInfo && classInfo.reviewList}
+                tutoringId={tutoringId}
+              />
             </ListWrapper>
           </>
         )}
