@@ -83,7 +83,11 @@ const ReviewListScreen = () => {
         <NoteHeader
           text={"복습 목록"}
           type={"delete"}
-          handlePressLeftButton={() => setEditMode(!editMode)}
+          handlePressLeftButton={() => {
+            if (reviewList && reviewList.length > 0) {
+              setEditMode(!editMode);
+            }
+          }}
         />
 
         <Container>

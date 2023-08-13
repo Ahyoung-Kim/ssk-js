@@ -8,11 +8,14 @@ import HwList from "../../components/note/HwList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
 import color from "../../common/color";
 import client from "../../config/axios";
-import { useRoute } from "@react-navigation/core";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
 
 const HwListScreen = () => {
+  const navigation = useNavigation();
   const route = useRoute();
   const { tutoringId } = route.params;
+
+  const isFocused = useIsFocused();
 
   const [editMode, setEditMode] = useState(false);
 
@@ -39,19 +42,35 @@ const HwListScreen = () => {
     }
   };
 
+  const goCreateHwScreen = () => {
+    navigation.navigate("CreateHwScreen", {
+      tutoringId,
+    });
+  };
+
   useEffect(() => {
-    getAssignmentList();
-  }, [tutoringId]);
+    if (isFocused) {
+      getAssignmentList();
+    }
+  }, [tutoringId, isFocused]);
 
   return (
     <>
-      <MainLayout headerText={"숙제 노트"} headerLeftType={"back"}>
+      <MainLayout
+        headerText={"숙제 노트"}
+        headerLeftType={"back"}
+        headerRightType={"pen"}
+        handlePressHeaderRight={goCreateHwScreen}
+      >
         <NoteHeader
           text={"숙제 목록"}
           type={"deleteAndWrite"}
           handlePressLeftButton={() => {
-            setEditMode(!editMode);
+            if (assignmentList && assignmentList.length > 0) {
+              setEditMode(!editMode);
+            }
           }}
+          handlePressRightButton={() => {}}
         />
 
         <Container>

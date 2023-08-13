@@ -12,7 +12,7 @@ const HwFrequencyForm = ({ frequency, setFrequency }) => {
       setFrequency(frequency.filter((el) => el != day));
     } else {
       days[day].selected = true;
-      setFrequency([...frequency, day]);
+      setFrequency([...frequency, Number(day)]);
     }
   };
 
