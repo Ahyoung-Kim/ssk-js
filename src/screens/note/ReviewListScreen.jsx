@@ -10,7 +10,7 @@ import NoteHeader from "../../components/note/NoteHeader";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
 import ReviewListBSheet from "./ReviewListBSheet";
-import { useRoute } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import client from "../../config/axios";
 
 const ReviewListContainer = ({ children, text }) => {
@@ -42,6 +42,8 @@ const ReviewListScreen = () => {
   const route = useRoute();
   const { tutoringId } = route.params;
 
+  const isFocused = useIsFocused();
+
   const [editMode, setEditMode] = useState(false);
 
   const [selectedList, setSelectedList] = useState([]);
@@ -69,8 +71,10 @@ const ReviewListScreen = () => {
   };
 
   useEffect(() => {
-    getReviewList();
-  }, [tutoringId]);
+    if (isFocused) {
+      getReviewList();
+    }
+  }, [tutoringId, isFocused]);
 
   return (
     <>
