@@ -3,7 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { useRoute, useNavigation } from "@react-navigation/native";
+import {
+  useRoute,
+  useNavigation,
+  useIsFocused,
+} from "@react-navigation/native";
 
 import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
@@ -35,6 +39,7 @@ const ClassNoteScreen = () => {
   const { date, noteId, tutoringId, startTime } = route.params; // noteId 필요
 
   const isTutor = useIsTutor();
+  const isFocused = useIsFocused();
 
   const rbRef = useRef();
 
@@ -69,7 +74,7 @@ const ClassNoteScreen = () => {
       const ret = await client.get(`/api/note/detail/${noteId}`);
 
       if (ret.status == 200) {
-        console.log("note info: ", ret.data);
+        // console.log("note info: ", ret.data);
         setNoteInfo(ret.data);
       }
     } catch (err) {
@@ -85,8 +90,10 @@ const ClassNoteScreen = () => {
   };
 
   useEffect(() => {
-    getNoteInfo();
-  }, [noteId]);
+    if (isFocused) {
+      getNoteInfo();
+    }
+  }, [noteId, isFocused]);
 
   return (
     <>
@@ -97,7 +104,7 @@ const ClassNoteScreen = () => {
         headerRightType={isTutor ? "pen" : null}
         handlePressHeaderRight={() => rbRef?.current?.open()}
       >
-        <NoteHeader text={dateFormat(date)} type="date" />
+        <NoteHeader text={dateFormat(date)} type="basic" />
 
         {loading ? (
           <>
@@ -114,7 +121,14 @@ const ClassNoteScreen = () => {
                 navigate={true}
                 label={"숙제 노트"}
                 rightIconComponent={
-                  <SettingIcon onPress={onPressSettingIcon.bind(this, false)} />
+                  noteInfo.assignmentList &&
+                  noteInfo.assignmentList.length > 0 ? (
+                    <SettingIcon
+                      onPress={onPressSettingIcon.bind(this, false)}
+                    />
+                  ) : (
+                    <></>
+                  )
                 }
                 onLabelPress={() =>
                   navigation.navigate("HwListScreen", {
@@ -136,7 +150,13 @@ const ClassNoteScreen = () => {
                 navigate={true}
                 label={"복습 노트"}
                 rightIconComponent={
-                  <SettingIcon onPress={onPressSettingIcon.bind(this, true)} />
+                  noteInfo.reviewList && noteInfo.reviewList.length > 0 ? (
+                    <SettingIcon
+                      onPress={onPressSettingIcon.bind(this, true)}
+                    />
+                  ) : (
+                    <></>
+                  )
                 }
                 onLabelPress={() =>
                   navigation.navigate("ReviewListScreen", {

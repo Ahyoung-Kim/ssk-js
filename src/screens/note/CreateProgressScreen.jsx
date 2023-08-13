@@ -13,6 +13,7 @@ import NoteHeader from "../../components/note/NoteHeader";
 import KeyboardAvoidingLayout from "../../components/common/KeyboardAvoidingLayout";
 import BigButton from "../../components/common/BigButton";
 import PrevNextButtons from "../../components/common/PrevNextButtons";
+import client from "../../config/axios";
 
 const CreateProgressScreen = ({}) => {
   const navigation = useNavigation();
@@ -42,6 +43,25 @@ const CreateProgressScreen = ({}) => {
     });
   };
 
+  const handleUpdateProgress = async () => {
+    try {
+      const ret = await client.put(`/api/note/${noteId}`, {
+        progress,
+      });
+
+      if (ret.status == 200) {
+        Alert.alert("진도 보고 내용이 수정되었습니다.");
+        navigation.navigate("ClassNoteScreen", {
+          date,
+          noteId,
+          tutoringId,
+        });
+      }
+    } catch (err) {
+      console.log("update progress err: ", err);
+    }
+  };
+
   useEffect(() => {
     if (progressData) {
       setProgress(progressData);
@@ -69,7 +89,7 @@ const CreateProgressScreen = ({}) => {
       </MainLayout>
 
       {progressData ? (
-        <BigButton onPress={() => {}} text="진도 보고 작성" />
+        <BigButton onPress={handleUpdateProgress} text="진도 보고 편집" />
       ) : (
         <PrevNextButtons onPressNext={onPressNext} />
       )}
