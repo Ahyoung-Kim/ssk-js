@@ -69,7 +69,7 @@ const ClassNoteScreen = () => {
       const ret = await client.get(`/api/note/detail/${noteId}`);
 
       if (ret.status == 200) {
-        // console.log(ret.data);
+        console.log("note info: ", ret.data);
         setNoteInfo(ret.data);
       }
     } catch (err) {
@@ -106,10 +106,7 @@ const ClassNoteScreen = () => {
         ) : noteInfo ? (
           <Contents>
             <LeftBarContainer label={"진도 보고"}>
-              <ProgressText>
-                재작년 6월 고1 국어 모의고사 문제를 풀이했습니다.{"\n"}마저 다
-                풀지 못한 문제들은 30일 수업 때 마무리할 계획입니다.
-              </ProgressText>
+              <ProgressText>{noteInfo.progress}</ProgressText>
             </LeftBarContainer>
 
             <Wrapper>
@@ -119,10 +116,15 @@ const ClassNoteScreen = () => {
                 rightIconComponent={
                   <SettingIcon onPress={onPressSettingIcon.bind(this, false)} />
                 }
-                onLabelPress={() => navigation.navigate("HwListScreen")}
+                onLabelPress={() =>
+                  navigation.navigate("HwListScreen", {
+                    tutoringId,
+                  })
+                }
               />
 
               <HwList
+                hwList={noteInfo.assignmentList}
                 editMode={hwEditMode}
                 selectedList={selectedHwList}
                 setSelectedList={setSelectedHwList}
@@ -144,6 +146,7 @@ const ClassNoteScreen = () => {
               />
 
               <ReviewList
+                reviewList={noteInfo.reviewList}
                 editMode={reviewEditMode}
                 selectedList={selectedReviewList}
                 setSelectedList={setSelectedReviewList}

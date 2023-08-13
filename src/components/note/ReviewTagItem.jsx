@@ -83,7 +83,7 @@ const TagWrapper = styled.View`
 
 const TagNameWrapper = styled.View`
   border-radius: 5;
-  background-color: rgba(12, 155, 251, 0.2);
+  background-color: ${color.COLOR_REVIEW_TAG};
   padding-vertical: 5;
   padding-horizontal: 10;
   margin-left: 10;

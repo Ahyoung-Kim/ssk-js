@@ -3,8 +3,10 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import ReviewItem from "./ReviewItem";
+import EmptyMessage from "../common/EmptyMessage";
 
 const ReviewList = ({
+  reviewList,
   editMode,
   selectedList,
   setSelectedList,
@@ -18,20 +20,28 @@ const ReviewList = ({
     }
   };
 
+  if (!reviewList) {
+    return <></>;
+  }
+
   return (
     <>
-      <FlatList
-        keyExtractor={(item, idx) => `review_${idx}`}
-        data={[0, 1, 2, 3]}
-        renderItem={({ item }) => (
-          <ReviewItem
-            editMode={editMode}
-            onPressItem={onPressItem}
-            data={item}
-            completed={completed}
-          />
-        )}
-      />
+      {reviewList.length == 0 ? (
+        <EmptyMessage paddingVertical={15} message={"복습 목록이 없습니다!"} />
+      ) : (
+        <FlatList
+          keyExtractor={(item, idx) => `review_${item.id}`}
+          data={reviewList}
+          renderItem={({ item }) => (
+            <ReviewItem
+              editMode={editMode}
+              onPressItem={onPressItem}
+              data={item}
+              completed={completed}
+            />
+          )}
+        />
+      )}
     </>
   );
 };

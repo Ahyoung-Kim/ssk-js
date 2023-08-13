@@ -135,7 +135,7 @@ const ClassInfoScreen = () => {
               </TouchableArea>
             </SubLayout> */}
             <ListWrapper>
-              <HwListBox />
+              <HwListBox tutoringId={tutoringId} />
 
               <ReviewListBox tutoringId={tutoringId} />
             </ListWrapper>

@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 
 const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
-  const [click, setClick] = useState(false);
+  const { body, id, isCompleted, noteId, tagId, tagName } = data;
+
+  const [click, setClick] = useState(isCompleted);
   const [selected, setSelected] = useState(false);
 
   const onPressClickBox = () => {
@@ -24,8 +26,12 @@ const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
     <>
       <Container>
         <Wraaper>
-          <Dot />
-          <ReviewName>지수와 로그 - 로그함수 응용</ReviewName>
+          {/* <Dot /> */}
+          <FontAwesome5 name="tag" color={color.COLOR_MAIN} size={14} />
+          <ReviewTag>
+            <ReviewTagName>{tagName}</ReviewTagName>
+          </ReviewTag>
+          <ReviewName>{body}</ReviewName>
 
           {editMode && <EditWrapper />}
         </Wraaper>
@@ -86,9 +92,18 @@ const Dot = styled.View`
   background-color: ${color.COLOR_MAIN};
 `;
 
+const ReviewTag = styled.View`
+  background-color: ${color.COLOR_REVIEW_TAG};
+  padding-vertical: 4;
+  padding-horizontal: 8;
+  border-radius: 4;
+  margin-horizontal: 10;
+`;
+
+const ReviewTagName = styled.Text``;
+
 const ReviewName = styled.Text`
   font-size: 16;
-  margin-left: 10;
 `;
 
 const CheckBox = styled.Pressable``;

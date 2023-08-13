@@ -18,11 +18,13 @@ const EachHw = ({ proceeding = "70%" }) => {
   );
 };
 
-const HwListBox = () => {
+const HwListBox = ({ tutoringId }) => {
   const navigation = useNavigation();
 
   const onPressMoreButton = () => {
-    navigation.navigate("HwListScreen");
+    navigation.navigate("HwListScreen", {
+      tutoringId,
+    });
   };
 
   return (
