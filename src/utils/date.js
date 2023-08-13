@@ -39,6 +39,112 @@ export const tutoringTimeFormat = (date, startTime) => {
   return moment(dateObj).format("YYYY-MM-DDTHH:mm:SS");
 };
 
+export const makeMarkedDatesByNoteList = (noteListInfo) => {
+  const result = {};
+
+  if (noteListInfo) {
+    for (let i = 0; i < noteListInfo.length; i++) {
+      const color = noteListInfo[i].color;
+      const noteList = noteListInfo[i].noteList;
+
+      if (noteList.length > 0) {
+        for (let j = 0; j < noteList.length; j++) {
+          const dateNum = noteList[j].date;
+          const noteId = noteList[j].noteId;
+
+          const target = result[dateNum];
+          if (!target) {
+            result[dateNum] = [{ noteId, color }];
+          } else {
+            result[dateNum] = [...target, { noteId, color }];
+          }
+        }
+      }
+    }
+  }
+
+  // console.log(result);
+
+  return result;
+};
+
+export const noteCalendarDays = (month, year, noteListInfo) => {
+  // 이전 달
+  const prev = new Date(year, month - 1, 0);
+  // 선택한 연/달
+  const curr = new Date(year, month, 0);
+  // 다음 달
+  const next = new Date(year, month + 1, 0);
+  const prevLastDate = prev.getDate();
+  const prevLastDay = prev.getDay();
+  const currLastDate = curr.getDate();
+  const currLastDay = curr.getDay();
+
+  const result = [];
+  let index = 0;
+
+  const markedDates = makeMarkedDatesByNoteList(noteListInfo);
+
+  // 이전 달
+  for (let i = prevLastDay; i < 6 && i >= 0; i--) {
+    const num = prevLastDate - i;
+    const date = new Date(prev.getFullYear(), prev.getMonth(), num);
+    const day = date.getDay() + 1;
+    result.push({
+      date,
+      day,
+      num,
+      state: CalendarStates.prev,
+      mark: false,
+      noteList: [],
+    });
+    index++;
+  }
+
+  // 선택한 연/달
+  for (let i = 1; i <= currLastDate; i++) {
+    const day = (index % 7) + 1;
+    const num = i;
+    const state =
+      day === 1
+        ? CalendarStates.sun
+        : day === 7
+        ? CalendarStates.sat
+        : CalendarStates.weekday;
+    const date = new Date(curr.getFullYear(), curr.getMonth(), num);
+    const mark = markedDates[num] ? true : false;
+    const noteList = markedDates[num] ? markedDates[num] : [];
+
+    result.push({
+      state,
+      day,
+      num,
+      date,
+      mark,
+      noteList,
+    });
+    index++;
+  }
+
+  // 다음 달
+  for (let i = 1; i < 7 - currLastDay; i++) {
+    const date = new Date(next.getFullYear(), next.getMonth(), i);
+    const day = date.getDay() + 1;
+    const num = i;
+
+    result.push({
+      state: CalendarStates.next,
+      num,
+      date,
+      day,
+      mark: false,
+      noteList: [],
+    });
+  }
+
+  return result;
+};
+
 export const makeMarkedDatesByTutoringIndex = (tutoringList) => {
   const result = {};
 

@@ -99,14 +99,15 @@ const CreateNoteBSheet = ({
           </TouchableArea>
         )}
 
-        <TouchableArea onPress={goCreateProgressScreen}>
-          <Text>진도 보고 작성</Text>
-        </TouchableArea>
-
         {progress && (
-          <TouchableArea onPress={onPressDeleteNote}>
-            <Text>수업 일지 삭제</Text>
-          </TouchableArea>
+          <>
+            <TouchableArea onPress={goCreateProgressScreen}>
+              <Text>진도 보고 수정</Text>
+            </TouchableArea>
+            <TouchableArea onPress={onPressDeleteNote}>
+              <Text>수업 일지 삭제</Text>
+            </TouchableArea>
+          </>
         )}
 
         {/* <TouchableArea onPress={goCreateHwScreen}>

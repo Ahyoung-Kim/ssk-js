@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import ReviewNameWithTag from "./ReviewNameWithTag";
 
 const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
   const { body, id, isCompleted, noteId, tagId, tagName } = data;
@@ -26,12 +27,7 @@ const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
     <>
       <Container>
         <Wraaper>
-          {/* <Dot /> */}
-          <FontAwesome5 name="tag" color={color.COLOR_MAIN} size={14} />
-          <ReviewTag>
-            <ReviewTagName>{tagName}</ReviewTagName>
-          </ReviewTag>
-          <ReviewName>{body}</ReviewName>
+          <ReviewNameWithTag tagId={tagId} body={body} tagName={tagName} />
 
           {editMode && <EditWrapper />}
         </Wraaper>
@@ -83,27 +79,6 @@ const EditWrapper = styled.View`
   z-index: 10;
   width: 100%;
   height: 100%;
-`;
-
-const Dot = styled.View`
-  width: 10;
-  height: 10;
-  border-radius: 100;
-  background-color: ${color.COLOR_MAIN};
-`;
-
-const ReviewTag = styled.View`
-  background-color: ${color.COLOR_REVIEW_TAG};
-  padding-vertical: 4;
-  padding-horizontal: 8;
-  border-radius: 4;
-  margin-horizontal: 10;
-`;
-
-const ReviewTagName = styled.Text``;
-
-const ReviewName = styled.Text`
-  font-size: 16;
 `;
 
 const CheckBox = styled.Pressable``;

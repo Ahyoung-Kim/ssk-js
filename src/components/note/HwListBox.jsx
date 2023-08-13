@@ -6,19 +6,23 @@ import color from "../../common/color";
 import { FlatList, StyleSheet } from "react-native";
 import ClassInfoBoxContainer from "./ClassInfoBoxContainer";
 import { useNavigation } from "@react-navigation/native";
+import EmptyMessage from "../common/EmptyMessage";
+import { proceedingPercentage } from "../../utils/assignment";
 
-const EachHw = ({ proceeding = "70%" }) => {
+const EachHw = ({ proceeding = "70%", assignment }) => {
+  const { body, count, goalCount } = assignment;
+
   return (
     <EachHwContainer>
-      <HwName>숙제 내용이 들어갈 부분</HwName>
+      <HwName>{body}</HwName>
       <StatusBar>
-        <ProceedingBar proceeding={proceeding} />
+        <ProceedingBar proceeding={proceedingPercentage(count, goalCount)} />
       </StatusBar>
     </EachHwContainer>
   );
 };
 
-const HwListBox = ({ tutoringId }) => {
+const HwListBox = ({ tutoringId, assignmentList }) => {
   const navigation = useNavigation();
 
   const onPressMoreButton = () => {
@@ -27,17 +31,25 @@ const HwListBox = ({ tutoringId }) => {
     });
   };
 
+  if (!assignmentList) {
+    return <></>;
+  }
+
   return (
     <>
       <ClassInfoBoxContainer
         name={"숙제 노트"}
         onPressMoreButton={onPressMoreButton}
       >
-        <FlatList
-          keyExtractor={(item, idx) => `hwbox_${idx}`}
-          data={[1, 2]}
-          renderItem={({ item }) => <EachHw data={item} />}
-        />
+        {assignmentList.length === 0 ? (
+          <EmptyMessage paddingVertical={20} message="숙제 목록이 없습니다!" />
+        ) : (
+          <FlatList
+            keyExtractor={(item, idx) => `hwbox_${item.id}`}
+            data={assignmentList}
+            renderItem={({ item }) => <EachHw assignment={item} />}
+          />
+        )}
       </ClassInfoBoxContainer>
     </>
   );

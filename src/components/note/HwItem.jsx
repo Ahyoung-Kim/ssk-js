@@ -6,6 +6,7 @@ import color from "../../common/color";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import days from "../../constants/days";
+import { proceedingPercentage } from "../../utils/assignment";
 
 const HwItem = ({ data, editMode, onPressItem = () => {} }) => {
   // console.log("assignment : ", data);
@@ -37,7 +38,7 @@ const HwItem = ({ data, editMode, onPressItem = () => {} }) => {
   };
 
   useEffect(() => {
-    const proceeding = `${count / goalCount}%`;
+    const proceeding = proceedingPercentage(count, goalCount);
     // console.log(proceeding);
     setProceeding(proceeding);
   }, [data]);
