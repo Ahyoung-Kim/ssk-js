@@ -6,10 +6,18 @@ import color from "../../common/color";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import ReviewNameWithTag from "./ReviewNameWithTag";
 import useIsTutor from "../../hooks/useIsTutor";
+import { useNavigation } from "@react-navigation/core";
 
-const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
+const ReviewItem = ({
+  data,
+  editMode,
+  onPressItem = () => {},
+  completed,
+  tutoringId,
+}) => {
   const { body, id, isCompleted, noteId, tagId, tagName } = data;
 
+  const navigation = useNavigation();
   const isTutor = useIsTutor();
 
   const [click, setClick] = useState(isCompleted);
@@ -28,6 +36,10 @@ const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
 
   const onPressContainer = () => {
     if (isTutor) {
+      navigation.navigate("CreateReviewScreen", {
+        tutoringId,
+        prevReview: data,
+      });
     }
   };
 

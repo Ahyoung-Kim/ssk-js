@@ -166,6 +166,7 @@ const ClassNoteScreen = () => {
               />
 
               <ReviewList
+                tutoringId={tutoringId}
                 reviewList={noteInfo.reviewList}
                 editMode={reviewEditMode}
                 selectedList={selectedReviewList}

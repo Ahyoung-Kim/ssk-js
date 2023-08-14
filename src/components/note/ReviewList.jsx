@@ -6,6 +6,7 @@ import ReviewItem from "./ReviewItem";
 import EmptyMessage from "../common/EmptyMessage";
 
 const ReviewList = ({
+  tutoringId,
   reviewList,
   editMode,
   selectedList,
@@ -34,6 +35,7 @@ const ReviewList = ({
           data={reviewList}
           renderItem={({ item }) => (
             <ReviewItem
+              tutoringId={tutoringId}
               editMode={editMode}
               onPressItem={onPressItem}
               data={item}

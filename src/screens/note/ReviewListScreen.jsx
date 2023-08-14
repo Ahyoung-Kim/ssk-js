@@ -106,6 +106,7 @@ const ReviewListScreen = () => {
             <>
               <ReviewListContainer text={"진행 중인 복습"}>
                 <ReviewList
+                  tutoringId={tutoringId}
                   reviewList={reviewList}
                   editMode={editMode}
                   selectedList={selectedList}
@@ -114,6 +115,7 @@ const ReviewListScreen = () => {
               </ReviewListContainer>
               <ReviewListContainer text={"완료된 복습"}>
                 <ReviewList
+                  tutoringId={tutoringId}
                   reviewList={[]}
                   editMode={editMode}
                   selectedList={selectedList}
