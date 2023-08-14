@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -6,45 +6,37 @@ import color from "../../common/color";
 import InputContainer from "./InputContainer";
 
 const HwFrequencyForm = ({ frequency, setFrequency }) => {
-  const onPress = (day) => {
-    if (frequency.includes(day)) {
-      days[day].selected = false;
-      setFrequency(frequency.filter((el) => el != day));
+  const onPress = (day, selected) => {
+    const _day = Number(day);
+
+    if (selected) {
+      setFrequency(frequency.filter((el) => el !== _day));
     } else {
-      days[day].selected = true;
-      setFrequency([...frequency, Number(day)]);
+      setFrequency([...frequency, _day]);
     }
   };
-
-  useEffect(() => {
-    if (frequency.length == 0) {
-      for (key in days) {
-        days[key].selected = false;
-      }
-    }
-  }, [frequency]);
 
   return (
     <>
       <InputContainer label="제출 요일">
         <Container>
-          {Object.keys(days).map((day) => (
-            <DayButton
-              key={`hwfrequency_${day}`}
-              onPress={onPress.bind(this, day)}
-              bgColor={
-                days[day].selected
-                  ? color.COLOR_MAIN
-                  : color.COLOR_WHITE_BACKGROUND
-              }
-            >
-              <DayText
-                textColor={days[day].selected ? "white" : color.COLOR_MAIN}
+          {Object.keys(days).map((day) => {
+            const selected = frequency.includes(Number(day));
+
+            return (
+              <DayButton
+                key={`hwfrequency_${day}`}
+                onPress={onPress.bind(this, day, selected)}
+                bgColor={
+                  selected ? color.COLOR_MAIN : color.COLOR_WHITE_BACKGROUND
+                }
               >
-                {days[day].text}
-              </DayText>
-            </DayButton>
-          ))}
+                <DayText textColor={selected ? "white" : color.COLOR_MAIN}>
+                  {days[day].text}
+                </DayText>
+              </DayButton>
+            );
+          })}
         </Container>
       </InputContainer>
     </>
@@ -82,36 +74,29 @@ const days = {
   1: {
     value: 1,
     text: "월",
-    selected: false,
   },
   2: {
     value: 2,
     text: "화",
-    selected: false,
   },
   3: {
     value: 3,
     text: "수",
-    selected: false,
   },
   4: {
     value: 4,
     text: "목",
-    selected: false,
   },
   5: {
     value: 5,
     text: "금",
-    selected: false,
   },
   6: {
     value: 6,
     text: "토",
-    selected: false,
   },
   7: {
     value: 7,
     text: "일",
-    selected: false,
   },
 };

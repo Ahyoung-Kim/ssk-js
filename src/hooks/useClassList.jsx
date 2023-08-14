@@ -22,7 +22,7 @@ const useClassList = () => {
   }, [classList]);
 
   useEffect(() => {
-    dispatch(clearClassList);
+    dispatchClassList();
   }, [user]);
 
   if (classList) {

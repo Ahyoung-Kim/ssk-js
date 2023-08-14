@@ -9,6 +9,7 @@ import ConfirmButtons from "../../components/common/ConfirmButtons";
 import color from "../../common/color";
 import client from "../../config/axios";
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
+import Loading from "../../components/common/Loading";
 
 const HwListScreen = () => {
   const navigation = useNavigation();
@@ -19,10 +20,13 @@ const HwListScreen = () => {
 
   const [editMode, setEditMode] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const [selectedList, setSelectedList] = useState([]);
   const [assignmentList, setAssignmentList] = useState([]);
 
   const getAssignmentList = async () => {
+    setLoading(true);
     try {
       const ret = await client.post("/api/assignment/list", {
         tutoringId,
@@ -40,6 +44,7 @@ const HwListScreen = () => {
         setAssignmentList([]);
       }
     }
+    setLoading(false);
   };
 
   const goCreateHwScreen = () => {
@@ -74,12 +79,16 @@ const HwListScreen = () => {
         />
 
         <Container>
-          <HwList
-            hwList={assignmentList}
-            editMode={editMode}
-            selectedList={selectedList}
-            setSelectedList={setSelectedList}
-          />
+          {loading ? (
+            <Loading />
+          ) : (
+            <HwList
+              hwList={assignmentList}
+              editMode={editMode}
+              selectedList={selectedList}
+              setSelectedList={setSelectedList}
+            />
+          )}
         </Container>
       </MainLayout>
 

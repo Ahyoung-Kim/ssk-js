@@ -3,17 +3,12 @@ import React, { useState } from "react";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
-
-import { clearClassList } from "../../redux/actions/classListAction";
 
 import { storeData, getData } from "../../constants/asyncStorage";
 import moment from "moment";
 import { APIURL } from "../../config/key";
 
 const LoginForm = ({ successMessage, errorMessage }) => {
-  const dispatch = useDispatch();
-
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +42,6 @@ const LoginForm = ({ successMessage, errorMessage }) => {
 
       if (response.status == 200) {
         await setStorageData(response.data);
-        dispatch(clearClassList());
         successMessage();
         setTimeout(() => {
           navigation.navigate("TabNavigator");

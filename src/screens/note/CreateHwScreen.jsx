@@ -9,6 +9,7 @@ import {
   dateFormat,
   dateToTimeFormat,
   serverDateFormat,
+  serverDateFormatToDate,
 } from "../../utils/date";
 
 import MainLayout from "../../components/common/MainLayout";
@@ -24,6 +25,7 @@ import { Alert, TouchableOpacity } from "react-native";
 
 import days from "../../constants/days";
 import client from "../../config/axios";
+import ConfirmButtons from "../../components/common/ConfirmButtons";
 
 const AssignmentItem = ({
   body,
@@ -70,7 +72,7 @@ const AssignmentItem = ({
 const CreateHwScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { date, tutoringId, prevStates } = route.params;
+  const { date, tutoringId, prevStates, prevAssignment } = route.params;
 
   const [assignmentList, setAssignmentList] = useState([]);
   // 숙제 내용
@@ -84,6 +86,18 @@ const CreateHwScreen = () => {
   // 제출양
   const [amount, setAmount] = useState("");
 
+  const getAssignmentBody = () => {
+    const data = {
+      body,
+      frequency,
+      startDate: serverDateFormat(startDate),
+      endDate: serverDateFormat(endDate),
+      amount,
+    };
+
+    return data;
+  };
+
   const onPressPlusButton = () => {
     if (!body) {
       Alert.alert("숙제 내용을 입력해주세요!");
@@ -94,16 +108,8 @@ const CreateHwScreen = () => {
       return;
     }
 
-    setAssignmentList([
-      ...assignmentList,
-      {
-        body,
-        startDate: serverDateFormat(startDate),
-        endDate: serverDateFormat(endDate),
-        frequency,
-        amount,
-      },
-    ]);
+    const data = getAssignmentBody();
+    setAssignmentList([...assignmentList, data]);
     setBody("");
     setStartDate(today);
     setEndDate(today);
@@ -130,13 +136,10 @@ const CreateHwScreen = () => {
   const handleCreateAssignment = async () => {
     try {
       const data = {
+        ...getAssignmentBody(),
         tutoringId,
-        body,
-        frequency,
-        startDate: serverDateFormat(startDate),
-        endDate: serverDateFormat(endDate),
-        amount,
       };
+
       // console.log(data);
 
       const ret = await client.post("/api/assignment", data);
@@ -153,6 +156,68 @@ const CreateHwScreen = () => {
     }
   };
 
+  const handleUpdateAssignment = async () => {
+    try {
+      const data = getAssignmentBody();
+      // console.log(data);
+
+      const ret = await client.put(
+        `/api/assignment/${prevAssignment.id}`,
+        data
+      );
+
+      if (ret.status == 200) {
+        setTimeout(() => {
+          navigation.goBack();
+        }, 500);
+      }
+    } catch (err) {
+      console.log("update assighment error: ", err);
+    }
+  };
+
+  const handleDeleteAssignment = () => {
+    Alert.alert("숙제 노트 삭제", "해당 숙제 노트를 삭제하시겠습니까?", [
+      {
+        text: "취소",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "삭제",
+        onPress: async () => {
+          try {
+            const ret = await client.delete(
+              `/api/assignment/${prevAssignment.id}`
+            );
+
+            if (ret.status == 200) {
+              setTimeout(() => {
+                navigation.navigate("HwListScreen", {
+                  tutoringId,
+                });
+              }, 500);
+            }
+          } catch (err) {
+            console.log("delete assighment error: ", err);
+          }
+        },
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    if (prevAssignment) {
+      // console.log(prevAssignment);
+      const { body, startDate, endDate, frequency, amount } = prevAssignment;
+      setBody(body);
+      setFrequency(frequency);
+      setAmount(amount);
+      setStartDate(serverDateFormatToDate(startDate));
+      setEndDate(serverDateFormatToDate(endDate));
+    }
+  }, [prevAssignment]);
+
   return (
     <KeyboardAvoidingLayout>
       <MainLayout
@@ -160,7 +225,16 @@ const CreateHwScreen = () => {
         headerLeftType={"back"}
         bgColor="white"
       >
-        <NoteHeader type="basic" text={dateFormat(date)} />
+        <NoteHeader
+          type="basic"
+          text={
+            date
+              ? dateFormat(date)
+              : prevAssignment
+              ? "숙제 노트 편집"
+              : "숙제 노트 추가"
+          }
+        />
 
         <TextInputForm
           label="숙제 내용"
@@ -218,6 +292,16 @@ const CreateHwScreen = () => {
 
       {prevStates ? (
         <PrevNextButtons onPressNext={onPressNext} />
+      ) : prevAssignment ? (
+        <ConfirmButtons
+          cancelText="삭제"
+          confirmText={"편집"}
+          filled={true}
+          cancelButtonColor={color.COLOR_RED_TEXT}
+          buttonColor={color.COLOR_MAIN}
+          onCancel={handleDeleteAssignment}
+          onConfirm={handleUpdateAssignment}
+        />
       ) : (
         <BigButton onPress={handleCreateAssignment} text={"숙제 노트 추가"} />
       )}

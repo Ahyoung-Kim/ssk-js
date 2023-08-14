@@ -33,7 +33,9 @@ const HwItem = ({ data, editMode, onPressItem = () => {} }) => {
       setSelected(!selected);
       onPressItem(data);
     } else {
-      navigation.navigate("HomeworkScreen");
+      navigation.navigate("HomeworkScreen", {
+        assignment: data,
+      });
     }
   };
 

@@ -12,6 +12,7 @@ import ConfirmButtons from "../../components/common/ConfirmButtons";
 import ReviewListBSheet from "./ReviewListBSheet";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import client from "../../config/axios";
+import Loading from "../../components/common/Loading";
 
 const ReviewListContainer = ({ children, text }) => {
   const [open, setOpen] = useState(true);
@@ -46,19 +47,38 @@ const ReviewListScreen = () => {
 
   const [editMode, setEditMode] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const [selectedList, setSelectedList] = useState([]);
   const [reviewList, setReviewList] = useState([]);
+  const [completedList, setCompletedList] = useState([]);
 
   const rbRef = useRef();
 
   const getReviewList = async () => {
+    setLoading(true);
     try {
       const ret = await client.post("/api/review/list", {
         tutoringId,
       });
 
       if (ret.status == 200) {
-        setReviewList(ret.data);
+        const data = ret.data;
+
+        let list = [];
+        let completed = [];
+
+        for (let i = 0; i < data.length; i++) {
+          const isCompleted = data[i].isCompleted;
+          if (isCompleted) {
+            completed.push(data[i]);
+          } else {
+            list.push(data[i]);
+          }
+        }
+
+        setReviewList(list);
+        setCompletedList(completed);
       }
     } catch (err) {
       console.log("get review list error: ", err);
@@ -66,8 +86,10 @@ const ReviewListScreen = () => {
 
       if (status == 404) {
         setReviewList([]);
+        setCompletedList([]);
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -95,24 +117,31 @@ const ReviewListScreen = () => {
         />
 
         <Container>
-          <ReviewListContainer text={"진행 중인 복습"}>
-            <ReviewList
-              reviewList={reviewList}
-              editMode={editMode}
-              selectedList={selectedList}
-              setSelectedList={setSelectedList}
-            />
-          </ReviewListContainer>
-
-          <ReviewListContainer text={"완료된 복습"}>
-            <ReviewList
-              reviewList={[]}
-              editMode={editMode}
-              selectedList={selectedList}
-              setSelectedList={setSelectedList}
-              completed={true}
-            />
-          </ReviewListContainer>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <ReviewListContainer text={"진행 중인 복습"}>
+                <ReviewList
+                  tutoringId={tutoringId}
+                  reviewList={reviewList}
+                  editMode={editMode}
+                  selectedList={selectedList}
+                  setSelectedList={setSelectedList}
+                />
+              </ReviewListContainer>
+              <ReviewListContainer text={"완료된 복습"}>
+                <ReviewList
+                  tutoringId={tutoringId}
+                  reviewList={completedList}
+                  editMode={editMode}
+                  selectedList={selectedList}
+                  setSelectedList={setSelectedList}
+                  completed={true}
+                />
+              </ReviewListContainer>
+            </>
+          )}
         </Container>
       </MainLayout>
 

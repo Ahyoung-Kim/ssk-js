@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
@@ -16,6 +16,7 @@ const DropDownForm = ({
   paddingHorizontal,
   menuHeight = 200,
   onPressItem = () => {},
+  initialItem = null,
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -29,6 +30,12 @@ const DropDownForm = ({
     setSelectedItem(item);
     onPressItem(item);
   };
+
+  useEffect(() => {
+    if (initialItem) {
+      setSelectedItem(initialItem);
+    }
+  }, []);
 
   if (!list || !textKey) {
     return <></>;

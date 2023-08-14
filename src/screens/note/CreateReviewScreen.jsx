@@ -13,6 +13,7 @@ import TextInputForm from "../../components/inputs/TextInputForm";
 import DropDownForm from "../../components/inputs/DropDownForm";
 import KeyboardAvoidingLayout from "../../components/common/KeyboardAvoidingLayout";
 import BigButton from "../../components/common/BigButton";
+import ConfirmButtons from "../../components/common/ConfirmButtons";
 import client from "../../config/axios";
 import { Alert, TouchableOpacity } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
@@ -44,9 +45,13 @@ const EachReviewItem = ({ review, onPressXButton }) => {
 const CreateReviewScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { date, tutoringId, prevStates } = route.params;
+
+  // requirement: tutoringId
+  const { date, tutoringId, prevStates, prevReview } = route.params;
 
   // console.log("prevStates: ", prevStates);
+  // console.log("prevReivew: ", prevReview);
+
   const [reviewList, setReviewList] = useState([]);
   // 복습 내용
   const [body, setBody] = useState("");
@@ -143,6 +148,56 @@ const CreateReviewScreen = () => {
     }
   };
 
+  const handleUpdateReview = async () => {
+    const { id } = prevReview;
+
+    try {
+      const ret = await client.put(`/api/review/${id}`, {
+        body,
+        tagId: tag.id,
+      });
+
+      if (ret.status == 200) {
+        Alert.alert("복습 노트가 편집되었습니다.");
+        setTimeout(() => {
+          navigation.goBack();
+        }, 500);
+      }
+    } catch (err) {
+      console.log("update review error: ", err);
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    const { id } = prevReview;
+
+    try {
+      const ret = await client.delete(`/api/review/${id}`);
+
+      if (ret.status == 200) {
+        setTimeout(() => {
+          navigation.goBack();
+        }, 500);
+      }
+    } catch (err) {
+      console.log("delete review error: ", err);
+    }
+  };
+
+  const onDelete = () => {
+    Alert.alert("복습 노트 삭제", "해당 복습 노트를 삭제하시겠습니까?", [
+      {
+        text: "취소",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "삭제",
+        onPress: handleDeleteReview,
+      },
+    ]);
+  };
+
   const getTagList = async () => {
     try {
       const ret = await client.post("/api/tag/list", {
@@ -167,6 +222,16 @@ const CreateReviewScreen = () => {
     getTagList();
   }, []);
 
+  useEffect(() => {
+    if (prevReview) {
+      setBody(prevReview.body);
+      setTag({
+        id: prevReview.tagId,
+        name: prevReview.tagName,
+      });
+    }
+  }, [prevReview]);
+
   return (
     <KeyboardAvoidingLayout>
       <MainLayout
@@ -176,7 +241,13 @@ const CreateReviewScreen = () => {
       >
         <NoteHeader
           type="basic"
-          text={date ? dateFormat(date) : "복습 노트 추가"}
+          text={
+            date
+              ? dateFormat(date)
+              : prevReview
+              ? "복습 노트 편집"
+              : "복습 노트 추가"
+          }
         />
 
         <TextInputForm
@@ -196,6 +267,14 @@ const CreateReviewScreen = () => {
             setTag(item);
           }}
           menuHeight={150}
+          initialItem={
+            prevReview
+              ? {
+                  id: prevReview.tagId,
+                  name: prevReview.tagName,
+                }
+              : null
+          }
         />
 
         {prevStates && (
@@ -225,6 +304,18 @@ const CreateReviewScreen = () => {
 
       {prevStates ? (
         <BigButton onPress={handleCreateClassNote} text="수업 일지 생성" />
+      ) : prevReview ? (
+        <>
+          <ConfirmButtons
+            cancelText="삭제"
+            confirmText={"편집"}
+            filled={true}
+            cancelButtonColor={color.COLOR_RED_TEXT}
+            buttonColor={color.COLOR_MAIN}
+            onCancel={onDelete}
+            onConfirm={handleUpdateReview}
+          />
+        </>
       ) : (
         <BigButton onPress={handleCreateReview} text="복습 노트 추가" />
       )}

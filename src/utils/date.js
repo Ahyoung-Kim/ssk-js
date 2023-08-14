@@ -13,6 +13,11 @@ export const serverDateFormat = (date) => {
   return moment(date).format("YYYY-MM-DD");
 };
 
+export const serverDateFormatToDate = (dateFormat) => {
+  const date = new Date(dateFormat);
+  return date;
+};
+
 export const compareDates = (date1, date2) => {
   return dateFormat(date1) === dateFormat(date2);
 };

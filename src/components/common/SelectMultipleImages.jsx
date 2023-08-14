@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 
 import { TouchableOpacity } from "react-native";
 
-const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
+const SelectMultipleImages = ({ children, setImageUrl, handleUploadImage }) => {
   // 권한 요청
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
@@ -21,7 +21,7 @@ const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsMultipleSelection: true,
       aspect: [1, 1],
       quality: 1,
     });
@@ -31,31 +31,40 @@ const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
       return null;
     }
 
-    // 서버에 요청 보내기
-    const uri = result.uri;
-    const name = uri.split("/").pop();
-    const width = result.width / 5;
-    const height = result.height / 5;
+    const { assets } = result;
 
-    const manipulatedResult = await ImageManipulator.manipulateAsync(
-      uri, //
-      [{ resize: { width, height } }],
-      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
-    );
-
-    const resizedUri = manipulatedResult.uri;
     const formData = new FormData();
-    formData.append("image", {
-      uri: resizedUri,
-      name,
-      type: "image/jpeg",
-    });
 
-    // console.log(formData);
+    let images = [];
+    for (let i = 0; i < assets.length; i++) {
+      const asset = assets[i];
+
+      const uri = asset.uri;
+      const name = uri.split("/").pop();
+      const width = asset.width / 5;
+      const height = asset.height / 5;
+
+      //   console.log({ uri, name, width, height });
+
+      const manipulatedResult = await ImageManipulator.manipulateAsync(
+        uri, //
+        [{ resize: { width, height } }],
+        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+      );
+      const resizedUri = manipulatedResult.uri;
+      formData.append("images", {
+        uri: resizedUri,
+        name,
+        type: "image/jpeg",
+      });
+    }
+
+    console.log(formData);
 
     await handleUploadImage(formData);
-    setImageUrl(uri);
+    // setImageUrl(uri);
   };
+
   return (
     <>
       <TouchableOpacity onPress={onUploadImage}>{children}</TouchableOpacity>
@@ -63,4 +72,4 @@ const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
   );
 };
 
-export default SelectImage;
+export default SelectMultipleImages;

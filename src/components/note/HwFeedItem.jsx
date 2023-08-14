@@ -2,39 +2,64 @@ import React, { useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
+import { dateFormat } from "../../utils/date";
 
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
-import { dw } from "../../common/windowSize";
-import Carousel from "../common/Carousel";
+import FeedCarousel from "../common/FeedCarousel";
 
-import { EvaluationType } from "../../constants/assignmentEvaluation";
+import { EvaluationValue } from "../../constants/assignmentEvaluation";
+import client from "../../config/axios";
 
-const HwFeedItem = () => {
-  const [evaluation, setEvaluation] = useState(EvaluationType.NONE);
+const HwFeedItem = ({ feedItem }) => {
+  const { dateTime, id, imageUrl, rate } = feedItem;
 
-  const onPressEvaluation = (type) => {
-    setEvaluation(type);
+  const [evaluation, setEvaluation] = useState(
+    rate ? rate : EvaluationValue.NONE
+  );
+
+  const handleEvaluation = async (value) => {
+    try {
+      const ret = await client.post(`/api/assignment/submit/${id}/evaluate`, {
+        rate: value,
+      });
+
+      if (ret.status == 200) {
+        console.log("success");
+      }
+    } catch (err) {
+      console.log("evaluate assignment feed item error: ", err);
+    }
   };
+
+  const onPressEvaluation = (value) => {
+    handleEvaluation(value).then(() => {
+      setEvaluation(value);
+    });
+  };
+
+  if (!feedItem) {
+    return <></>;
+  }
 
   return (
     <>
       <Container>
         <Header>
           <HeaderWrapper>
-            <DateText>2023년 8월 27일</DateText>
+            <DateText>{dateFormat(dateTime)}</DateText>
           </HeaderWrapper>
 
           <HeaderWrapper>
             <TouchableOpacity
-              onPress={onPressEvaluation.bind(this, EvaluationType.CRICLE)}
+              onPress={onPressEvaluation.bind(this, EvaluationValue.CRICLE)}
             >
               <MaterialCommunityIcons
                 size={20}
                 name="checkbox-blank-circle-outline"
                 color={
-                  evaluation === EvaluationType.CRICLE
+                  evaluation === EvaluationValue.CRICLE
                     ? color.COLOR_EVALUATION_CIRCLE
                     : color.COLOR_GRAY_ICON
                 }
@@ -42,13 +67,13 @@ const HwFeedItem = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={onPressEvaluation.bind(this, EvaluationType.TRIANGLE)}
+              onPress={onPressEvaluation.bind(this, EvaluationValue.TRIANGLE)}
             >
               <MaterialCommunityIcons
                 size={20}
                 name="triangle-outline"
                 color={
-                  evaluation === EvaluationType.TRIANGLE
+                  evaluation === EvaluationValue.TRIANGLE
                     ? color.COLOR_EVALUATION_TRIANGLE
                     : color.COLOR_GRAY_ICON
                 }
@@ -56,13 +81,13 @@ const HwFeedItem = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={onPressEvaluation.bind(this, EvaluationType.X)}
+              onPress={onPressEvaluation.bind(this, EvaluationValue.X)}
             >
               <Feather
                 size={24}
                 name="x"
                 color={
-                  evaluation === EvaluationType.X
+                  evaluation === EvaluationValue.X
                     ? color.COLOR_EVALUATION_X
                     : color.COLOR_GRAY_ICON
                 }
@@ -71,12 +96,7 @@ const HwFeedItem = () => {
           </HeaderWrapper>
         </Header>
 
-        <Carousel
-          data={[0, 1, 2]}
-          renderItem={
-            <HwImage source={require("../../assets/images/examImage.jpeg")} />
-          }
-        />
+        <FeedCarousel data={imageUrl} />
       </Container>
     </>
   );
@@ -108,11 +128,4 @@ const DateText = styled.Text`
   font-size: 16;
   font-weight: bold;
   color: ${color.COLOR_MAIN};
-`;
-
-const HwImage = styled.Image`
-  width: ${dw};
-  height: ${dw};
-  resize-mode: contain;
-  overflow: hidden;
 `;
