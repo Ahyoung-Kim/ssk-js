@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import ReviewNameWithTag from "./ReviewNameWithTag";
+import useIsTutor from "../../hooks/useIsTutor";
 
 const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
   const { body, id, isCompleted, noteId, tagId, tagName } = data;
+
+  const isTutor = useIsTutor();
 
   const [click, setClick] = useState(isCompleted);
   const [selected, setSelected] = useState(false);
@@ -23,31 +26,48 @@ const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
     }
   };
 
+  const onPressContainer = () => {
+    if (isTutor) {
+    }
+  };
+
   return (
     <>
-      <Container>
+      <Container onPress={onPressContainer} activeOpacity={isTutor ? 0.5 : 1}>
         <Wraaper>
           <ReviewNameWithTag tagId={tagId} body={body} tagName={tagName} />
 
           {editMode && <EditWrapper />}
         </Wraaper>
 
-        <CheckBox onPress={onPressClickBox}>
-          {editMode ? (
-            <Ionicons
-              name={selected ? "checkmark-circle" : "checkmark-circle-outline"}
-              color={color.COLOR_RED_TEXT}
-              size={20}
+        {isTutor ? (
+          <>
+            <FontAwesome5
+              name="angle-right"
+              size={22}
+              color={color.COLOR_GRAY_ICON}
             />
-          ) : (
-            <Ionicons
-              name={click ? "checkbox" : "checkbox-outline"}
-              color={color.COLOR_MAIN}
-              size={20}
-              style={completed ? { opacity: 0 } : {}}
-            />
-          )}
-        </CheckBox>
+          </>
+        ) : (
+          <CheckBox onPress={onPressClickBox}>
+            {editMode ? (
+              <Ionicons
+                name={
+                  selected ? "checkmark-circle" : "checkmark-circle-outline"
+                }
+                color={color.COLOR_RED_TEXT}
+                size={20}
+              />
+            ) : (
+              <Ionicons
+                name={click ? "checkbox" : "checkbox-outline"}
+                color={color.COLOR_MAIN}
+                size={20}
+                style={completed ? { opacity: 0 } : {}}
+              />
+            )}
+          </CheckBox>
+        )}
       </Container>
     </>
   );
@@ -55,7 +75,7 @@ const ReviewItem = ({ data, editMode, onPressItem = () => {}, completed }) => {
 
 export default ReviewItem;
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   //   background-color: orange;
   flex-direction: row;
   align-items: center;

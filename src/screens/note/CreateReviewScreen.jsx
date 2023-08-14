@@ -44,7 +44,9 @@ const EachReviewItem = ({ review, onPressXButton }) => {
 const CreateReviewScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { date, tutoringId, prevStates } = route.params;
+
+  // requirement: tutoringId
+  const { date, tutoringId, prevStates, prevReview } = route.params;
 
   // console.log("prevStates: ", prevStates);
   const [reviewList, setReviewList] = useState([]);
@@ -176,7 +178,7 @@ const CreateReviewScreen = () => {
       >
         <NoteHeader
           type="basic"
-          text={date ? dateFormat(date) : "복습 노트 추가"}
+          text={date ? dateFormat(date) : "복습 노트 등록"}
         />
 
         <TextInputForm
@@ -225,6 +227,8 @@ const CreateReviewScreen = () => {
 
       {prevStates ? (
         <BigButton onPress={handleCreateClassNote} text="수업 일지 생성" />
+      ) : prevReview ? (
+        <BigButton onPress={() => {}} text="복습 노트 편집" />
       ) : (
         <BigButton onPress={handleCreateReview} text="복습 노트 추가" />
       )}

@@ -56,6 +56,14 @@ const MyPageButton = ({ nickname, type, handleButton }) => {
           <ButtonText>로그인(임시)</ButtonText>
         </>
       );
+      break;
+    case "CLEAR": // 임시
+      component = (
+        <>
+          <ButtonText>스토리지 초기화(임시)</ButtonText>
+        </>
+      );
+      break;
     default:
       break;
   }

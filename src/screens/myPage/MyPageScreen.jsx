@@ -120,6 +120,13 @@ const MyPageScreen = () => {
           type="LOGIN"
           handleButton={() => navigation.navigate("LoginScreen")}
         />
+        {/* 임시 */}
+        <MyPageButton
+          type="CLEAR"
+          handleButton={async () => {
+            await clearData();
+          }}
+        />
       </MainLayout>
       {isLeaveModalOpened && (
         <ConfirmModal

@@ -7,9 +7,12 @@ import client from "../config/axios";
 import { clearData, getData, storeData } from "../constants/asyncStorage";
 import axios from "axios";
 import { APIURL } from "../config/key";
+import { useDispatch } from "react-redux";
+import { clearClassList } from "../redux/actions/classListAction";
 
 const useAxiosInterceptors = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const toast = () =>
     Toast.show({
@@ -20,6 +23,8 @@ const useAxiosInterceptors = () => {
     });
 
   const handleUnauthorization = async () => {
+    await clearData();
+    dispatch(clearClassList);
     toast();
     navigation.navigate("LoginScreen");
   };
