@@ -6,8 +6,21 @@ import color from "../../common/color";
 import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
 import HwFeedItem from "../../components/note/HwFeedItem";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
 
 const HomeworkScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { assignment } = route.params;
+
+  // console.log(assignment);
+
+  const goUpdateAssignment = () => {
+    navigation.navigate("CreateHwScreen", {
+      prevAssignment: assignment,
+    });
+  };
+
   return (
     <>
       <MainLayout
@@ -15,7 +28,11 @@ const HomeworkScreen = () => {
         headerLeftType={"back"}
         bgColor="white"
       >
-        <NoteHeader type="settingAndWrite" text={"수학 고쟁이 레벨B"} />
+        <NoteHeader
+          type="settingAndWrite"
+          text={assignment.body}
+          handlePressLeftButton={goUpdateAssignment}
+        />
 
         <HwFeed>
           <HwFeedItem />
