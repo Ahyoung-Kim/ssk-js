@@ -51,6 +51,7 @@ const ReviewListScreen = () => {
 
   const [selectedList, setSelectedList] = useState([]);
   const [reviewList, setReviewList] = useState([]);
+  const [completedList, setCompletedList] = useState([]);
 
   const rbRef = useRef();
 
@@ -62,7 +63,22 @@ const ReviewListScreen = () => {
       });
 
       if (ret.status == 200) {
-        setReviewList(ret.data);
+        const data = ret.data;
+
+        let list = [];
+        let completed = [];
+
+        for (let i = 0; i < data.length; i++) {
+          const isCompleted = data[i].isCompleted;
+          if (isCompleted) {
+            completed.push(data[i]);
+          } else {
+            list.push(data[i]);
+          }
+        }
+
+        setReviewList(list);
+        setCompletedList(completed);
       }
     } catch (err) {
       console.log("get review list error: ", err);
@@ -70,6 +86,7 @@ const ReviewListScreen = () => {
 
       if (status == 404) {
         setReviewList([]);
+        setCompletedList([]);
       }
     }
     setLoading(false);
@@ -116,7 +133,7 @@ const ReviewListScreen = () => {
               <ReviewListContainer text={"완료된 복습"}>
                 <ReviewList
                   tutoringId={tutoringId}
-                  reviewList={[]}
+                  reviewList={completedList}
                   editMode={editMode}
                   selectedList={selectedList}
                   setSelectedList={setSelectedList}

@@ -7,6 +7,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import ReviewNameWithTag from "./ReviewNameWithTag";
 import useIsTutor from "../../hooks/useIsTutor";
 import { useNavigation } from "@react-navigation/core";
+import client from "../../config/axios";
 
 const ReviewItem = ({
   data,
@@ -23,13 +24,32 @@ const ReviewItem = ({
   const [click, setClick] = useState(isCompleted);
   const [selected, setSelected] = useState(false);
 
+  const handleCheck = async (isCompleted) => {
+    try {
+      const body = {
+        isCompleted,
+      };
+
+      // console.log(body);
+      const ret = await client.post(`/api/review/${id}/check`, body);
+
+      if (ret.status == 200) {
+        console.log("success");
+      }
+    } catch (err) {
+      console.log("check review item error: ", err);
+    }
+  };
+
   const onPressClickBox = () => {
     if (editMode) {
       setSelected(!selected);
       onPressItem(data);
     } else {
       if (!completed) {
-        setClick(!click);
+        const _click = !click;
+        setClick(_click);
+        handleCheck(_click);
       }
     }
   };
