@@ -21,6 +21,7 @@
     "expo": "~48.0.18",
     "expo-dev-client": "^2.4.4",
     "expo-device": "~5.2.1",
+    "expo-image-manipulator": "11.3.0",
     "expo-image-picker": "~14.1.1",
     "expo-notifications": "~0.18.1",
     "expo-splash-screen": "^0.18.2",

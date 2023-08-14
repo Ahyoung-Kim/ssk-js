@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 
 import { TouchableOpacity } from "react-native";
 
@@ -9,6 +10,7 @@ const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const onUploadImage = async () => {
+    console.log("click");
     // 권한 확인
     if (!status.granted) {
       const permission = requestPermission();
@@ -18,7 +20,7 @@ const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -31,25 +33,28 @@ const SelectImage = ({ children, setImageUrl, handleUploadImage }) => {
 
     // 서버에 요청 보내기
     const uri = result.uri;
-    const filename = uri.split("/").pop();
-    const match = /\.(\w+)$/.exec(filename ?? "");
-    const type = match ? `image/${match[1]}` : "image";
+    const name = uri.split("/").pop();
+    const width = result.width / 5;
+    const height = result.height / 5;
 
+    const manipulatedResult = await ImageManipulator.manipulateAsync(
+      uri, //
+      [{ resize: { width, height } }],
+      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+    );
+
+    const resizedUri = manipulatedResult.uri;
     const formData = new FormData();
     formData.append("image", {
-      uri,
-      name: filename,
-      type,
+      uri: resizedUri,
+      name,
+      type: "image/jpeg",
     });
 
-    const headers = {
-      "content-type": "multipart/form-data",
-    };
+    // console.log(formData);
 
-    console.log("formData: ", formData);
-
+    await handleUploadImage(formData);
     setImageUrl(uri);
-    handleUploadImage(formData);
   };
   return (
     <>
