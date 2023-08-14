@@ -7,13 +7,7 @@ import { dw } from "../../common/windowSize";
 
 import { FlatList } from "react-native";
 
-const Carousel = ({
-  data,
-  renderItem,
-  keyExtractor,
-  itemWidth = dw,
-  itemHeight = dw,
-}) => {
+const FeedCarousel = ({ data, itemWidth = dw, itemHeight = dw }) => {
   const [pageIndex, setPageIndex] = useState(0);
 
   const onScroll = (e) => {
@@ -35,7 +29,7 @@ const Carousel = ({
           }}
           keyExtractor={(item, index) => `carousel_${index}`}
           data={data}
-          renderItem={({ item }) => <>{renderItem}</>}
+          renderItem={({ item }) => <HwImage source={{ uri: item }} />}
           horizontal
           pagingEnabled
           initialScrollIndex={0}
@@ -53,7 +47,7 @@ const Carousel = ({
   );
 };
 
-export default Carousel;
+export default FeedCarousel;
 
 const Container = styled.View`
   width: ${({ width }) => width};
@@ -80,4 +74,11 @@ const Indicator = styled.View`
   border-radius: 100;
   background-color: ${({ focused }) =>
     focused ? color.COLOR_MAIN : "rgba(176, 176, 176, 0.5)"};
+`;
+
+const HwImage = styled.Image`
+  width: ${dw};
+  height: ${dw};
+  resize-mode: contain;
+  overflow: hidden;
 `;
