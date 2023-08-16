@@ -10,6 +10,7 @@ import HwListScreen from "../screens/note/HwListScreen";
 import ReviewListScreen from "../screens/note/ReviewListScreen";
 import ReviewTagListScreen from "../screens/note/ReviewTagListScreen";
 import HomeworkScreen from "../screens/note/HomeworkScreen";
+import SubmitHwScreen from "../screens/note/SubmitHwScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,11 @@ export const ClassNoteNavigator = () => {
         component={HomeworkScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="SubmitHwScreen"
+        component={SubmitHwScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
@@ -111,6 +117,11 @@ export default [
   {
     name: "HomeworkScreen",
     component: HomeworkScreen,
+    options: { headerShown: false },
+  },
+  {
+    name: "SubmitHwScreen",
+    component: SubmitHwScreen,
     options: { headerShown: false },
   },
 ];

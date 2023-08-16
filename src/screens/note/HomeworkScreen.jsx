@@ -9,6 +9,8 @@ import HwFeedItem from "../../components/note/HwFeedItem";
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
 import client from "../../config/axios";
 
+import { FlatList } from "react-native";
+
 const HomeworkScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -21,6 +23,12 @@ const HomeworkScreen = () => {
   const goUpdateAssignment = () => {
     navigation.navigate("CreateHwScreen", {
       prevAssignment: assignment,
+    });
+  };
+
+  const goSubmitHwScreen = () => {
+    navigation.navigate("SubmitHwScreen", {
+      assignmentId: assignment.id,
     });
   };
 
@@ -55,14 +63,17 @@ const HomeworkScreen = () => {
           type="settingAndWrite"
           text={assignment.body}
           handlePressLeftButton={goUpdateAssignment}
+          handlePressRightButton={goSubmitHwScreen}
         />
 
         {feedInfo && feedInfo.length > 0 && (
-          <HwFeed>
-            {feedInfo.map((feedItem) => (
-              <HwFeedItem key={`feedItem_${feedItem.id}`} feedItem={feedItem} />
-            ))}
-          </HwFeed>
+          <FlatList
+            numColumns={1}
+            data={feedInfo}
+            inverted={true}
+            keyExtractor={(item) => `feedItem_${item.id}`}
+            renderItem={({ item }) => <HwFeedItem feedItem={item} />}
+          />
         )}
       </MainLayout>
     </>
@@ -70,5 +81,3 @@ const HomeworkScreen = () => {
 };
 
 export default HomeworkScreen;
-
-const HwFeed = styled.View``;
