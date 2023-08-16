@@ -16,45 +16,17 @@ import { useSelector } from "react-redux";
 import useUser from "../../hooks/useUser";
 import EmptyMessage from "../../components/common/EmptyMessage";
 import LeftBarContainer from "../../components/common/LeftBarContainer";
+import useClassListInfo from "../../hooks/useClassListInfo";
 
-const HomeScreen = ({ navigation }) => {
-  const user = useUser();
-  const classList = useClassList();
-  const todayClassList = useSelector(
-    (state) => state.classListReducer.todayClassList
-  );
-
+const HomeScreen = () => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
-  const [tutoringList, setTutoringList] = useState(null);
 
-  const getTutoringSchedules = async () => {
-    try {
-      const ret = await client.get(
-        `/api/schedule/list/tutorings/${year}/${month}`
-      );
-
-      if (ret.status == 200) {
-        setTutoringList(ret.data);
-      }
-    } catch (err) {
-      console.log("get tutoring schedules error", err);
-      if (err?.response?.status) {
-        const status = err?.response?.status;
-        if (status == 404) {
-          console.log("Tutoring list doesn't exist");
-          setTutoringList([]);
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (year && month) {
-      getTutoringSchedules();
-    }
-  }, [year, month, classList, user]);
+  const tutoringList = useClassListInfo(year, month);
+  const todayClassList = useSelector(
+    (state) => state.classListReducer.todayClassList
+  );
 
   return (
     <>

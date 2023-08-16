@@ -126,14 +126,6 @@ const ClassInfoScreen = () => {
               }}
             />
 
-            {/* <SubLayout>
-              <TouchableArea onPress={handlePressHwBtn}>
-                <HwNotePreview />
-              </TouchableArea>
-              <TouchableArea onPress={handlePressReviewBtn}>
-                <ReviewNotePreview />
-              </TouchableArea>
-            </SubLayout> */}
             <ListWrapper>
               <HwListBox
                 assignmentList={classInfo && classInfo.assignmentList}
