@@ -17,6 +17,8 @@ import ConfirmButtons from "../../components/common/ConfirmButtons";
 import client from "../../config/axios";
 import { Alert, TouchableOpacity } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import useReviewTagList from "../../hooks/useReviewTagList";
 
 const EachReviewItem = ({ review, onPressXButton }) => {
   const { body, tagId, tag } = review;
@@ -58,7 +60,7 @@ const CreateReviewScreen = () => {
   // 태그
   const [tag, setTag] = useState(null);
 
-  const [tagList, setTagList] = useState([]);
+  const tagList = useReviewTagList(tutoringId);
 
   const onPressPlustButton = () => {
     if (!body) {
@@ -198,30 +200,6 @@ const CreateReviewScreen = () => {
     ]);
   };
 
-  const getTagList = async () => {
-    try {
-      const ret = await client.post("/api/tag/list", {
-        tutoringId,
-      });
-
-      if (ret.status == 200) {
-        // console.log(ret.data);
-        setTagList(ret.data.tagList);
-      }
-    } catch (err) {
-      console.log("get tag list error: ", err);
-      const status = err?.response?.status;
-
-      if (status == 404) {
-        setTagList([]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getTagList();
-  }, []);
-
   useEffect(() => {
     if (prevReview) {
       setBody(prevReview.body);
@@ -260,7 +238,7 @@ const CreateReviewScreen = () => {
         <DropDownForm
           label="복습 태그"
           placeholder={"복습 태그를 선택하세요."}
-          list={tagList}
+          list={tagList ? tagList : []}
           textKey={"name"}
           onPressItem={(item) => {
             // console.log(item);
