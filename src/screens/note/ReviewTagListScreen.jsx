@@ -10,13 +10,17 @@ import TextInputForm from "../../components/inputs/TextInputForm";
 import ReviewTagItem from "../../components/note/ReviewTagItem";
 import client from "../../config/axios";
 import EmptyMessage from "../../components/common/EmptyMessage";
+import useReviewTagList from "../../hooks/useReviewTagList";
+import { useDispatch } from "react-redux";
+import { getReviewTagList } from "../../redux/actions/reviewTagListAction";
 
 const ReviewTagListScreen = () => {
   const route = useRoute();
+  const dispatch = useDispatch();
   const { tutoringId } = route.params;
 
   const [tagName, setTagName] = useState("");
-  const [tagList, setTagList] = useState([]);
+  const tagList = useReviewTagList(tutoringId);
 
   const [plusTag, setPlusTag] = useState(false);
   const [refetch, setRefetch] = useState(false);
@@ -37,34 +41,12 @@ const ReviewTagListScreen = () => {
     }
   };
 
-  const getTagList = async () => {
-    try {
-      const ret = await client.post("/api/tag/list", {
-        tutoringId,
-      });
-
-      if (ret.status == 200) {
-        // console.log(ret.data);
-        setTagList(ret.data.tagList);
-      }
-    } catch (err) {
-      console.log("get tag list error: ", err);
-      const status = err?.response?.status;
-
-      if (status == 404) {
-        setTagList([]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getTagList();
-  }, []);
-
   useEffect(() => {
     if (refetch) {
-      getTagList();
-      setRefetch(false);
+      getReviewTagList(tutoringId).then((ret) => {
+        dispatch(ret);
+        setRefetch(false);
+      });
     }
   }, [refetch]);
 
@@ -95,7 +77,7 @@ const ReviewTagListScreen = () => {
         )}
 
         <Contents>
-          {tagList.length > 0 ? (
+          {tagList && tagList.length > 0 ? (
             <TagList>
               {tagList.map((tag) => (
                 <ReviewTagItem

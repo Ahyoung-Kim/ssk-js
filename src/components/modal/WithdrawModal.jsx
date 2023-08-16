@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
 import ModalConfirmButtons from "./ModalConfirmButtons";
 import { useNavigation } from "@react-navigation/native";
+import { withdrawClassInfo } from "../../redux/actions/classInfoAction";
 
 const WithdrawModal = ({
   classInfoRef,
@@ -23,23 +24,16 @@ const WithdrawModal = ({
   const navigation = useNavigation();
 
   const handleWithdraw = async () => {
-    try {
-      const ret = await client.delete(`/api/tutoring/${tutoringId}/withdraw`);
-
-      if (ret.status == 200) {
-        getClassList()
-          .then((res) => {
-            dispatch(res);
-            classInfoRef?.current?.close();
-            setModalVisible(false);
-          })
-          .then(() => {
-            navigation.navigate("ClassListScreen");
-          });
-      }
-    } catch (err) {
-      console.log("withdraw class error: ", err);
-    }
+    await withdrawClassInfo(tutoringId).then((ret) => dispatch(ret));
+    await getClassList()
+      .then((res) => {
+        dispatch(res);
+      })
+      .then(() => {
+        classInfoRef?.current?.close();
+        setModalVisible(false);
+        navigation.navigate("ClassListScreen");
+      });
   };
 
   return (

@@ -42,24 +42,24 @@ const ReviewItem = ({
   };
 
   const onPressClickBox = () => {
-    if (editMode) {
-      setSelected(!selected);
-      onPressItem(data);
-    } else {
-      if (!completed) {
-        const _click = !click;
-        setClick(_click);
-        handleCheck(_click);
-      }
+    if (!completed) {
+      const _click = !click;
+      setClick(_click);
+      handleCheck(_click);
     }
   };
 
   const onPressContainer = () => {
     if (isTutor) {
-      navigation.navigate("CreateReviewScreen", {
-        tutoringId,
-        prevReview: data,
-      });
+      if (!editMode) {
+        navigation.navigate("CreateReviewScreen", {
+          tutoringId,
+          prevReview: data,
+        });
+      } else {
+        setSelected(!selected);
+        onPressItem(data);
+      }
     }
   };
 
@@ -74,14 +74,6 @@ const ReviewItem = ({
 
         {isTutor ? (
           <>
-            <FontAwesome5
-              name="angle-right"
-              size={22}
-              color={color.COLOR_GRAY_ICON}
-            />
-          </>
-        ) : (
-          <CheckBox onPress={onPressClickBox}>
             {editMode ? (
               <Ionicons
                 name={
@@ -91,13 +83,21 @@ const ReviewItem = ({
                 size={20}
               />
             ) : (
-              <Ionicons
-                name={click ? "checkbox" : "checkbox-outline"}
-                color={color.COLOR_MAIN}
-                size={20}
-                style={completed ? { opacity: 0 } : {}}
+              <FontAwesome5
+                name="angle-right"
+                size={22}
+                color={color.COLOR_GRAY_ICON}
               />
             )}
+          </>
+        ) : (
+          <CheckBox onPress={onPressClickBox}>
+            <Ionicons
+              name={click ? "checkbox" : "checkbox-outline"}
+              color={color.COLOR_MAIN}
+              size={20}
+              style={completed ? { opacity: 0 } : {}}
+            />
           </CheckBox>
         )}
       </Container>

@@ -12,6 +12,8 @@ const TextInputForm = ({
   multiline = false,
   button = "",
   handleButtonPress = () => {},
+  editable = true,
+  buttonColor = color.COLOR_MAIN,
 }) => {
   return (
     <>
@@ -32,10 +34,15 @@ const TextInputForm = ({
                 : {}
             }
             width={button ? "80%" : "100%"}
+            editable={editable}
           />
 
           {button && (
-            <Button onPress={handleButtonPress} activeOpacity={0.5}>
+            <Button
+              buttonColor={buttonColor}
+              onPress={handleButtonPress}
+              activeOpacity={0.5}
+            >
               <ButtonText>{button}</ButtonText>
             </Button>
           )}
@@ -59,7 +66,8 @@ const InputForm = styled.TextInput`
   width: ${({ width }) => width};
   height: 100%;
   background-color: ${color.COLOR_WHITE_BACKGROUND};
-  border-color: ${color.COLOR_MAIN};
+  border-color: ${({ editable }) =>
+    editable ? color.COLOR_MAIN : color.COLOR_GRAY_BORDER};
   border-width: 1;
   border-radius: 5;
   padding-horizontal: 15;
@@ -67,14 +75,14 @@ const InputForm = styled.TextInput`
 `;
 
 const Button = styled.TouchableOpacity`
-  background-color: ${color.COLOR_MAIN};
+  background-color: ${({ buttonColor }) => buttonColor};
   width: 19%;
   height: 100%;
   align-items: center;
   justify-content: center;
   border-width: 1;
   border-radius: 5;
-  border-color: ${color.COLOR_MAIN};
+  border-color: ${({ buttonColor }) => buttonColor};
 `;
 
 const ButtonText = styled.Text`

@@ -105,7 +105,8 @@ const ListContainer = styled.ScrollView`
   position: absolute;
   bottom: ${({ menuHeight }) => `-${menuHeight + 2}`};
   left: 0;
-  z-index: 10;
+  z-index: 100;
+  elevation: 100;
   width: 100%;
   height: ${({ menuHeight }) => menuHeight};
   background-color: ${color.COLOR_WHITE_BACKGROUND};

@@ -20,7 +20,8 @@ const MyPageScreen = () => {
 
   // 버튼: 프로필 정보 화면으로 가기
   const handleProfileButton = () => {
-    navigation.navigate("MyProfileScreen");
+    // navigation.navigate("MyProfileScreen");
+    navigation.navigate("UserInfoScreen");
   };
 
   // 버튼: 푸시 알림 설정 화면으로 가기

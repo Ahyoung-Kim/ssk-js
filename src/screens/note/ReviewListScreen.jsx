@@ -13,6 +13,7 @@ import ReviewListBSheet from "./ReviewListBSheet";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
+import { Alert } from "react-native";
 
 const ReviewListContainer = ({ children, text }) => {
   const [open, setOpen] = useState(true);
@@ -92,6 +93,35 @@ const ReviewListScreen = () => {
     setLoading(false);
   };
 
+  const handleDeleteReviews = () => {
+    Alert.alert("복습 목록 삭제", "선택한 복습 목록을 삭제하시겠습니까?", [
+      {
+        text: "취소",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "삭제",
+        onPress: async () => {
+          const reviewIdList = selectedList.map((el) => el.id);
+
+          try {
+            const ret = await client.post(`/api/review/multi-delete`, {
+              reviewIdList,
+            });
+
+            if (ret.status == 200) {
+              await getReviewList();
+              setEditMode(false);
+            }
+          } catch (err) {
+            console.log("delete multiple assignments error: ", err);
+          }
+        },
+      },
+    ]);
+  };
+
   useEffect(() => {
     if (isFocused) {
       getReviewList();
@@ -152,7 +182,7 @@ const ReviewListScreen = () => {
           onCancel={() => {
             setEditMode(false);
           }}
-          onConfirm={() => {}}
+          onConfirm={handleDeleteReviews}
           buttonColor={color.COLOR_RED_TEXT}
         />
       )}

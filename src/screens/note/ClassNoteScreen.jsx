@@ -121,6 +121,7 @@ const ClassNoteScreen = () => {
                 navigate={true}
                 label={"숙제 노트"}
                 rightIconComponent={
+                  isTutor &&
                   noteInfo.assignmentList &&
                   noteInfo.assignmentList.length > 0 ? (
                     <SettingIcon
@@ -150,7 +151,9 @@ const ClassNoteScreen = () => {
                 navigate={true}
                 label={"복습 노트"}
                 rightIconComponent={
-                  noteInfo.reviewList && noteInfo.reviewList.length > 0 ? (
+                  isTutor &&
+                  noteInfo.reviewList &&
+                  noteInfo.reviewList.length > 0 ? (
                     <SettingIcon
                       onPress={onPressSettingIcon.bind(this, true)}
                     />
