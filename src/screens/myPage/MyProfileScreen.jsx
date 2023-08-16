@@ -11,6 +11,7 @@ import ProfileInfo from "../../components/myPage/ProfileInfo";
 import ImageUpdateButton from "../../components/myPage/ImageUpdateButton";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import useUser from "../../hooks/useUser";
+import client from "../../config/axios";
 
 const MyProfileScreen = () => {
   const user = useUser();
@@ -62,6 +63,18 @@ const MyProfileScreen = () => {
     }
   };
 
+  const deleteProfileImage = async () => {
+    try {
+      const ret = await client.delete("/api/user/profile");
+
+      if (ret.status == 200) {
+        console.log("success");
+      }
+    } catch (err) {
+      console.log("delete profile image error: ", err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const userInfo = await fetchUserInfo();
@@ -93,7 +106,7 @@ const MyProfileScreen = () => {
 
           <ImageUpdateButton setImage={setImage} />
 
-          <DefaultImageButton>
+          <DefaultImageButton onPress={deleteProfileImage}>
             <DefaultImageText>기본 이미지로 변경</DefaultImageText>
           </DefaultImageButton>
         </ProfileImageWrapper>
