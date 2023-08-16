@@ -13,9 +13,12 @@ import DropDownForm from "../inputs/DropDownForm";
 import { dateToTimeFormat, serverDateFormat } from "../../utils/date";
 import useClassList from "../../hooks/useClassList";
 import { Alert } from "react-native";
+import { useDispatch } from "react-redux";
+import { getClassInfo } from "../../redux/actions/classInfoAction";
 
 const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
   const classList = useClassList();
+  const dispatch = useDispatch();
 
   const today = new Date();
   today.setMinutes(0);
@@ -43,6 +46,11 @@ const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
 
       if (ret.status == 200) {
         Alert.alert("일정 등록", "일정이 등록되었습니다.");
+        await getClassInfo(
+          tutoringId,
+          date.getFullYear(),
+          date.getMonth() + 1
+        ).then((ret) => dispatch(ret));
         setRefetch(true);
         rbRef?.current?.close();
       }

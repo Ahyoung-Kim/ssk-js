@@ -11,6 +11,10 @@ export default function classListInfoReducer(state = initialState, action) {
         ...state,
         classListInfo: action.payload,
       };
+    case ClassListInfoActionType.CLEAR_CLASS_LIST_INFO:
+      return {
+        classListInfo: null,
+      };
     default:
       return state;
   }

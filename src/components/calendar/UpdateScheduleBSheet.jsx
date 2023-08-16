@@ -19,6 +19,8 @@ import {
 import { Alert } from "react-native";
 import client from "../../config/axios";
 import DatePickerForm from "../inputs/DatePickerForm";
+import { useDispatch } from "react-redux";
+import { getClassInfo } from "../../redux/actions/classInfoAction";
 
 const UpdateScheduleBSheet = ({
   rbRef,
@@ -27,7 +29,9 @@ const UpdateScheduleBSheet = ({
   setRefetch,
   scheduleRbRef,
 }) => {
-  //   console.log("schedule: ", schedule);
+  // console.log("schedule: ", schedule);
+
+  const dispatch = useDispatch();
   const {
     color: tagColor,
     endTime,
@@ -62,6 +66,11 @@ const UpdateScheduleBSheet = ({
 
       if (ret.status == 200) {
         Alert.alert("일정 편집", "일정 정보가 편집되었습니다.");
+        await getClassInfo(
+          tutoringId,
+          date.getFullYear(),
+          date.getMonth() + 1
+        ).then((ret) => dispatch(ret));
         setRefetch(true);
         scheduleRbRef?.current?.close();
         rbRef?.current?.close();

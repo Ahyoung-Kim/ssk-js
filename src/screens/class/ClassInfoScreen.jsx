@@ -10,13 +10,6 @@ import {
 
 import MainLayout from "../../components/common/MainLayout";
 import Calendar from "../../components/calendar/Calendar";
-import HwNotePreview from "../../components/homeworkNote/HwNotePreview";
-import ReviewNotePreview from "../../components/reviewNote/ReviewNotePreview";
-import StudentInfo from "../../components/classInfo/StudentInfo";
-import TeacherInfo from "../../components/classInfo/TeacherInfo";
-import SubLayout from "../../components/common/SubLayout";
-import ClassInfo from "../../components/classInfo/ClassInfo";
-import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
 import ClassDetailInfo from "../../components/classInfo/ClassDetailInfo";
 import useIsTutor from "../../hooks/useIsTutor";
@@ -24,9 +17,12 @@ import CircleIconButton from "../../components/common/CircleIconButton";
 
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
+import { getClassInfo } from "../../redux/actions/classInfoAction";
 import HwListBox from "../../components/note/HwListBox";
 import ReviewListBox from "../../components/note/ReviewListBox";
 import TuteeClassInfoBSheet from "../../components/classInfo/TuteeClassInfoBSheet";
+import useClassInfo from "../../hooks/useClassInfo";
+import { getClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const ClassInfoScreen = () => {
   const dispatch = useDispatch();
@@ -43,18 +39,12 @@ const ClassInfoScreen = () => {
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
 
-  const [classInfo, setClassInfo] = useState(null);
-
   const [refetch, setRefetch] = useState(false);
+
+  const classInfo = useClassInfo(tutoringId, year, month);
 
   const rbRef = useRef();
 
-  const handlePressHwBtn = () => {
-    navigation.navigate("HwListPage");
-  };
-  const handlePressReviewBtn = () => {
-    navigation.navigate("ReviewListPage");
-  };
   const handlePressCircleIcon = () => {
     if (isTutor) {
       navigation.navigate("UpdateClassScreen", {
@@ -65,44 +55,16 @@ const ClassInfoScreen = () => {
     }
   };
 
-  const getClassInfo = async () => {
-    try {
-      const ret = await client.get(
-        `/api/tutoring/detail/${tutoringId}/${year}/${month}`
-      );
-
-      if (ret.status == 200) {
-        // console.log("class info: ", ret.data);
-        setClassInfo(ret.data);
-      }
-    } catch (err) {
-      console.log("get class detail info error: ", err);
-    }
-  };
-
   useEffect(() => {
-    if (year && month && tutoringId) {
-      getClassInfo();
-    }
-  }, [year, month, tutoringId]);
-
-  useEffect(() => {
-    if (isFocused && route.params.refetch) {
+    if (refetch || (isFocused && route.params.refetch)) {
       if (year && month && tutoringId) {
-        getClassInfo();
-      }
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
-    if (refetch) {
-      if (year && month && tutoringId) {
-        getClassInfo();
+        getClassInfo(tutoringId, year, month).then((ret) => dispatch(ret));
         getClassList().then((ret) => dispatch(ret));
+        getClassListInfo(year, month).then((ret) => dispatch(ret));
       }
       setRefetch(false);
     }
-  }, [refetch]);
+  }, [refetch, isFocused]);
 
   return (
     <>
@@ -155,25 +117,6 @@ const ClassInfoScreen = () => {
 };
 
 export default ClassInfoScreen;
-
-const TouchableArea = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  activeopacity: 0.8;
-`;
-const Wrapper = styled.View`
-  margin-vertical: 15;
-  padding-horizontal: 20;
-`;
-
-const InfroWrapper = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-vertical: 25;
-`;
 
 const ListWrapper = styled.View`
   margin-top: 20;

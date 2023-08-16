@@ -27,3 +27,10 @@ export const getClassListInfo = async (year, month) => {
     payload,
   };
 };
+
+export const clearClassListInfo = () => {
+  return {
+    type: ClassListInfoActionType.CLEAR_CLASS_LIST_INFO,
+    payload: null,
+  };
+};
