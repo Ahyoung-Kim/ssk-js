@@ -53,6 +53,12 @@ const HwListScreen = () => {
     });
   };
 
+  const goSubmitHwScreen = () => {
+    navigation.navigate("SubmitHwScreen", {
+      assignmentList,
+    });
+  };
+
   useEffect(() => {
     if (isFocused) {
       getAssignmentList();
@@ -75,7 +81,7 @@ const HwListScreen = () => {
               setEditMode(!editMode);
             }
           }}
-          handlePressRightButton={() => {}}
+          handlePressRightButton={goSubmitHwScreen}
         />
 
         <Container>

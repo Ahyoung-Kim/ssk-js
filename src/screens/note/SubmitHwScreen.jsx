@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 import styled from "styled-components/native";
@@ -19,10 +19,12 @@ import { Alert } from "react-native";
 import BigButton from "../../components/common/BigButton";
 
 const SubmitHwScreen = () => {
+  const navigation = useNavigation();
   const route = useRoute();
-  const { assignmentId } = route.params;
+  const { assignment, assignmentList } = route.params;
 
   const [images, setImages] = useState([]);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
 
   const photoRbRef = useRef();
 
@@ -31,6 +33,17 @@ const SubmitHwScreen = () => {
   };
 
   const handleSubmitAssignment = async () => {
+    const assignmentId = assignment
+      ? assignment?.id
+      : selectedAssignment
+      ? selectedAssignment?.id
+      : null;
+
+    if (!assignmentId) {
+      Alert.alert("제출할 숙제를 선택해주세요!");
+      return;
+    }
+
     if (images.length == 0) {
       Alert.alert("숙제 인증 사진을 선택해주세요!");
       return;
@@ -50,7 +63,14 @@ const SubmitHwScreen = () => {
       );
 
       if (ret.status == 200) {
+        const param = assignment ? assignment : selectedAssignment;
+
         Alert.alert("숙제 인증 사진이 등록되었습니다.");
+        setTimeout(() => {
+          navigation.navigate("HomeworkScreen", {
+            assignment: param,
+          });
+        }, 500);
       }
     } catch (err) {
       console.log("submit assignment error: ", err);
@@ -64,14 +84,22 @@ const SubmitHwScreen = () => {
         headerText={"숙제 노트"}
         headerLeftType={"back"}
       >
-        <NoteHeader text="숙제 작성" />
-
-        <DropDownForm
-          label={"제출할 숙제"}
-          list={[{ temp: "hello world" }]}
-          textKey={"temp"}
-          placeholder={"제출할 숙제를 선택하세요"}
+        <NoteHeader
+          text={assignment ? `[${assignment.body}] 숙제 인증` : "숙제 인증"}
         />
+
+        {!assignment && assignmentList && (
+          <DropDownForm
+            label={"제출할 숙제"}
+            list={assignmentList}
+            textKey={"body"}
+            placeholder={"제출할 숙제를 선택하세요"}
+            onPressItem={(item) => {
+              // console.log(item);
+              setSelectedAssignment(item);
+            }}
+          />
+        )}
 
         <Container>
           <InputLabel label="숙제 인증 사진" />

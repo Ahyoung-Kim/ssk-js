@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
 import { dateFormat } from "../../utils/date";
 
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Feather,
+  FontAwesome5,
+} from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
 import FeedCarousel from "../common/FeedCarousel";
 
 import { EvaluationValue } from "../../constants/assignmentEvaluation";
 import client from "../../config/axios";
+import useIsTutor from "../../hooks/useIsTutor";
+import DeleteFeedItemBSheet from "./DeleteFeedItemBSheet";
 
 const HwFeedItem = ({ feedItem }) => {
+  const isTutor = useIsTutor();
   const { dateTime, id, imageUrl, rate } = feedItem;
+
+  const rbRef = useRef();
 
   const [evaluation, setEvaluation] = useState(
     rate ? rate : EvaluationValue.NONE
@@ -51,53 +60,67 @@ const HwFeedItem = ({ feedItem }) => {
             <DateText>{dateFormat(dateTime)}</DateText>
           </HeaderWrapper>
 
-          <HeaderWrapper>
-            <TouchableOpacity
-              onPress={onPressEvaluation.bind(this, EvaluationValue.CRICLE)}
-            >
-              <MaterialCommunityIcons
-                size={20}
-                name="checkbox-blank-circle-outline"
-                color={
-                  evaluation === EvaluationValue.CRICLE
-                    ? color.COLOR_EVALUATION_CIRCLE
-                    : color.COLOR_GRAY_ICON
-                }
-              />
-            </TouchableOpacity>
+          {isTutor ? (
+            <HeaderWrapper>
+              <TouchableOpacity
+                onPress={onPressEvaluation.bind(this, EvaluationValue.CRICLE)}
+              >
+                <MaterialCommunityIcons
+                  size={20}
+                  name="checkbox-blank-circle-outline"
+                  color={
+                    evaluation === EvaluationValue.CRICLE
+                      ? color.COLOR_EVALUATION_CIRCLE
+                      : color.COLOR_GRAY_ICON
+                  }
+                />
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={onPressEvaluation.bind(this, EvaluationValue.TRIANGLE)}
-            >
-              <MaterialCommunityIcons
-                size={20}
-                name="triangle-outline"
-                color={
-                  evaluation === EvaluationValue.TRIANGLE
-                    ? color.COLOR_EVALUATION_TRIANGLE
-                    : color.COLOR_GRAY_ICON
-                }
-              />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={onPressEvaluation.bind(this, EvaluationValue.TRIANGLE)}
+              >
+                <MaterialCommunityIcons
+                  size={20}
+                  name="triangle-outline"
+                  color={
+                    evaluation === EvaluationValue.TRIANGLE
+                      ? color.COLOR_EVALUATION_TRIANGLE
+                      : color.COLOR_GRAY_ICON
+                  }
+                />
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={onPressEvaluation.bind(this, EvaluationValue.X)}
-            >
-              <Feather
-                size={24}
-                name="x"
-                color={
-                  evaluation === EvaluationValue.X
-                    ? color.COLOR_EVALUATION_X
-                    : color.COLOR_GRAY_ICON
-                }
-              />
-            </TouchableOpacity>
-          </HeaderWrapper>
+              <TouchableOpacity
+                onPress={onPressEvaluation.bind(this, EvaluationValue.X)}
+              >
+                <Feather
+                  size={24}
+                  name="x"
+                  color={
+                    evaluation === EvaluationValue.X
+                      ? color.COLOR_EVALUATION_X
+                      : color.COLOR_GRAY_ICON
+                  }
+                />
+              </TouchableOpacity>
+            </HeaderWrapper>
+          ) : (
+            <HeaderWrapper>
+              <TouchableOpacity onPress={() => rbRef?.current?.open()}>
+                <MaterialCommunityIcons
+                  size={24}
+                  name="dots-horizontal"
+                  color={color.COLOR_GRAY_ICON}
+                />
+              </TouchableOpacity>
+            </HeaderWrapper>
+          )}
         </Header>
 
         <FeedCarousel data={imageUrl} />
       </Container>
+
+      <DeleteFeedItemBSheet rbRef={rbRef} submitId={id} />
     </>
   );
 };

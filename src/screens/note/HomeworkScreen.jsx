@@ -28,7 +28,7 @@ const HomeworkScreen = () => {
 
   const goSubmitHwScreen = () => {
     navigation.navigate("SubmitHwScreen", {
-      assignmentId: assignment.id,
+      assignment,
     });
   };
 

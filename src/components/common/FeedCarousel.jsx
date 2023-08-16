@@ -37,11 +37,13 @@ const FeedCarousel = ({ data, itemWidth = dw, itemHeight = dw }) => {
           onScroll={onScroll}
         />
 
-        <IndicatorWrapper>
-          {data.map((_, index) => (
-            <Indicator focused={index === pageIndex} />
-          ))}
-        </IndicatorWrapper>
+        {data && data.length > 1 && (
+          <IndicatorWrapper>
+            {data.map((_, index) => (
+              <Indicator focused={index === pageIndex} />
+            ))}
+          </IndicatorWrapper>
+        )}
       </Container>
     </>
   );
