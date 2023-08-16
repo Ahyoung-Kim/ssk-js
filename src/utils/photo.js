@@ -4,8 +4,12 @@ export const makeImageFormData = (name, images) => {
 
   const formData = new FormData();
 
-  for (let i = 0; i < images.length; i++) {
-    formData.append(name, images[i]);
+  if (images?.length) {
+    for (let i = 0; i < images.length; i++) {
+      formData.append(name, images[i]);
+    }
+  } else {
+    formData.append(name, images);
   }
 
   return formData;

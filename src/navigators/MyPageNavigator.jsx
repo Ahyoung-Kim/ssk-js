@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MyPageScreen from "../screens/myPage/MyPageScreen";
 import MyPageNotificationScreen from "../screens/myPage/MyPageNotificationScreen";
 import MyProfileScreen from "../screens/myPage/MyProfileScreen";
+import UserInfoScreen from "../screens/myPage/UserInfoScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,11 @@ const MyPageNavigator = () => {
       <Stack.Screen
         name="MyProfileScreen"
         component={MyProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UserInfoScreen"
+        component={UserInfoScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

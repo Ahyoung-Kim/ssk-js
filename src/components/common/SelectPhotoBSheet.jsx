@@ -11,7 +11,11 @@ import * as ImageManipulator from "expo-image-manipulator";
 
 import BottomSheet from "./BottomSheet";
 
-const SelectPhotoBSheet = ({ rbRef, setImages }) => {
+const SelectPhotoBSheet = ({
+  rbRef,
+  setImages,
+  allowsMultipleSelection = true,
+}) => {
   // 카메라 권한 요청
   const [cameraStatus, cameraRequestPermission] =
     ImagePicker.useCameraPermissions();
@@ -49,7 +53,9 @@ const SelectPhotoBSheet = ({ rbRef, setImages }) => {
       images.push(image);
     }
 
-    setImages((prev) => [...prev, ...images]);
+    setImages((prev) =>
+      allowsMultipleSelection ? [...prev, ...images] : images[0]
+    );
     rbRef?.current?.close();
   };
 
@@ -80,7 +86,8 @@ const SelectPhotoBSheet = ({ rbRef, setImages }) => {
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
+      allowsEditing: true,
+      allowsMultipleSelection,
       aspect: [1, 1],
       quality: 1,
     });
