@@ -11,6 +11,7 @@ import client from "../../config/axios";
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
 import Loading from "../../components/common/Loading";
 import { Alert } from "react-native";
+import useIsTutor from "../../hooks/useIsTutor";
 
 const HwListScreen = () => {
   const navigation = useNavigation();
@@ -18,6 +19,7 @@ const HwListScreen = () => {
   const { tutoringId } = route.params;
 
   const isFocused = useIsFocused();
+  const isTutor = useIsTutor();
 
   const [editMode, setEditMode] = useState(false);
 
@@ -100,12 +102,12 @@ const HwListScreen = () => {
       <MainLayout
         headerText={"숙제 노트"}
         headerLeftType={"back"}
-        headerRightType={"pen"}
+        headerRightType={isTutor ? "pen" : null}
         handlePressHeaderRight={goCreateHwScreen}
       >
         <NoteHeader
           text={"숙제 목록"}
-          type={"deleteAndWrite"}
+          type={isTutor ? "delete" : "write"}
           handlePressLeftButton={() => {
             if (assignmentList && assignmentList.length > 0) {
               setEditMode(!editMode);

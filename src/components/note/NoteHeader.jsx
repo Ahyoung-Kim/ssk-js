@@ -55,7 +55,7 @@ const NoteHeader = ({
             <NonTouchableArea />
           </>
         );
-      case "wrtie":
+      case "write":
         return (
           <>
             <NonTouchableArea />

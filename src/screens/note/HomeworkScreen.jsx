@@ -10,8 +10,11 @@ import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
 import client from "../../config/axios";
 
 import { FlatList } from "react-native";
+import EmptyMessage from "../../components/common/EmptyMessage";
+import useIsTutor from "../../hooks/useIsTutor";
 
 const HomeworkScreen = () => {
+  const isTutor = useIsTutor();
   const navigation = useNavigation();
   const route = useRoute();
   const { assignment } = route.params;
@@ -60,13 +63,13 @@ const HomeworkScreen = () => {
         bgColor="white"
       >
         <NoteHeader
-          type="settingAndWrite"
+          type={isTutor ? "setting" : "write"}
           text={assignment.body}
           handlePressLeftButton={goUpdateAssignment}
           handlePressRightButton={goSubmitHwScreen}
         />
 
-        {feedInfo && feedInfo.length > 0 && (
+        {feedInfo && feedInfo.length > 0 ? (
           <FlatList
             numColumns={1}
             data={feedInfo}
@@ -74,6 +77,8 @@ const HomeworkScreen = () => {
             keyExtractor={(item) => `feedItem_${item.id}`}
             renderItem={({ item }) => <HwFeedItem feedItem={item} />}
           />
+        ) : (
+          <EmptyMessage message="인증된 숙제가 없습니다." />
         )}
       </MainLayout>
     </>
