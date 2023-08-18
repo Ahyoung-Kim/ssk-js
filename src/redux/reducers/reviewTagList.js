@@ -14,6 +14,8 @@ export default function reviewTagListReducer(state = initialState, action) {
         ...state,
         ...action.payload,
       };
+    case ReviewTagListActionType.CLEAR_REVIEW_TAG_LIST:
+      return initialState;
     default:
       return state;
   }

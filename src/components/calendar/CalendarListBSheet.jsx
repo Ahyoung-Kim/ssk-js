@@ -17,6 +17,8 @@ import { getClassList } from "../../redux/actions/classListAction";
 import client from "../../config/axios";
 import Loading from "../common/Loading";
 import EmptyMessage from "../common/EmptyMessage";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
+import { getClassInfo } from "../../redux/actions/classInfoAction";
 
 const CalendarListBSheet = ({ rbRef, selectedItem }) => {
   const isTutor = useIsTutor();
@@ -38,17 +40,6 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
     scheduleRbRef?.current?.open();
   };
 
-  const dispatchData = async () => {
-    getClassList()
-      .then((ret) => {
-        dispatch(ret);
-      })
-      .then(() => {
-        setRefetch(false);
-        // rbRef?.current?.close();
-      });
-  };
-
   const getScheduleList = async () => {
     const date = selectedItem.date;
     const year = date.getFullYear();
@@ -68,10 +59,15 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
     }
   };
 
+  const dispatchData = async () => {
+    getScheduleList();
+    dispatch(clearClassListInfo());
+  };
+
   useEffect(() => {
     if (refetch) {
-      getScheduleList();
       dispatchData();
+      setRefetch(false);
     }
   }, [refetch]);
 

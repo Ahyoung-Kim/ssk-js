@@ -24,6 +24,8 @@ import ConfirmButtons from "../../components/common/ConfirmButtons";
 
 import { Alert } from "react-native";
 import TagColorForm from "../../components/inputs/TagColorForm";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
+import { clearClassInfo } from "../../redux/actions/classInfoAction";
 
 const UpdateClassScreen = () => {
   const route = useRoute();
@@ -39,6 +41,14 @@ const UpdateClassScreen = () => {
   const [startDate, setStartDate] = useState(new Date(classInfo.startDate));
   // tag color
   const [tagColor, setTagColor] = useState(classInfo.color);
+
+  const refetchData = async () => {
+    dispatch(clearClassListInfo());
+    dispatch(clearClassInfo());
+    await getClassList().then((ret) => {
+      dispatch(ret);
+    });
+  };
 
   const parseDays = () => {
     const ret = [];
@@ -80,10 +90,8 @@ const UpdateClassScreen = () => {
       });
 
       if (ret.status == 200) {
-        getClassList().then((ret) => {
-          dispatch(ret);
+        refetchData().then(() => {
           navigation.navigate("ClassInfoScreen", {
-            refetch: true,
             tutoringId: classInfo.tutoringId,
           });
         });
@@ -98,8 +106,7 @@ const UpdateClassScreen = () => {
       const ret = await client.delete(`/api/tutoring/${classInfo.tutoringId}`);
 
       if (ret.status == 200) {
-        getClassList().then((ret) => {
-          dispatch(ret);
+        refetchData().then(() => {
           navigation.navigate("ClassListScreen");
         });
       }

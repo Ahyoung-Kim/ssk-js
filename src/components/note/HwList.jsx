@@ -9,6 +9,7 @@ import HwItem from "./HwItem";
 import EmptyMessage from "../common/EmptyMessage";
 
 const HwList = ({
+  tutoringId,
   hwList,
   editMode = false,
   selectedList,
@@ -36,7 +37,12 @@ const HwList = ({
           data={hwList}
           keyExtractor={(item, idx) => `hw_${idx}`}
           renderItem={({ item }) => (
-            <HwItem onPressItem={onPressItem} editMode={editMode} data={item} />
+            <HwItem
+              onPressItem={onPressItem}
+              editMode={editMode}
+              data={item}
+              tutoringId={tutoringId}
+            />
           )}
         />
       )}

@@ -1,13 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useDebugValue, useEffect, useRef, useState } from "react";
 
 import styled from "styled-components/native";
 import color from "../../common/color";
 
-import {
-  useRoute,
-  useNavigation,
-  useIsFocused,
-} from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
@@ -19,9 +15,11 @@ import CreateNoteBSheet from "../../components/note/CreateNoteBSheet";
 import HwList from "../../components/note/HwList";
 import ReviewList from "../../components/note/ReviewList";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
-import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
 import EmptyMessage from "../../components/common/EmptyMessage";
+import useClassNote from "../../hooks/useClassNote";
+import { useDispatch } from "react-redux";
+import { getClassNote } from "../../redux/actions/classNoteAction";
 
 const SettingIcon = ({ onPress }) => {
   return (
@@ -39,13 +37,13 @@ const ClassNoteScreen = () => {
   const { date, noteId, tutoringId, startTime } = route.params; // noteId 필요
 
   const isTutor = useIsTutor();
-  const isFocused = useIsFocused();
 
   const rbRef = useRef();
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const [noteInfo, setNoteInfo] = useState({});
+  const noteInfo = useClassNote(noteId);
   const [loading, setLoading] = useState(false);
 
   const [selectedHwList, setSelectedHwList] = useState([]);
@@ -68,32 +66,17 @@ const ClassNoteScreen = () => {
     }
   };
 
-  const getNoteInfo = async () => {
-    setLoading(true);
-    try {
-      const ret = await client.get(`/api/note/detail/${noteId}`);
-
-      if (ret.status == 200) {
-        // console.log("note info: ", ret.data);
-        setNoteInfo(ret.data);
-      }
-    } catch (err) {
-      console.log("get note info error: ", err);
-      const status = err?.response?.status;
-
-      if (status == 404) {
-        // Not found
-        setNoteInfo(null);
-      }
-    }
-    setLoading(false);
+  const handleRefresh = async () => {
+    await getClassNote(noteId).then((ret) => dispatch(ret));
   };
 
   useEffect(() => {
-    if (isFocused) {
-      getNoteInfo();
+    if (noteInfo) {
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
-  }, [noteId, isFocused]);
+  }, [noteInfo]);
 
   return (
     <>
@@ -103,6 +86,7 @@ const ClassNoteScreen = () => {
         headerLeftType={"back"}
         headerRightType={isTutor ? "pen" : null}
         handlePressHeaderRight={() => rbRef?.current?.open()}
+        handleRefresh={handleRefresh}
       >
         <NoteHeader text={dateFormat(date)} type="basic" />
 
@@ -110,7 +94,7 @@ const ClassNoteScreen = () => {
           <>
             <Loading />
           </>
-        ) : noteInfo ? (
+        ) : noteInfo && noteInfo.progress ? (
           <Contents>
             <LeftBarContainer label={"진도 보고"}>
               <ProgressText>{noteInfo.progress}</ProgressText>
@@ -139,6 +123,7 @@ const ClassNoteScreen = () => {
               />
 
               <HwList
+                tutoringId={tutoringId}
                 hwList={noteInfo.assignmentList}
                 editMode={hwEditMode}
                 selectedList={selectedHwList}

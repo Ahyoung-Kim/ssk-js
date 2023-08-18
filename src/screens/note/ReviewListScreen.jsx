@@ -14,6 +14,9 @@ import { useIsFocused, useRoute } from "@react-navigation/native";
 import client from "../../config/axios";
 import Loading from "../../components/common/Loading";
 import { Alert } from "react-native";
+import { useDispatch } from "react-redux";
+import { getReviewList } from "../../redux/actions/reviewListAction";
+import useReviewList from "../../hooks/useReviewList";
 
 const ReviewListContainer = ({ children, text }) => {
   const [open, setOpen] = useState(true);
@@ -44,54 +47,19 @@ const ReviewListScreen = () => {
   const route = useRoute();
   const { tutoringId } = route.params;
 
-  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   const [editMode, setEditMode] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
+  const reviewList = useReviewList(tutoringId);
+
   const [selectedList, setSelectedList] = useState([]);
-  const [reviewList, setReviewList] = useState([]);
+  const [ongoingList, setOngoingList] = useState([]);
   const [completedList, setCompletedList] = useState([]);
 
   const rbRef = useRef();
-
-  const getReviewList = async () => {
-    setLoading(true);
-    try {
-      const ret = await client.post("/api/review/list", {
-        tutoringId,
-      });
-
-      if (ret.status == 200) {
-        const data = ret.data;
-
-        let list = [];
-        let completed = [];
-
-        for (let i = 0; i < data.length; i++) {
-          const isCompleted = data[i].isCompleted;
-          if (isCompleted) {
-            completed.push(data[i]);
-          } else {
-            list.push(data[i]);
-          }
-        }
-
-        setReviewList(list);
-        setCompletedList(completed);
-      }
-    } catch (err) {
-      console.log("get review list error: ", err);
-      const status = err?.response?.status;
-
-      if (status == 404) {
-        setReviewList([]);
-        setCompletedList([]);
-      }
-    }
-    setLoading(false);
-  };
 
   const handleDeleteReviews = () => {
     Alert.alert("복습 목록 삭제", "선택한 복습 목록을 삭제하시겠습니까?", [
@@ -111,7 +79,7 @@ const ReviewListScreen = () => {
             });
 
             if (ret.status == 200) {
-              await getReviewList();
+              await getReviewList(tutoringId).then((ret) => dispatch(ret));
               setEditMode(false);
             }
           } catch (err) {
@@ -122,11 +90,32 @@ const ReviewListScreen = () => {
     ]);
   };
 
+  const handleRefresh = async () => {
+    await getReviewList(tutoringId).then((ret) => dispatch(ret));
+  };
+
   useEffect(() => {
-    if (isFocused) {
-      getReviewList();
+    if (!reviewList) {
+      setLoading(true);
+    } else {
+      let list = [];
+      let completed = [];
+
+      for (let i = 0; i < reviewList.length; i++) {
+        const isCompleted = reviewList[i].isCompleted;
+        if (isCompleted) {
+          completed.push(reviewList[i]);
+        } else {
+          list.push(reviewList[i]);
+        }
+      }
+
+      setOngoingList(list);
+      setCompletedList(completed);
+
+      setLoading(false);
     }
-  }, [tutoringId, isFocused]);
+  }, [reviewList]);
 
   return (
     <>
@@ -135,6 +124,7 @@ const ReviewListScreen = () => {
         headerLeftType={"back"}
         headerRightType={"setting"}
         handlePressHeaderRight={() => rbRef?.current?.open()}
+        handleRefresh={handleRefresh}
       >
         <NoteHeader
           text={"복습 목록"}
@@ -154,7 +144,7 @@ const ReviewListScreen = () => {
               <ReviewListContainer text={"진행 중인 복습"}>
                 <ReviewList
                   tutoringId={tutoringId}
-                  reviewList={reviewList}
+                  reviewList={ongoingList}
                   editMode={editMode}
                   selectedList={selectedList}
                   setSelectedList={setSelectedList}

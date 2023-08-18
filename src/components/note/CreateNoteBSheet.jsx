@@ -15,6 +15,12 @@ import {
 } from "../../utils/date";
 import { Alert } from "react-native";
 import client from "../../config/axios";
+import { useDispatch } from "react-redux";
+import { getClassNote } from "../../redux/actions/classNoteAction";
+import { getReviewList } from "../../redux/actions/reviewListAction";
+import { getAssignmentList } from "../../redux/actions/assignmentListAction";
+import { clearClassInfo } from "../../redux/actions/classInfoAction";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const CreateNoteBSheet = ({
   rbRef,
@@ -25,6 +31,7 @@ const CreateNoteBSheet = ({
   startTime,
 }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const goCreateProgressScreen = () => {
     const tutoringTime = tutoringTimeFormat(date, startTime);
@@ -46,6 +53,12 @@ const CreateNoteBSheet = ({
       const ret = await client.delete(`/api/note/${noteId}`);
 
       if (ret.status == 200) {
+        await getClassNote(noteId).then((ret) => dispatch(ret));
+        await getReviewList(tutoringId).then((ret) => dispatch(ret));
+        await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
+        dispatch(clearClassInfo());
+        dispatch(clearClassListInfo());
+
         rbRef?.current?.close();
         setTimeout(() => {
           navigation.goBack();

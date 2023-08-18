@@ -10,9 +10,12 @@ import MainLayout from "../../components/common/MainLayout";
 import MyPageButton from "../../components/myPage/MyPageButton";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import useUser from "../../hooks/useUser";
+import useClearRedux from "../../hooks/useClearRedux";
 
 const MyPageScreen = () => {
   const user = useUser();
+
+  const clearReduxData = useClearRedux();
 
   const navigation = useNavigation();
   // const [nickName, setNickName] = useState("");
@@ -58,13 +61,14 @@ const MyPageScreen = () => {
       {
         text: "확인",
         onPress: async () => {
-          await clearData();
           navigation.dispatch(
             CommonActions.reset({
               routes: [{ name: "LoginScreen" }],
             })
           );
           navigation.navigate("LoginScreen");
+          await clearData();
+          await clearReduxData(true);
         },
       },
     ]);

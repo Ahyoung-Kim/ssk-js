@@ -12,25 +12,31 @@ import client from "../../config/axios";
 import useClassList from "../../hooks/useClassList";
 import Loading from "../../components/common/Loading";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useUser from "../../hooks/useUser";
 import EmptyMessage from "../../components/common/EmptyMessage";
 import LeftBarContainer from "../../components/common/LeftBarContainer";
 import useClassListInfo from "../../hooks/useClassListInfo";
+import useTodayClassList from "../../hooks/useTodayClassList";
+import { getClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const HomeScreen = () => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
 
+  const dispatch = useDispatch();
+
   const tutoringList = useClassListInfo(year, month);
-  const todayClassList = useSelector(
-    (state) => state.classListReducer.todayClassList
-  );
+  const todayClassList = useTodayClassList();
+
+  const handleRefresh = async () => {
+    await getClassListInfo(year, month).then((ret) => dispatch(ret));
+  };
 
   return (
     <>
-      <MainLayout headerText={"홈"}>
+      <MainLayout headerText={"홈"} handleRefresh={handleRefresh}>
         {tutoringList ? (
           <Calendar
             tutoringList={tutoringList}

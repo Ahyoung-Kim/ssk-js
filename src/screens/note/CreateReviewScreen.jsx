@@ -17,8 +17,16 @@ import ConfirmButtons from "../../components/common/ConfirmButtons";
 import client from "../../config/axios";
 import { Alert, TouchableOpacity } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useReviewTagList from "../../hooks/useReviewTagList";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
+import {
+  clearClassInfo,
+  getClassInfo,
+} from "../../redux/actions/classInfoAction";
+import { getClassNote } from "../../redux/actions/classNoteAction";
+import { getReviewList } from "../../redux/actions/reviewListAction";
+import { getAssignmentList } from "../../redux/actions/assignmentListAction";
 
 const EachReviewItem = ({ review, onPressXButton }) => {
   const { body, tagId, tag } = review;
@@ -47,6 +55,7 @@ const EachReviewItem = ({ review, onPressXButton }) => {
 const CreateReviewScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatch = useDispatch();
 
   // requirement: tutoringId
   const { date, tutoringId, prevStates, prevReview } = route.params;
@@ -107,6 +116,13 @@ const CreateReviewScreen = () => {
       if (ret.status == 200) {
         // TODO: ret.data 에서 noteId 가져오기
         const noteId = ret.data;
+
+        await getClassNote(noteId).then((ret) => dispatch(ret));
+        await getReviewList(tutoringId).then((ret) => dispatch(ret));
+        await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
+        dispatch(clearClassInfo());
+        dispatch(clearClassListInfo());
+
         // Alert.alert("수업 일지가 등록되었습니다!");
         navigation.navigate("ClassNoteScreen", {
           date,
@@ -117,6 +133,16 @@ const CreateReviewScreen = () => {
     } catch (err) {
       console.log("create class note error: ", err);
     }
+  };
+
+  const refetchData = async () => {
+    const noteId = prevReview?.noteId;
+    if (noteId) {
+      await getClassNote(noteId).then((ret) => dispatch(ret));
+    }
+    await getReviewList(tutoringId).then((ret) => dispatch(ret));
+    dispatch(clearClassInfo());
+    dispatch(clearClassListInfo());
   };
 
   const handleCreateReview = async () => {
@@ -141,6 +167,7 @@ const CreateReviewScreen = () => {
       const ret = await client.post("/api/review", data);
 
       if (ret.status == 200) {
+        await refetchData();
         navigation.navigate("ReviewListScreen", {
           tutoringId,
         });
@@ -160,6 +187,7 @@ const CreateReviewScreen = () => {
       });
 
       if (ret.status == 200) {
+        await refetchData();
         Alert.alert("복습 노트가 편집되었습니다.");
         setTimeout(() => {
           navigation.goBack();
@@ -177,6 +205,7 @@ const CreateReviewScreen = () => {
       const ret = await client.delete(`/api/review/${id}`);
 
       if (ret.status == 200) {
+        await refetchData();
         setTimeout(() => {
           navigation.goBack();
         }, 500);

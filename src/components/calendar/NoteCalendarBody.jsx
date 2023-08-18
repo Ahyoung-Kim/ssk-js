@@ -16,6 +16,7 @@ import {
 
 import tags from "../../common/tags";
 import { noteCalendarDays, compareDates } from "../../utils/date";
+import CalendarNoteListBSheet from "./CalendarNoteListBSheet";
 
 const NoteCalendarBody = ({
   selectedDate,
@@ -88,8 +89,6 @@ const NoteCalendarBody = ({
     return;
   }
 
-  //   console.log(noteListInfo[0].noteList);
-
   return (
     <>
       <Container>
@@ -106,7 +105,11 @@ const NoteCalendarBody = ({
         />
 
         {/* 일지 목록 바텀시트 */}
-        {selectedItem && <></>}
+        {selectedItem && (
+          <>
+            <CalendarNoteListBSheet rbRef={rbRef} selectedItem={selectedItem} />
+          </>
+        )}
       </Container>
     </>
   );

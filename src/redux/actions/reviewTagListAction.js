@@ -38,3 +38,9 @@ export const deleteReviewTag = async (tutoringId) => {
     [tutoringId]: null,
   };
 };
+
+export const clearReviewTagList = () => {
+  return {
+    type: ReviewTagListActionType.CLEAR_REVIEW_TAG_LIST,
+  };
+};

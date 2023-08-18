@@ -17,6 +17,10 @@ import client from "../../config/axios";
 
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
+import {
+  clearClassListInfo,
+  getClassListInfo,
+} from "../../redux/actions/classListInfoAction";
 
 import initialRegularDays from "../../constants/initialRegularDays";
 import tags from "../../common/tags";
@@ -89,10 +93,12 @@ const CreateClassScreen = () => {
         const ret = await client.post("/api/tutoring", body);
 
         if (ret.status === 200) {
-          getClassList().then((ret) => {
-            dispatch(ret);
-            navigation.navigate("ClassListScreen");
-          });
+          dispatch(clearClassListInfo());
+          await getClassList() //
+            .then((ret) => {
+              dispatch(ret);
+              navigation.navigate("ClassListScreen");
+            });
         }
       } catch (err) {
         console.log("Create class request fail: ", err);

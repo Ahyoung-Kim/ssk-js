@@ -15,6 +15,7 @@ import useClassList from "../../hooks/useClassList";
 import { Alert } from "react-native";
 import { useDispatch } from "react-redux";
 import { getClassInfo } from "../../redux/actions/classInfoAction";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
   const classList = useClassList();
@@ -51,6 +52,7 @@ const CreateScheduleBSheet = ({ rbRef, date, edit, setRefetch }) => {
           date.getFullYear(),
           date.getMonth() + 1
         ).then((ret) => dispatch(ret));
+
         setRefetch(true);
         rbRef?.current?.close();
       }

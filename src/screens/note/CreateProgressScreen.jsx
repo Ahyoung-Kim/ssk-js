@@ -14,9 +14,12 @@ import KeyboardAvoidingLayout from "../../components/common/KeyboardAvoidingLayo
 import BigButton from "../../components/common/BigButton";
 import PrevNextButtons from "../../components/common/PrevNextButtons";
 import client from "../../config/axios";
+import { useDispatch } from "react-redux";
+import { getClassNote } from "../../redux/actions/classNoteAction";
 
 const CreateProgressScreen = ({}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const route = useRoute();
   const {
     date,
@@ -50,6 +53,8 @@ const CreateProgressScreen = ({}) => {
       });
 
       if (ret.status == 200) {
+        await getClassNote(noteId).then((ret) => dispatch(ret));
+
         Alert.alert("진도 보고 내용이 수정되었습니다.");
         navigation.navigate("ClassNoteScreen", {
           date,

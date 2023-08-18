@@ -26,6 +26,11 @@ import { Alert, TouchableOpacity } from "react-native";
 import days from "../../constants/days";
 import client from "../../config/axios";
 import ConfirmButtons from "../../components/common/ConfirmButtons";
+import { getClassNote } from "../../redux/actions/classNoteAction";
+import { useDispatch } from "react-redux";
+import { getAssignmentList } from "../../redux/actions/assignmentListAction";
+import { clearClassInfo } from "../../redux/actions/classInfoAction";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const AssignmentItem = ({
   body,
@@ -70,6 +75,7 @@ const AssignmentItem = ({
 };
 
 const CreateHwScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
   const { date, tutoringId, prevStates, prevAssignment } = route.params;
@@ -133,6 +139,17 @@ const CreateHwScreen = () => {
     });
   };
 
+  const refetchData = async () => {
+    const noteId = prevAssignment?.noteId;
+
+    if (noteId) {
+      await getClassNote(noteId).then((ret) => dispatch(ret));
+    }
+    await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
+    dispatch(clearClassInfo());
+    dispatch(clearClassListInfo());
+  };
+
   const handleCreateAssignment = async () => {
     try {
       const data = {
@@ -145,11 +162,11 @@ const CreateHwScreen = () => {
       const ret = await client.post("/api/assignment", data);
 
       if (ret.status == 200) {
-        setTimeout(() => {
+        await refetchData().then(() => {
           navigation.navigate("HwListScreen", {
             tutoringId,
           });
-        }, 500);
+        });
       }
     } catch (err) {
       console.log("create assighment error: ", err);
@@ -167,9 +184,11 @@ const CreateHwScreen = () => {
       );
 
       if (ret.status == 200) {
-        setTimeout(() => {
-          navigation.goBack();
-        }, 500);
+        await refetchData().then(() => {
+          navigation.navigate("HwListScreen", {
+            tutoringId,
+          });
+        });
       }
     } catch (err) {
       console.log("update assighment error: ", err);
@@ -192,11 +211,11 @@ const CreateHwScreen = () => {
             );
 
             if (ret.status == 200) {
-              setTimeout(() => {
+              await refetchData().then(() => {
                 navigation.navigate("HwListScreen", {
                   tutoringId,
                 });
-              }, 500);
+              });
             }
           } catch (err) {
             console.log("delete assighment error: ", err);

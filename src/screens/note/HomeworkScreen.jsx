@@ -6,26 +6,28 @@ import color from "../../common/color";
 import MainLayout from "../../components/common/MainLayout";
 import NoteHeader from "../../components/note/NoteHeader";
 import HwFeedItem from "../../components/note/HwFeedItem";
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
-import client from "../../config/axios";
+import { useNavigation, useRoute } from "@react-navigation/core";
 
 import { FlatList } from "react-native";
 import EmptyMessage from "../../components/common/EmptyMessage";
 import useIsTutor from "../../hooks/useIsTutor";
+import useFeedInfo from "../../hooks/useFeedInfo";
+import { useDispatch } from "react-redux";
+import { getFeedInfo } from "../../redux/actions/feedInfoAction";
 
 const HomeworkScreen = () => {
   const isTutor = useIsTutor();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const route = useRoute();
-  const { assignment } = route.params;
+  const { assignment, tutoringId } = route.params;
 
-  const [feedInfo, setFeedInfo] = useState(null);
-
-  // console.log(assignment);
+  const feedInfo = useFeedInfo(assignment.id);
 
   const goUpdateAssignment = () => {
     navigation.navigate("CreateHwScreen", {
       prevAssignment: assignment,
+      tutoringId,
     });
   };
 
@@ -35,25 +37,9 @@ const HomeworkScreen = () => {
     });
   };
 
-  const getAssignmentSubmits = async () => {
-    try {
-      const ret = await client.get(
-        `/api/assignment/${assignment.id}/submit/list`
-      );
-
-      if (ret.status == 200) {
-        // console.log(ret.data);
-
-        setFeedInfo(ret.data);
-      }
-    } catch (err) {
-      console.log("get assignment submits error: ", err);
-    }
+  const handleRefresh = async () => {
+    await getFeedInfo(assignment.id).then((ret) => dispatch(ret));
   };
-
-  useEffect(() => {
-    getAssignmentSubmits();
-  }, [assignment]);
 
   return (
     <>
@@ -61,6 +47,7 @@ const HomeworkScreen = () => {
         headerText={"숙제 노트"}
         headerLeftType={"back"}
         bgColor="white"
+        handleRefresh={handleRefresh}
       >
         <NoteHeader
           type={isTutor ? "setting" : "write"}
@@ -75,7 +62,14 @@ const HomeworkScreen = () => {
             data={feedInfo}
             inverted={true}
             keyExtractor={(item) => `feedItem_${item.id}`}
-            renderItem={({ item }) => <HwFeedItem feedItem={item} />}
+            renderItem={({ item }) => (
+              <HwFeedItem
+                feedItem={item}
+                tutoringId={tutoringId}
+                assignmentId={assignment.id}
+                noteId={assignment.noteId}
+              />
+            )}
           />
         ) : (
           <EmptyMessage message="인증된 숙제가 없습니다." />
