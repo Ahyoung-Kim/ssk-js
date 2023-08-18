@@ -23,8 +23,10 @@ const UserInfo = ({
         )}
 
         <TextView>
-          <InfoBigText>{subject}</InfoBigText>
-          <InfoSmallText>
+          <InfoBigText numberOfLines={1} ellipsizeMode="tail">
+            {subject}
+          </InfoBigText>
+          <InfoSmallText numberOfLines={1} ellipsizeMode="tail">
             {name
               ? name + " " + (isTutor ? "학생" : "선생님")
               : "학생이 초대되지 않았습니다."}
@@ -41,13 +43,16 @@ const UserInfoView = styled.View`
   //   background-color: orange;
   flex-direction: row;
   align-items: center;
+  flex-shrink: 1;
 `;
 
 const ProfileImageView = styled.View`
   margin-right: 10;
 `;
 
-const TextView = styled.View``;
+const TextView = styled.View`
+  flex-shrink: 1;
+`;
 
 const InfoBigText = styled.Text`
   font-weight: bold;

@@ -41,7 +41,9 @@ const NoteItem = ({ note }) => {
       <Pressable style={styles.container}>
         <NoteWrapper>
           <FontAwesome5 name="check" color={tags[tagColor]} size={20} />
-          <ProgressText>진도 보고 내용</ProgressText>
+          <ProgressText numberOfLines={1} ellipsizeMode="tail">
+            진도 보고 내용
+          </ProgressText>
         </NoteWrapper>
 
         <FontAwesome5
@@ -113,10 +115,12 @@ const styles = StyleSheet.create({
 const NoteWrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  flex-shrink: 1;
 `;
 
 const ProgressText = styled.Text`
   font-weight: bold;
   font-size: 16;
-  margin-left: 15;
+  margin-horizontal: 15;
+  flex-shrink: 1;
 `;
