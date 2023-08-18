@@ -15,11 +15,14 @@ import { useNavigation } from "@react-navigation/native";
 
 import useClassList from "../../hooks/useClassList";
 import EmptyMessage from "../../components/common/EmptyMessage";
+import { useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
 
 const ClassListScreen = () => {
   const classList = useClassList();
 
   const isTutor = useIsTutor();
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +39,10 @@ const ClassListScreen = () => {
     }
   };
 
+  const handleRefresh = async () => {
+    await getClassList().then((ret) => dispatch(ret));
+  };
+
   useEffect(() => {
     if (!classList) {
       setLoading(true);
@@ -46,7 +53,7 @@ const ClassListScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"수업 목록"}>
+      <MainLayout headerText={"수업 목록"} handleRefresh={handleRefresh}>
         {loading ? (
           <Loading />
         ) : classList ? (

@@ -22,7 +22,10 @@ import HwListBox from "../../components/note/HwListBox";
 import ReviewListBox from "../../components/note/ReviewListBox";
 import TuteeClassInfoBSheet from "../../components/classInfo/TuteeClassInfoBSheet";
 import useClassInfo from "../../hooks/useClassInfo";
-import { getClassListInfo } from "../../redux/actions/classListInfoAction";
+import {
+  clearClassListInfo,
+  getClassListInfo,
+} from "../../redux/actions/classListInfoAction";
 
 const ClassInfoScreen = () => {
   const dispatch = useDispatch();
@@ -30,8 +33,6 @@ const ClassInfoScreen = () => {
   const route = useRoute();
 
   const isTutor = useIsTutor();
-
-  const isFocused = useIsFocused();
 
   const { tutoringId } = route.params;
 
@@ -55,20 +56,25 @@ const ClassInfoScreen = () => {
     }
   };
 
+  const refetchData = async () => {
+    getClassInfo(tutoringId, year, month).then((ret) => dispatch(ret));
+    dispatch(clearClassListInfo());
+  };
+
   useEffect(() => {
-    if (refetch || (isFocused && route.params.refetch)) {
-      if (year && month && tutoringId) {
-        getClassInfo(tutoringId, year, month).then((ret) => dispatch(ret));
-        getClassList().then((ret) => dispatch(ret));
-        getClassListInfo(year, month).then((ret) => dispatch(ret));
-      }
+    if (refetch) {
+      refetchData();
       setRefetch(false);
     }
-  }, [refetch, isFocused]);
+  }, [refetch]);
 
   return (
     <>
-      <MainLayout headerText={"수업 정보"} headerLeftType={"back"}>
+      <MainLayout
+        headerText={"수업 정보"}
+        headerLeftType={"back"}
+        handleRefresh={refetchData}
+      >
         {!classInfo ? (
           <Loading />
         ) : (

@@ -12,13 +12,16 @@ import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core";
 import Loading from "../../components/common/Loading";
 import { Alert } from "react-native";
 import useIsTutor from "../../hooks/useIsTutor";
+import useAssignmentList from "../../hooks/useAssignmentList";
+import { useDispatch, useSelector } from "react-redux";
+import { getAssignmentList } from "../../redux/actions/assignmentListAction";
 
 const HwListScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { tutoringId } = route.params;
 
-  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
   const isTutor = useIsTutor();
 
   const [editMode, setEditMode] = useState(false);
@@ -26,29 +29,8 @@ const HwListScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const [selectedList, setSelectedList] = useState([]);
-  const [assignmentList, setAssignmentList] = useState([]);
-
-  const getAssignmentList = async () => {
-    setLoading(true);
-    try {
-      const ret = await client.post("/api/assignment/list", {
-        tutoringId,
-      });
-
-      if (ret.status == 200) {
-        // console.log(ret.data);
-        setAssignmentList(ret.data);
-      }
-    } catch (err) {
-      console.log("get assignment list error: ", err);
-      const status = err?.response?.status;
-
-      if (status == 404) {
-        setAssignmentList([]);
-      }
-    }
-    setLoading(false);
-  };
+  const assignmentList = useAssignmentList(tutoringId);
+  // console.log("assignmentList: ", assignmentList);
 
   const handleDeleteAssignments = () => {
     Alert.alert("숙제 목록 삭제", "선택한 숙제 목록을 삭제하시겠습니까?", [
@@ -68,7 +50,7 @@ const HwListScreen = () => {
             });
 
             if (ret.status == 200) {
-              await getAssignmentList();
+              await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
               setEditMode(false);
             }
           } catch (err) {
@@ -88,14 +70,21 @@ const HwListScreen = () => {
   const goSubmitHwScreen = () => {
     navigation.navigate("SubmitHwScreen", {
       assignmentList,
+      tutoringId,
     });
   };
 
+  const handleRefresh = async () => {
+    await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
+  };
+
   useEffect(() => {
-    if (isFocused) {
-      getAssignmentList();
+    if (assignmentList) {
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
-  }, [tutoringId, isFocused]);
+  }, [assignmentList]);
 
   return (
     <>
@@ -104,6 +93,7 @@ const HwListScreen = () => {
         headerLeftType={"back"}
         headerRightType={isTutor ? "pen" : null}
         handlePressHeaderRight={goCreateHwScreen}
+        handleRefresh={handleRefresh}
       >
         <NoteHeader
           text={"숙제 목록"}
@@ -121,6 +111,7 @@ const HwListScreen = () => {
             <Loading />
           ) : (
             <HwList
+              tutoringId={tutoringId}
               hwList={assignmentList}
               editMode={editMode}
               selectedList={selectedList}

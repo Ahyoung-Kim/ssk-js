@@ -10,6 +10,7 @@ import client from "../../config/axios";
 
 import { useDispatch } from "react-redux";
 import { getClassList } from "../../redux/actions/classListAction";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const ApproveModal = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
@@ -26,9 +27,11 @@ const ApproveModal = ({ modalVisible, setModalVisible }) => {
       });
 
       if (ret.status == 200) {
-        getClassList().then((ret) => {
+        setModalVisible(false);
+        setInviteCode("");
+        dispatch(clearClassListInfo());
+        await getClassList().then((ret) => {
           dispatch(ret);
-          setModalVisible(false);
         });
       }
     } catch (err) {

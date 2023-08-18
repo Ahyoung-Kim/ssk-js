@@ -1,0 +1,4 @@
+export default {
+  GET_CLASS_NOTE: "GET_CLASS_NOTE",
+  CLEAR_CLASS_NOTE: "CLEAR_CLASS_NOTE",
+};

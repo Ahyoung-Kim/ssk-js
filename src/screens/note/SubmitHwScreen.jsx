@@ -17,11 +17,17 @@ import client from "../../config/axios";
 import { makeImageFormData } from "../../utils/photo";
 import { Alert } from "react-native";
 import BigButton from "../../components/common/BigButton";
+import { getFeedInfo } from "../../redux/actions/feedInfoAction";
+import { useDispatch } from "react-redux";
+import { getAssignmentList } from "../../redux/actions/assignmentListAction";
+import { clearClassInfo } from "../../redux/actions/classInfoAction";
+import { getClassNote } from "../../redux/actions/classNoteAction";
 
 const SubmitHwScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const route = useRoute();
-  const { assignment, assignmentList } = route.params;
+  const { assignment, assignmentList, tutoringId } = route.params;
 
   const [images, setImages] = useState([]);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
@@ -30,6 +36,19 @@ const SubmitHwScreen = () => {
 
   const onPressXButton = (image) => {
     setImages(images.filter((_image) => _image !== image));
+  };
+
+  const refetchData = async (assignmentId) => {
+    const noteId = assignment
+      ? assignment?.noteId
+      : selectedAssignment
+      ? selectedAssignment?.noteId
+      : null;
+
+    await getFeedInfo(assignmentId).then((ret) => dispatch(ret));
+    await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
+    await getClassNote(noteId).then((ret) => dispatch(ret));
+    dispatch(clearClassInfo());
   };
 
   const handleSubmitAssignment = async () => {
@@ -65,12 +84,13 @@ const SubmitHwScreen = () => {
       if (ret.status == 200) {
         const param = assignment ? assignment : selectedAssignment;
 
-        Alert.alert("숙제 인증 사진이 등록되었습니다.");
-        setTimeout(() => {
-          navigation.navigate("HomeworkScreen", {
-            assignment: param,
+        await refetchData(assignmentId) //
+          .then(() => {
+            Alert.alert("숙제 인증 사진이 등록되었습니다.");
+            navigation.navigate("HomeworkScreen", {
+              assignment: param,
+            });
           });
-        }, 500);
       }
     } catch (err) {
       console.log("submit assignment error: ", err);

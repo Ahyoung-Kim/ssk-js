@@ -10,13 +10,12 @@ import useAxiosInterceptors from "../../hooks/useAxiosInterceptors";
 const MainLayout = ({
   children,
   headerText,
-
-  handleRefresh,
   bgColor = color.COLOR_GRAY_BACKGROUND,
   headerLeftType,
   headerRightType,
   handlePressHeaderLeft,
   handlePressHeaderRight,
+  handleRefresh,
 }) => {
   useAxiosInterceptors();
 
@@ -25,9 +24,8 @@ const MainLayout = ({
   const onRefresh = async () => {
     if (handleRefresh) {
       setRefreshing(true);
-      handleRefresh().then(() => {
-        setRefreshing(false);
-      });
+      await handleRefresh();
+      setRefreshing(false);
     }
   };
 

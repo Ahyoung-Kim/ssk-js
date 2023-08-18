@@ -42,11 +42,9 @@ const ReviewItem = ({
   };
 
   const onPressClickBox = () => {
-    if (!completed) {
-      const _click = !click;
-      setClick(_click);
-      handleCheck(_click);
-    }
+    const _click = !click;
+    setClick(_click);
+    handleCheck(_click);
   };
 
   const onPressContainer = () => {
@@ -83,23 +81,24 @@ const ReviewItem = ({
                 size={20}
               />
             ) : (
-              <FontAwesome5
-                name="angle-right"
-                size={22}
-                color={color.COLOR_GRAY_ICON}
-              />
+              <Wraaper>
+                <CheckBox onPress={onPressClickBox}>
+                  <Ionicons
+                    name={click ? "checkbox" : "checkbox-outline"}
+                    color={color.COLOR_MAIN}
+                    size={20}
+                  />
+                </CheckBox>
+
+                <FontAwesome5
+                  name="angle-right"
+                  size={22}
+                  color={color.COLOR_GRAY_ICON}
+                />
+              </Wraaper>
             )}
           </>
-        ) : (
-          <CheckBox onPress={onPressClickBox}>
-            <Ionicons
-              name={click ? "checkbox" : "checkbox-outline"}
-              color={color.COLOR_MAIN}
-              size={20}
-              style={completed ? { opacity: 0 } : {}}
-            />
-          </CheckBox>
-        )}
+        ) : null}
       </Container>
     </>
   );
@@ -133,4 +132,6 @@ const EditWrapper = styled.View`
   height: 100%;
 `;
 
-const CheckBox = styled.Pressable``;
+const CheckBox = styled.Pressable`
+  margin-right: 7;
+`;

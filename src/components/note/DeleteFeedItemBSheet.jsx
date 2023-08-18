@@ -7,14 +7,16 @@ import BottomSheet from "../common/BottomSheet";
 import client from "../../config/axios";
 import { Alert } from "react-native";
 
-const DeleteFeedItemBSheet = ({ rbRef, submitId }) => {
+const DeleteFeedItemBSheet = ({ rbRef, submitId, refetchData }) => {
   const handleDeleteSubmit = async () => {
     try {
       const ret = await client.delete(`/api/assignment/submit/${submitId}`);
 
       if (ret.status == 200) {
-        Alert.alert("삭제 되었습니다.");
-        rbRef?.current?.close();
+        await refetchData().then(() => {
+          Alert.alert("삭제 되었습니다.");
+          rbRef?.current?.close();
+        });
       }
     } catch (err) {
       console.log("delete assignment submit error: ", err);

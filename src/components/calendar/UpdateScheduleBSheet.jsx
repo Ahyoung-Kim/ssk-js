@@ -20,7 +20,10 @@ import { Alert } from "react-native";
 import client from "../../config/axios";
 import DatePickerForm from "../inputs/DatePickerForm";
 import { useDispatch } from "react-redux";
-import { getClassInfo } from "../../redux/actions/classInfoAction";
+import {
+  clearClassInfo,
+  getClassInfo,
+} from "../../redux/actions/classInfoAction";
 
 const UpdateScheduleBSheet = ({
   rbRef,
@@ -71,9 +74,10 @@ const UpdateScheduleBSheet = ({
           date.getFullYear(),
           date.getMonth() + 1
         ).then((ret) => dispatch(ret));
-        setRefetch(true);
+
         scheduleRbRef?.current?.close();
         rbRef?.current?.close();
+        setRefetch(true);
       }
     } catch (err) {
       console.log("update schedule error: ", err);
@@ -103,6 +107,7 @@ const UpdateScheduleBSheet = ({
       });
 
       if (ret.status == 200) {
+        dispatch(clearClassInfo());
         setRefetch(true);
         scheduleRbRef?.current?.close();
         rbRef?.current?.close();

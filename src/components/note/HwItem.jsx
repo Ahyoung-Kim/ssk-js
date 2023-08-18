@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import days from "../../constants/days";
 import { proceedingPercentage } from "../../utils/assignment";
 
-const HwItem = ({ data, editMode, onPressItem = () => {} }) => {
+const HwItem = ({ tutoringId, data, editMode, onPressItem = () => {} }) => {
   // console.log("assignment : ", data);
   const {
     body,
@@ -35,6 +35,7 @@ const HwItem = ({ data, editMode, onPressItem = () => {} }) => {
     } else {
       navigation.navigate("HomeworkScreen", {
         assignment: data,
+        tutoringId,
       });
     }
   };

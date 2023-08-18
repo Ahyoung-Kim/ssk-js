@@ -13,6 +13,7 @@ import { getClassList } from "../../redux/actions/classListAction";
 import ModalConfirmButtons from "./ModalConfirmButtons";
 import { useNavigation } from "@react-navigation/native";
 import { withdrawClassInfo } from "../../redux/actions/classInfoAction";
+import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
 
 const WithdrawModal = ({
   classInfoRef,
@@ -34,6 +35,7 @@ const WithdrawModal = ({
         setModalVisible(false);
         navigation.navigate("ClassListScreen");
       });
+    dispatch(clearClassListInfo());
   };
 
   return (

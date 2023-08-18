@@ -1,0 +1,4 @@
+export default {
+  GET_FEED_INFO: "GET_FEED_INFO",
+  CLEAR_FEED_INFO: "CLEAR_FEED_INFO",
+};

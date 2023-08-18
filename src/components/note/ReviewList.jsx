@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { FlatList, StyleSheet } from "react-native";
 
 import ReviewItem from "./ReviewItem";
 import EmptyMessage from "../common/EmptyMessage";
+import { useDispatch } from "react-redux";
+import { getReviewList } from "../../redux/actions/reviewListAction";
 
 const ReviewList = ({
   tutoringId,
@@ -13,6 +15,8 @@ const ReviewList = ({
   setSelectedList,
   completed = false,
 }) => {
+  const dispatch = useDispatch();
+
   const onPressItem = (data) => {
     if (selectedList.includes(data)) {
       setSelectedList(selectedList.filter((el) => el != data));
@@ -20,6 +24,16 @@ const ReviewList = ({
       setSelectedList([...selectedList, data]);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (!completed) {
+        getReviewList(tutoringId).then((ret) => {
+          dispatch(ret);
+        });
+      }
+    };
+  }, [tutoringId]);
 
   if (!reviewList) {
     return <></>;
