@@ -9,10 +9,11 @@ import axios from "axios";
 import { APIURL } from "../config/key";
 import { useDispatch } from "react-redux";
 import { clearClassList } from "../redux/actions/classListAction";
+import useClearRedux from "./useClearRedux";
 
 const useAxiosInterceptors = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const clearReduxData = useClearRedux();
 
   const toast = () =>
     Toast.show({
@@ -23,10 +24,10 @@ const useAxiosInterceptors = () => {
     });
 
   const handleUnauthorization = async () => {
-    await clearData();
-    dispatch(clearClassList);
     toast();
     navigation.navigate("LoginScreen");
+    await clearData();
+    await clearReduxData(true);
   };
 
   const responseHandler = async (response) => {
