@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getClassInfo } from "../redux/actions/classInfoAction";
-import useUser from "./useUser";
 
 const useClassInfo = (tutoringId, year, month) => {
-  const user = useUser();
   const dispatch = useDispatch();
   const classInfo = useSelector(
     (state) => state.classInfoReducer?.[tutoringId]
@@ -22,13 +20,7 @@ const useClassInfo = (tutoringId, year, month) => {
     if (!classInfo) {
       dispatchData();
     }
-  }, [classInfo]);
-
-  useEffect(() => {
-    if (user) {
-      dispatchData();
-    }
-  }, [user, tutoringId, year, month]);
+  }, [classInfo, tutoringId, year, month]);
 
   if (classInfo) {
     return classInfo;

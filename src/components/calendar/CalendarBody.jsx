@@ -144,7 +144,11 @@ const CalendarBody = ({
 
       {/* 캘린더 바텀시트 */}
       {selectedItem && (
-        <CalendarListBSheet rbRef={rbRef} selectedItem={selectedItem} />
+        <CalendarListBSheet
+          tutoringId={classInfo ? classInfo?.tutoringId : null}
+          rbRef={rbRef}
+          selectedItem={selectedItem}
+        />
       )}
     </Container>
   );

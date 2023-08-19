@@ -72,6 +72,7 @@ const UserInfoScreen = () => {
       const ret = await client.post("/api/user/profile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Cache-Control": "no-cache",
         },
       });
 
@@ -86,7 +87,11 @@ const UserInfoScreen = () => {
   const getProfileImage = async () => {
     try {
       const userId = await getData("id");
-      const ret = await client.get(`/api/user/profile/${userId}`);
+      const ret = await client.get(`/api/user/profile/${userId}`, {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
 
       if (ret.status == 200) {
         setProfileImage(ret.data);
