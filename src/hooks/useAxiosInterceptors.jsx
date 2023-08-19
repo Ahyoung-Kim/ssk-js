@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 
 import client from "../config/axios";
@@ -13,6 +17,7 @@ import useClearRedux from "./useClearRedux";
 
 const useAxiosInterceptors = () => {
   const navigation = useNavigation();
+
   const clearReduxData = useClearRedux();
 
   const toast = () =>
@@ -24,10 +29,25 @@ const useAxiosInterceptors = () => {
     });
 
   const handleUnauthorization = async () => {
-    toast();
-    navigation.navigate("LoginScreen");
-    await clearData();
-    await clearReduxData(true);
+    return new Promise(async (resolve, reject) => {
+      try {
+        navigation.dispatch(
+          CommonActions.reset({
+            routes: [{ name: "LoginScreen" }],
+          })
+        );
+
+        toast();
+        navigation.navigate("LoginScreen");
+
+        await clearData();
+        await clearReduxData(true);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
   };
 
   const responseHandler = async (response) => {
@@ -49,7 +69,7 @@ const useAxiosInterceptors = () => {
 
       if (!refreshToken) {
         console.log("refreshToken 없음");
-        handleUnauthorization();
+        await handleUnauthorization();
         return Promise.reject(error);
       }
 
@@ -77,12 +97,12 @@ const useAxiosInterceptors = () => {
 
           targetRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
+          await clearReduxData(true);
           return axios(targetRequest);
         }
       } catch (err) {
         console.log("토큰 재발급 에러: ", err);
-        await clearData();
-        handleUnauthorization();
+        await handleUnauthorization();
       }
     } else if (status == 400) {
       // Bad Request
