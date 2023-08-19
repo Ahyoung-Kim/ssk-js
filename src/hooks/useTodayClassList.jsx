@@ -33,7 +33,9 @@ const useTodayClassList = () => {
   };
 
   useEffect(() => {
-    getTodayClassList();
+    if (classListInfo) {
+      getTodayClassList();
+    }
   }, [year, month, day, classListInfo]);
 
   if (result) {

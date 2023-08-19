@@ -26,7 +26,9 @@ export const getData = async (key) => {
 // clear asyncStorage
 export const clearData = async () => {
   try {
-    await AsyncStorage.clear();
+    if ((await AsyncStorage.getAllKeys()).length > 0) {
+      await AsyncStorage.clear();
+    }
   } catch (e) {
     console.log("clear async storage err: ", e);
   }

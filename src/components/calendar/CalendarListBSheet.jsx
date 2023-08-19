@@ -20,7 +20,7 @@ import EmptyMessage from "../common/EmptyMessage";
 import { clearClassListInfo } from "../../redux/actions/classListInfoAction";
 import { getClassInfo } from "../../redux/actions/classInfoAction";
 
-const CalendarListBSheet = ({ rbRef, selectedItem }) => {
+const CalendarListBSheet = ({ rbRef, selectedItem, tutoringId }) => {
   const isTutor = useIsTutor();
   const dispatch = useDispatch();
 
@@ -46,8 +46,12 @@ const CalendarListBSheet = ({ rbRef, selectedItem }) => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
 
+    const tutoringIdParam = tutoringId ? `${tutoringId}/` : "";
+
     try {
-      const ret = await client.get(`/api/schedule/${year}/${month}/${day}`);
+      const ret = await client.get(
+        `/api/schedule/${tutoringIdParam}${year}/${month}/${day}`
+      );
 
       if (ret.status == 200) {
         // console.log(year, month, day);

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import useUser from "./useUser";
 import { getReviewTagList } from "../redux/actions/reviewTagListAction";
 
 const useReviewTagList = (tutoringId) => {
@@ -9,7 +8,6 @@ const useReviewTagList = (tutoringId) => {
     (state) => state.reviewTagListReducer?.[tutoringId]
   );
   const dispatch = useDispatch();
-  const user = useUser();
 
   const dispatchData = () => {
     getReviewTagList(tutoringId).then((ret) => dispatch(ret));
@@ -19,13 +17,7 @@ const useReviewTagList = (tutoringId) => {
     if (!reviewTagList) {
       dispatchData();
     }
-  }, [reviewTagList]);
-
-  useEffect(() => {
-    if (user) {
-      dispatchData();
-    }
-  }, [user, tutoringId]);
+  }, [reviewTagList, tutoringId]);
 
   if (reviewTagList) {
     return reviewTagList;

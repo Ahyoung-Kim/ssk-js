@@ -43,9 +43,9 @@ const ClassItem = ({ classItem }) => {
         <ProfileImage image={profileImageUrl} />
 
         <UserTextView>
-          <UserBigText>{subject}</UserBigText>
+          <UserBigText numberOfLines={1}>{subject}</UserBigText>
 
-          <UserSmallText>
+          <UserSmallText numberOfLines={1}>
             {name
               ? `${name} ` + (isTutor ? "학생" : "선생님")
               : "학생이 초대되지 않았습니다."}
@@ -96,10 +96,12 @@ const UserInfoView = styled.View`
   height: 40;
   flex-direction: row;
   align-items: center;
+  flex-shrink: 1;
 `;
 
 const UserTextView = styled.View`
   margin-horizontal: 15;
+  flex-shrink: 1;
 `;
 
 const UserBigText = styled.Text`

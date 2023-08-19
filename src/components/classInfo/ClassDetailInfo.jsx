@@ -60,7 +60,7 @@ const ClassDetailInfo = ({ classInfo }) => {
         <InfoContainer>
           <InfroWrapper>
             <Label>과목</Label>
-            <InfoText>{subject}</InfoText>
+            <InfoText numberOfLines={1}>{subject}</InfoText>
           </InfroWrapper>
 
           <InfroWrapper>
