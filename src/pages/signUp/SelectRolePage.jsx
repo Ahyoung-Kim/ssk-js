@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 
 const Button = styled.TouchableOpacity`
   background-color: white;
-  border-radius: 8;
+  border-radius: 8px;
   width: 100%;
   height: 160;
   margin-bottom: 15;

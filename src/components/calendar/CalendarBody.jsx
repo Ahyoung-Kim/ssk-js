@@ -200,7 +200,7 @@ export const TagView = styled.View`
 export const Tag = styled.View`
   width: 7;
   height: 7;
-  border-radius: 100;
+  border-radius: 100px;
   background-color: ${({ tagColor }) => tagColor};
   margin-horizontal: 3;
   margin-vertical: 5;

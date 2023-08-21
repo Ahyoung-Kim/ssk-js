@@ -52,7 +52,7 @@ const Button = styled.Pressable`
   justify-content: center;
   background-color: ${({ buttonColor, filled }) =>
     buttonColor && filled ? buttonColor : color.COLOR_WHITE_BACKGROUND};
-  border-radius: 5;
+  border-radius: 5px;
   border-width: 2;
   border-color: ${({ buttonColor }) =>
     buttonColor ? buttonColor : color.COLOR_GRAY_BUTTON};

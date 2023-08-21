@@ -110,7 +110,7 @@ const Container = styled.Pressable`
   background-color: white;
   height: 100%;
   width: 100%;
-  border-radius: 5;
+  border-radius: 5px;
   border-color: ${color.COLOR_MAIN};
   border-width: 1;
   flex-direction: row;

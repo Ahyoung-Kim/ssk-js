@@ -33,7 +33,7 @@ const Button = styled.Pressable`
   align-self: center;
   align-items: center;
   justify-content: center;
-  border-radius: 5;
+  border-radius: 5px;
   height: 45;
 `;
 

@@ -140,7 +140,7 @@ const Button = styled.TouchableOpacity`
   height: 100;
   padding-horizontal: 25;
   margin-bottom: 15;
-  border-radius: 8;
+  border-radius: 8px;
 `;
 
 const ButtonText = styled.Text`

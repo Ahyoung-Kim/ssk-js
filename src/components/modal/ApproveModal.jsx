@@ -103,7 +103,7 @@ const InviteButton = styled.TouchableOpacity`
   width: 100%;
   background-color: ${({ loading }) =>
     loading ? color.COLOR_DARKGRAY_BACKGROUND : color.COLOR_MAIN};
-  border-radius: 5;
+  border-radius: 5px;
   height: 40;
   justify-content: center;
 `;

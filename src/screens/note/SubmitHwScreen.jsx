@@ -192,7 +192,7 @@ const ImageWrapper = styled.Pressable`
   background-color: white;
   border-width: 1.5;
   border-color: ${color.COLOR_GRAY_BORDER};
-  border-radius: 5;
+  border-radius: 5px;
   align-items: center;
   justify-content: center;
   overflow: hidden;

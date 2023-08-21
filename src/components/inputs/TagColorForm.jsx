@@ -59,7 +59,7 @@ const TagColorButton = styled.Pressable`
   align-items: center;
   justify-content: center;
   padding-vertical: 5;
-  border-radius: 100;
+  border-radius: 100px;
   width: 70;
   margin-bottom: 5;
 `;
@@ -75,12 +75,12 @@ const TagCircle = styled.View`
   background-color: ${({ tagColor }) => tagColor};
   width: 12;
   height: 12;
-  border-radius: 100;
+  border-radius: 100px;
 `;
 
 const TagList = styled.View`
   background-color: ${color.COLOR_LIGHTGRAY_BACKGROUND};
-  border-radius: 10;
+  border-radius: 10px;
   width: 200;
   padding: 15px;
   gap: 15;
@@ -92,6 +92,6 @@ const TagList = styled.View`
 const TagItem = styled.Pressable`
   width: 20;
   height: 20;
-  border-radius: 100;
+  border-radius: 100px;
   background-color: ${({ tagColor }) => tagColor};
 `;

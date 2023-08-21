@@ -59,7 +59,7 @@ const DayButton = styled.Pressable`
   background-color: ${({ bgColor }) => bgColor};
   border-width: 1;
   border-color: ${color.COLOR_MAIN};
-  border-radius: 5;
+  border-radius: 5px;
   align-items: center;
   justify-content: center;
 `;

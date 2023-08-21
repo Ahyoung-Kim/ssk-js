@@ -56,7 +56,7 @@ const Button = styled.Pressable`
   background-color: ${({ btnColor }) => btnColor};
   width: 40;
   height: 40;
-  border-radius: 100;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
 `;

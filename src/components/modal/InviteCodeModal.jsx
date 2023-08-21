@@ -146,7 +146,7 @@ const InviteButton = styled.TouchableOpacity`
   height: 100%;
   background-color: ${({ loading }) =>
     loading ? color.COLOR_DARKGRAY_BACKGROUND : color.COLOR_MAIN};
-  border-radius: 5;
+  border-radius: 5px;
   justify-content: center;
 `;
 const ButtonText = styled.Text`
@@ -161,7 +161,7 @@ const ShareButton = styled.TouchableOpacity`
   height: 100%;
   border-width: 1;
   border-color: ${color.COLOR_MAIN};
-  border-radius: 5;
+  border-radius: 5px;
   align-items: center;
   justify-content: center;
 `;

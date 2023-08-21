@@ -342,7 +342,7 @@ const PlusButton = styled.TouchableOpacity`
   justify-content: center;
   border-width: 2;
   border-color: ${color.COLOR_GRAY_ICON};
-  border-radius: 100;
+  border-radius: 100px;
   width: 30;
   height: 30;
   margin-vertical: 20;
@@ -366,7 +366,7 @@ const TagContainer = styled.View`
   margin-horizontal: 7;
   padding-horizontal: 8;
   padding-vertical: 4;
-  border-radius: 5;
+  border-radius: 5px;
   background-color: rgba(12, 155, 251, 0.2);
 `;
 

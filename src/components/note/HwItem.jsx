@@ -103,7 +103,7 @@ const HwItem = ({ tutoringId, data, editMode, onPressItem = () => {} }) => {
 export default HwItem;
 
 const Container = styled.TouchableOpacity`
-  border-radius: 8;
+  border-radius: 8px;
   margin-bottom: 10;
   position: relative;
   overflow: hidden;
@@ -117,7 +117,7 @@ const EditContainer = styled.View`
   z-index: 10;
   width: 100%;
   height: 100%;
-  border-radius: 8;
+  border-radius: 8px;
   border-width: 1.5;
   border-style: ${({ selected }) => (selected ? "solid" : "dashed")};
   border-color: ${color.COLOR_RED_TEXT};
@@ -157,7 +157,7 @@ const Frequency = styled.Text`
 const StatusBar = styled.View`
   width: 100%;
   height: 30;
-  border-radius: 50%;
+  border-radius: 100px;
   background-color: #dadada;
   overflow: hidden;
 `;

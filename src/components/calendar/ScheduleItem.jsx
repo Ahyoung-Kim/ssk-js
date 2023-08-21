@@ -94,7 +94,7 @@ const EndTime = styled.Text`
 const VerticalLine = styled.View`
   height: 100%;
   width: 5;
-  border-radius: 100;
+  border-radius: 100px;
   background-color: ${({ tagColor }) => (tagColor ? tagColor : "black")};
   margin-horizontal: 15;
 `;
