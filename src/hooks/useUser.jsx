@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { getData, storeData } from "../constants/asyncStorage";
 import client from "../config/axios";
 import { Platform } from "react-native";
-import { useNavigation, CommonActions } from "@react-navigation/native";
+import {
+  useNavigation,
+  CommonActions,
+  useFocusEffect,
+} from "@react-navigation/native";
 
 const useUser = () => {
   const [userData, setUserData] = useState(null);
@@ -39,9 +43,11 @@ const useUser = () => {
     });
   };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserData();
+    }, [])
+  );
 
   if (userData) {
     return userData;
