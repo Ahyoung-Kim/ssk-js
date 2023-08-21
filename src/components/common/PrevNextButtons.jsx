@@ -4,13 +4,21 @@ import styled from "styled-components/native";
 import color from "../../common/color";
 import { useNavigation } from "@react-navigation/native";
 
-const PrevNextButtons = ({ onPressNext }) => {
+const PrevNextButtons = ({ onPressPrev, onPressNext }) => {
   const navigation = useNavigation();
+
+  const onPressPrevButton = () => {
+    if (onPressPrev) {
+      onPressPrev();
+    } else {
+      navigation.goBack();
+    }
+  };
 
   return (
     <>
       <Wrapper>
-        <Button prev={true} onPress={() => navigation.goBack()}>
+        <Button prev={true} onPress={onPressPrevButton}>
           <ButtonText prev={true}>이전</ButtonText>
         </Button>
         <Button onPress={onPressNext}>
