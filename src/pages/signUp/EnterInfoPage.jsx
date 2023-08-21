@@ -108,7 +108,7 @@ const Label = styled.Text`
 
 const Input = styled.TextInput`
   width: 100%;
-  border-radius: 5;
+  border-radius: 5px;
   border-width: 1;
   border-color: ${({ errorCondition }) =>
     errorCondition ? color.COLOR_RED_TEXT : color.COLOR_GRAY_BORDER};

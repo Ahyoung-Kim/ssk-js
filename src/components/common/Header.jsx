@@ -8,6 +8,8 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import color from "../../common/color";
+import { StatusBar } from "react-native";
 
 const Header = ({
   headerText,
@@ -82,6 +84,7 @@ const Header = ({
   return (
     <>
       <HeaderWrapper>
+        <StatusBar />
         {leftComponent}
         <Text>{headerText}</Text>
         {rightComponent}
@@ -97,7 +100,7 @@ const HeaderWrapper = styled.View`
   width: 100%;
   display: flex;
   flex-direction: row;
-  background-color: #0c9bfb;
+  background-color: ${color.COLOR_MAIN};
   padding: 15px;
   justify-content: space-between;
   align-items: center;

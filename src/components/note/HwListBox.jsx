@@ -73,7 +73,7 @@ const HwName = styled.Text`
 const StatusBar = styled.View`
   width: 100%;
   height: 25;
-  border-radius: 50%;
+  border-radius: 100px;
   background-color: #dadada;
   overflow: hidden;
 `;

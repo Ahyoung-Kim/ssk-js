@@ -73,7 +73,7 @@ const Indicator = styled.View`
   width: 10;
   height: 10;
   margin-horizontal: 5;
-  border-radius: 100;
+  border-radius: 100px;
   background-color: ${({ focused }) =>
     focused ? color.COLOR_MAIN : "rgba(176, 176, 176, 0.5)"};
 `;

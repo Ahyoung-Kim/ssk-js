@@ -68,7 +68,7 @@ const EachReviewContainer = styled.View`
 const Dot = styled.View`
   width: 10;
   height: 10;
-  border-radius: 100;
+  border-radius: 100px;
   background-color: ${color.COLOR_MAIN};
 `;
 

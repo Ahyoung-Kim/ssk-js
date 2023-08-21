@@ -25,8 +25,16 @@ const TabNavigator = () => {
           },
           shadowOpacity: 0.2,
           elevation: 3,
+          height: 80,
+        },
+        tabBarItemStyle: {
+          // backgroundColor: "aqua",
+          marginBottom: 5,
+          marginTop: 5,
+          height: 50,
         },
         tabBarHideOnKeyboard: true,
+        tabBarShowLabel: true,
       }}
     >
       <TabBar.Screen

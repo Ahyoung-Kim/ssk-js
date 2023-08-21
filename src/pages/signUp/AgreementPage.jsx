@@ -126,7 +126,7 @@ const RequiredText = styled.Text`
 const DescriptionWrapper = styled.ScrollView`
   width: 100%;
   height: ${dh * 0.4};
-  border-radius: 5;
+  border-radius: 5px;
   border-width: 1;
   border-color: ${color.COLOR_GRAY_BORDER};
   flex-shrink: 1;

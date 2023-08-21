@@ -52,7 +52,7 @@ const MainLayout = ({
 
 export default MainLayout;
 
-const Wrapper = styled(SafeAreaView)`
+const Wrapper = styled.SafeAreaView`
   width: 100%;
   flex: 1;
   background-color: ${color.COLOR_MAIN};

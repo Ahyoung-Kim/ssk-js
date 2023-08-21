@@ -199,7 +199,7 @@ const DescriptionInput = styled.TextInput`
   border-color: ${color.COLOR_GRAY_BORDER};
   width: 100%;
   height: 150;
-  border-radius: 5;
+  border-radius: 5px;
   padding: 7px;
 `;
 
