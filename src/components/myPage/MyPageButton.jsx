@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -6,14 +6,46 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import color from "../../common/color";
 import ProfileImage from "../common/ProfileImage";
 
+import client from "../../config/axios";
+import { getData, storeData } from "../../constants/asyncStorage";
+
 const MyPageButton = ({ nickname, type, handleButton }) => {
+  const [profileImage, setProfileImage] = useState(null); // state: 프로필 이미지
+
+  // 프로필 이미지 불러오기
+  const getProfileImage = async () => {
+    try {
+      const userId = await getData("id");
+      const ret = await client.get(`/api/user/profile/${userId}`, {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
+
+      if (ret.status == 200) {
+        setProfileImage(ret.data);
+      }
+    } catch (err) {
+      console.log("get profile image error: ", err);
+      const status = err?.response?.status;
+
+      if (status == 404) {
+        setProfileImage(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getProfileImage();
+  }, []);
+
   let component;
   switch (type) {
     case "PROFILE":
       component = (
         <>
           <ProfileContainer>
-            <ProfileImage />
+            <ProfileImage image={profileImage} />
             <NameText>{nickname}</NameText>
           </ProfileContainer>
           <FontAwesome5 name="angle-right" size={20} color="#D4D4D4" />

@@ -18,12 +18,10 @@ const MyPageScreen = () => {
   const clearReduxData = useClearRedux();
 
   const navigation = useNavigation();
-  // const [nickName, setNickName] = useState("");
   const [isLeaveModalOpened, setIsLeaveModalOpened] = useState(false);
 
   // 버튼: 프로필 정보 화면으로 가기
   const handleProfileButton = () => {
-    // navigation.navigate("MyProfileScreen");
     navigation.navigate("UserInfoScreen");
   };
 
@@ -73,34 +71,6 @@ const MyPageScreen = () => {
       },
     ]);
   };
-
-  // 회원 정보 불러오기
-  const fetchUserInfo = async () => {
-    try {
-      const token = await getData("accessToken");
-      const response = await axios.get(
-        "http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/detail",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const userInfo = await fetchUserInfo();
-  //     console.log(userInfo);
-  //     setNickName(userInfo.name);
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   return (
     <>
