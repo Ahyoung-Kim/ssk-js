@@ -32,7 +32,7 @@ const ReviewTagView = styled.View`
   background-color: ${color.COLOR_REVIEW_TAG};
   padding-vertical: 4;
   padding-horizontal: 8;
-  border-radius: 4;
+  border-radius: 4px;
   margin-horizontal: 10;
 `;
 

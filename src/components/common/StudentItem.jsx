@@ -50,7 +50,7 @@ const Container = styled.View`
   background-color: ${color.COLOR_WHITE_BACKGROUND};
   width: 95%;
   margin-vertical: 4;
-  border-radius: 5;
+  border-radius: 5px;
   flex-direction: row;
   align-items: center;
   align-self: center;

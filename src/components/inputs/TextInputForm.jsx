@@ -69,7 +69,7 @@ const InputForm = styled.TextInput`
   border-color: ${({ editable }) =>
     editable ? color.COLOR_MAIN : color.COLOR_GRAY_BORDER};
   border-width: 1;
-  border-radius: 5;
+  border-radius: 5px;
   padding-horizontal: 15;
   font-size: 16;
 `;
@@ -81,7 +81,7 @@ const Button = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   border-width: 1;
-  border-radius: 5;
+  border-radius: 5px;
   border-color: ${({ buttonColor }) => buttonColor};
 `;
 

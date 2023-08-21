@@ -55,7 +55,7 @@ export default ClassInfoBoxContainer;
 
 const Container = styled.View`
   background-color: ${color.COLOR_WHITE_BACKGROUND};
-  border-radius: 7;
+  border-radius: 7px;
   border-color: ${color.COLOR_MAIN};
   border-width: 1;
   padding-vertical: 15;

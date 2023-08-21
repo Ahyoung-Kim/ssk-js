@@ -198,7 +198,7 @@ const Button = styled.Pressable`
   align-self: flex-end;
   border-color: ${({ btnColor }) => btnColor};
   border-width: 1;
-  border-radius: 100;
+  border-radius: 100px;
   padding-horizontal: 7;
   padding-vertical: 3;
   margin-horizontal: 10;

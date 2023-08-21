@@ -29,7 +29,7 @@ export default ModalContainer;
 
 const Contents = styled.View`
   padding: 20px;
-  border-radius: 8;
+  border-radius: 8px;
   background-color: ${color.COLOR_WHITE_BACKGROUND};
   justify-content: center;
 `;

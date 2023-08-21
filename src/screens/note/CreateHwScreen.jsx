@@ -340,7 +340,7 @@ const PlusButton = styled.TouchableOpacity`
   justify-content: center;
   border-width: 2;
   border-color: ${color.COLOR_GRAY_ICON};
-  border-radius: 100;
+  border-radius: 100px;
   width: 30;
   height: 30;
   margin-vertical: 20;

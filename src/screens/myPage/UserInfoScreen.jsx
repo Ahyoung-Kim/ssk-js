@@ -179,7 +179,7 @@ const ProfileImageContainer = styled.View`
 const UpdateImageButton = styled.TouchableOpacity`
   padding-vertical: 5;
   padding-horizontal: 12;
-  border-radius: 5;
+  border-radius: 5px;
   border-color: ${color.COLOR_MAIN};
   border-width: 1;
   margin-top: 15;

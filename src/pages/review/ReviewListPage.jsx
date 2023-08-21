@@ -63,7 +63,7 @@ const Container = styled.TextInput`
   background-color: ${color.COLOR_WHITE_BACKGROUND};
   border-color: ${color.COLOR_MAIN};
   border-width: 1;
-  border-radius: 5;
+  border-radius: 5px;
   padding-horizontal: 15;
   margin-horizontal: 15;
   font-size: 16;

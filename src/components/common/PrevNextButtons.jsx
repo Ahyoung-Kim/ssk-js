@@ -53,7 +53,7 @@ const Button = styled.TouchableOpacity`
   align-self: center;
   align-items: center;
   justify-content: center;
-  border-radius: 5;
+  border-radius: 5px;
   height: 41;
   border-width: 2;
   border-color: ${color.COLOR_MAIN};

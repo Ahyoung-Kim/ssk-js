@@ -128,7 +128,7 @@ const InviteButton = styled.TouchableOpacity`
   justify-content: center;
   border-width: 2;
   border-color: ${color.COLOR_MAIN};
-  border-radius: 5;
+  border-radius: 5px;
 `;
 
 const InviteText = styled.Text`

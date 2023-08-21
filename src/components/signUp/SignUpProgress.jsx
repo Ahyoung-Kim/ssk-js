@@ -35,7 +35,7 @@ const Circle = styled.View`
     filled ? color.COLOR_MAIN : color.COLOR_DEEPGRAY_BACKGROUND};
   width: 25;
   height: 25;
-  border-radius: 100%;
+  border-radius: 100px;
 `;
 
 const HorizontalLine = styled.View`

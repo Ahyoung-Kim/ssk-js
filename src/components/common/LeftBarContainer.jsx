@@ -17,7 +17,7 @@ const LeftBarContainer = ({
   return (
     <>
       <Container width={width} onPress={onPress}>
-        <LabelContainer margin={children ? true : false}>
+        <LabelContainer margin={children ? 7 : 0}>
           <Label onPress={onLabelPress}>
             <LabelText>{label}</LabelText>
 
@@ -51,7 +51,7 @@ const Container = styled.Pressable`
 
 const LabelContainer = styled.View`
   // background-color: orange;
-  margin-bottom: ${({ margin }) => (margin ? 7 : 0)};
+  margin-bottom: ${({ margin }) => margin};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
