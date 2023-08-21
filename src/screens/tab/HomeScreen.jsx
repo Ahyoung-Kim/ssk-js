@@ -36,7 +36,11 @@ const HomeScreen = () => {
 
   return (
     <>
-      <MainLayout headerText={"홈"} handleRefresh={handleRefresh}>
+      <MainLayout
+        headerText={"홈"}
+        handleRefresh={handleRefresh}
+        headerRightType={"bell"}
+      >
         {tutoringList ? (
           <Calendar
             tutoringList={tutoringList}

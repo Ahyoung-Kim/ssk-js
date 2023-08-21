@@ -25,6 +25,11 @@ const Header = ({
     navigation.goBack();
   };
 
+  // bell 버튼 핸들링
+  const handleBellButton = () => {
+    navigation.navigate("TestNotiScreen");
+  };
+
   const makeComponent = (type, onPress) => {
     switch (type) {
       case "back": // 백 버튼
@@ -53,7 +58,7 @@ const Header = ({
         );
       case "bell": // 종 모양(알림)
         return (
-          <TouchableArea onPress={onPress}>
+          <TouchableArea onPress={handleBellButton}>
             <MaterialCommunityIcons name="bell" size={26} color="#fff" />
           </TouchableArea>
         );
