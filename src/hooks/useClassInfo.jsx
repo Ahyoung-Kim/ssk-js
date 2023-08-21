@@ -20,7 +20,11 @@ const useClassInfo = (tutoringId, year, month) => {
     if (!classInfo) {
       dispatchData();
     }
-  }, [classInfo, tutoringId, year, month]);
+  }, [classInfo, tutoringId]);
+
+  useEffect(() => {
+    dispatchData();
+  }, [year, month]);
 
   if (classInfo) {
     return classInfo;
