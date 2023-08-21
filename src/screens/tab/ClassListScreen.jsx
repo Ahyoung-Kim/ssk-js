@@ -1,40 +1,91 @@
-import React from "react";
-import MainLayout from "../../components/common/MainLayout";
+import React, { useEffect, useState } from "react";
+
 import styled from "styled-components/native";
-import ClassItem from "../../components/common/ClassItem";
+
+import MainLayout from "../../components/common/MainLayout";
 import CircleIconButton from "../../components/common/CircleIconButton";
+import ClassList from "../../components/common/ClassList";
+
+import Loading from "../../components/common/Loading";
+import ErrorMessage from "../../components/common/ErrorMessage";
+import ApproveModal from "../../components/modal/ApproveModal";
+
+import useIsTutor from "../../hooks/useIsTutor";
 import { useNavigation } from "@react-navigation/native";
-import StudentItem from "../../components/common/StudentItem";
+
+import useClassList from "../../hooks/useClassList";
+import EmptyMessage from "../../components/common/EmptyMessage";
+import { useDispatch } from "react-redux";
+import { getClassList } from "../../redux/actions/classListAction";
 
 const ClassListScreen = () => {
+  const classList = useClassList();
+
+  const isTutor = useIsTutor();
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+
+  // 수업 초대 수락 모달
+  const [modalVisible, setModalVisible] = useState(false);
+
   const navigation = useNavigation();
 
-  const handleClassComponentBtn = () => {
-    navigation.navigate("ClassInfoScreen");
+  const handlePressIcon = () => {
+    if (isTutor) {
+      navigation.navigate("CreateClassScreen");
+    } else {
+      setModalVisible(true);
+    }
   };
+
+  const handleRefresh = async () => {
+    await getClassList().then((ret) => dispatch(ret));
+  };
+
+  useEffect(() => {
+    if (!classList) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [classList]);
+
   return (
     <>
-      <MainLayout headerText={"수업 목록"} headerType={"basic"}>
-        <TouchableArea onPress={handleClassComponentBtn}>
-          <StudentItem />
-        </TouchableArea>
-        <CircleIconButton name="plus" />
+      <MainLayout headerText={"수업 목록"} handleRefresh={handleRefresh}>
+        {loading ? (
+          <Loading />
+        ) : classList ? (
+          <ClassListWrapper>
+            {classList.length === 0 ? (
+              <EmptyMessage message={"수업 목록이 없습니다."} />
+            ) : (
+              <ClassList classList={classList} />
+            )}
+          </ClassListWrapper>
+        ) : (
+          <ErrorMessage />
+        )}
       </MainLayout>
+
+      <CircleIconButton name={"plus"} onPress={handlePressIcon} />
+
+      {/* 학생 수업 참여 모달 */}
+      {!isTutor && (
+        <>
+          <ApproveModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        </>
+      )}
     </>
   );
 };
 
 export default ClassListScreen;
 
-const Container = styled.FlatList`
-  width: 100%;
-  overflow: visible;
-`;
-
-const TouchableArea = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  activeopacity: 0.8;
+const ClassListWrapper = styled.View`
+  margin-vertical: 10;
 `;

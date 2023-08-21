@@ -1,0 +1,4 @@
+export default {
+  GET_REVIEW_LIST: "GET_REVIEW_LIST",
+  CLEAR_REVIEW_LIST: "CLEAR_REVIEW_LIST",
+};

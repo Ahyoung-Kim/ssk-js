@@ -9,15 +9,17 @@ const windowWidth = Dimensions.get("window").width;
 
 const ConfirmButtons = ({
   confirmText,
+  cancelText = "취소",
   buttonColor,
+  cancelButtonColor,
   filled,
   onCancel,
   onConfirm,
 }) => {
   return (
     <Container>
-      <Button onPress={onCancel}>
-        <ButtonText>취소</ButtonText>
+      <Button onPress={onCancel} buttonColor={cancelButtonColor}>
+        <ButtonText textColor={cancelButtonColor}>{cancelText}</ButtonText>
       </Button>
       <Button onPress={onConfirm} buttonColor={buttonColor} filled={filled}>
         <ButtonText textColor={filled ? "white" : buttonColor}>
@@ -38,13 +40,14 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 20;
-  padding-horizontal: 20;
+  padding-bottom: 30;
+  padding-horizontal: 15;
+  background-color: white;
 `;
 
 const Button = styled.Pressable`
   width: 48%;
-  height: 40;
+  height: 41;
   align-items: center;
   justify-content: center;
   background-color: ${({ buttonColor, filled }) =>

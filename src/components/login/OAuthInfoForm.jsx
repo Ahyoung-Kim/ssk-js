@@ -21,19 +21,23 @@ const OAuthInfoForm = () => {
 
   const handleSubmitButton = async () => {
     try {
-      const token = await getData("access-token");
-      const data = {role: role, name: name};
+      const token = await getData("accessToken");
+      const data = { role: role, name: name };
       console.log("보내기 전: ", data);
-      const response = await axios.post("http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/signup", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/signup",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("response: ", response.data);
       navigation.navigate("TabNavigator");
     } catch (error) {
       console.log("error: ", error);
-    };
+    }
   };
 
   return (
@@ -48,24 +52,18 @@ const OAuthInfoForm = () => {
       </ContentContainer>
       <QuestionText>역할을 설정해주세요.</QuestionText>
       <ContentContainer>
-        <RoleButton
-          role="tutor"
-          isSelected={role}
-          onPress={handleTutorButton}
-        >
-          <RoleText role="tutor" isSelected={role}>Tutor</RoleText>
+        <RoleButton role="tutor" isSelected={role} onPress={handleTutorButton}>
+          <RoleText role="tutor" isSelected={role}>
+            Tutor
+          </RoleText>
         </RoleButton>
-        <RoleButton
-          role="tutee"
-          isSelected={role}
-          onPress={handleTuteeButton}
-        >
-          <RoleText role="tutee" isSelected={role}>Tutee</RoleText>
+        <RoleButton role="tutee" isSelected={role} onPress={handleTuteeButton}>
+          <RoleText role="tutee" isSelected={role}>
+            Tutee
+          </RoleText>
         </RoleButton>
       </ContentContainer>
-      <SubmitButton
-        onPress={handleSubmitButton}
-      >
+      <SubmitButton onPress={handleSubmitButton}>
         <SubmitText>시작하기</SubmitText>
       </SubmitButton>
     </Wrapper>
@@ -105,7 +103,8 @@ const ContentContainer = styled.View`
 
 const RoleButton = styled.TouchableOpacity`
   width: 50%;
-  background-color: ${(props) => props.isSelected === props.role ? color.COLOR_MAIN : "#fff" };
+  background-color: ${(props) =>
+    props.isSelected === props.role ? color.COLOR_MAIN : "#fff"};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -113,14 +112,15 @@ const RoleButton = styled.TouchableOpacity`
 `;
 
 const RoleText = styled.Text`
-  color: ${(props) => props.isSelected === props.role ? "#fff" : color.COLOR_GRAY_TEXT }
+  color: ${(props) =>
+    props.isSelected === props.role ? "#fff" : color.COLOR_GRAY_TEXT}
   font-size: 14px;
   font-family: "Medium";
   padding: 10px;
 `;
 
 const NameInput = styled.TextInput`
-  width: 100%; 
+  width: 100%;
   padding: 5px 12px;
 `;
 

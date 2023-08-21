@@ -1,23 +1,28 @@
 import React from "react";
 import styled from "styled-components/native";
-import { Dimensions, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import RBSheet from "react-native-raw-bottom-sheet";
 import color from "../../common/color";
+import BigButton from "./BigButton";
 
-const windowHeight = Dimensions.get("window").height;
+import { dh } from "../../common/windowSize";
 
 const BottomSheet = ({
   children,
   rbRef,
   heightPercentage = 0.5,
+  height,
   onClose = () => {},
+  button = null, // 버튼 텍스트
+  handlePressButton = () => {},
+  // confirmButton = null,
 }) => {
   return (
     <>
       <RBSheet
         ref={rbRef}
-        height={windowHeight * heightPercentage}
+        height={height ? height : dh * heightPercentage}
         onClose={onClose}
         closeOnDragDown={true}
         closeOnPressMask={true}
@@ -38,7 +43,7 @@ const BottomSheet = ({
         <Contents scrollEnabled={true}>
           <TouchableOpacity
             style={{
-              paddingBottom: windowHeight * 0.07,
+              paddingBottom: button ? dh * 0.07 + 80 : dh * 0.07,
               height: "100%",
               width: "100%",
               justifyContent: "center",
@@ -49,6 +54,10 @@ const BottomSheet = ({
             {children}
           </TouchableOpacity>
         </Contents>
+
+        {button ? (
+          <BigButton text={button} onPress={handlePressButton} />
+        ) : null}
       </RBSheet>
     </>
   );

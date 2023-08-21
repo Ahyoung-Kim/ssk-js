@@ -2,6 +2,9 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font";
+import { Provider } from "react-redux";
+
+import store from "./src/redux/store";
 
 import RootNavigator from "./src/navigators/RootNavigator";
 
@@ -16,11 +19,13 @@ export default function App() {
 
   return (
     <>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </Provider>
     </>
   );
 }

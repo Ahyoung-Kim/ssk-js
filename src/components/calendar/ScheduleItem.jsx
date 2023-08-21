@@ -4,29 +4,43 @@ import color from "../../common/color";
 
 import { Pressable, StyleSheet, Platform } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import ProfileImage from "../common/ProfileImage";
+import UserInfo from "../common/UserInfo";
+import tags from "../../common/tags";
 
-const ScheduleItem = ({ tagColor = color.COLOR_MAIN }) => {
+const ScheduleItem = ({ handlePressScheduleItem, item }) => {
+  // console.log(item);
+  const {
+    color: tagColor,
+    endTime,
+    startTime,
+    personName,
+    profileImageUrl,
+    subject,
+    tutoringId,
+  } = item;
+
   return (
-    <Pressable style={styles.container}>
-      <FontAwesome5 name="check" color={tagColor} size={20} />
+    <>
+      <Pressable
+        style={styles.container}
+        onPress={handlePressScheduleItem.bind(this, item)}
+      >
+        <FontAwesome5 name="check" color={tags[tagColor]} size={20} />
 
-      <TimeContainer>
-        <StartTime>18:00</StartTime>
-        <EndTime>~ 20:30</EndTime>
-      </TimeContainer>
+        <TimeContainer>
+          <StartTime>{startTime}</StartTime>
+          <EndTime>~ {endTime}</EndTime>
+        </TimeContainer>
 
-      <VerticalLine tagColor={tagColor} />
+        <VerticalLine tagColor={tags[tagColor]} />
 
-      <UserInfoView>
-        <ProfileImage />
-
-        <TextView>
-          <InfoBigText>영어</InfoBigText>
-          <InfoSmallText>김영어 선생님</InfoSmallText>
-        </TextView>
-      </UserInfoView>
-    </Pressable>
+        <UserInfo
+          name={personName}
+          profileImageUrl={profileImageUrl}
+          subject={subject}
+        />
+      </Pressable>
+    </>
   );
 };
 
@@ -62,7 +76,9 @@ const styles = StyleSheet.create({
 });
 
 const TimeContainer = styled.View`
-  margin-horizontal: 15;
+  margin-left: 15;
+  // background-color: orange;
+  width: 52;
 `;
 
 const StartTime = styled.Text`
@@ -79,28 +95,6 @@ const VerticalLine = styled.View`
   height: 100%;
   width: 5;
   border-radius: 100;
-  background-color: ${({ tagColor }) => tagColor};
-`;
-
-const UserInfoView = styled.View`
-  //   background-color: orange;
-  flex-direction: row;
-  align-items: center;
+  background-color: ${({ tagColor }) => (tagColor ? tagColor : "black")};
   margin-horizontal: 15;
-`;
-
-const TextView = styled.View`
-  margin-left: 10;
-`;
-
-const InfoBigText = styled.Text`
-  font-weight: bold;
-  font-size: 16;
-  margin-bottom: 3;
-`;
-
-const InfoSmallText = styled.Text`
-  font-weight: 500;
-  color: ${color.COLOR_GRAY_TEXT};
-  font-size: 12;
 `;

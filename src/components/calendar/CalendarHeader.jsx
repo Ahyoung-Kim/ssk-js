@@ -44,7 +44,7 @@ const Container = styled.View`
   align-items: center;
   //   justify-content: center;
   justify-content: space-between;
-  padding-vertical: 15;
+  padding-vertical: 20;
 `;
 
 const HeaderText = styled.Text`

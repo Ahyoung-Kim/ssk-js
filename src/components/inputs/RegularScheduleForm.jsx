@@ -6,7 +6,6 @@ import color from "../../common/color";
 import InputContainer from "./InputContainer";
 import TimePicker from "../common/TimePicker";
 
-import { Text } from "react-native";
 import { dateToTimeFormat } from "../../utils/date";
 
 import { FontAwesome5, Feather } from "@expo/vector-icons";
@@ -14,21 +13,13 @@ import { FontAwesome5, Feather } from "@expo/vector-icons";
 const RegularScheduleForm = ({ days, setDays }) => {
   const [selectedDay, setSelectedDay] = useState(null);
 
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const today = new Date();
+  today.setMinutes(0);
+  const [startTime, setStartTime] = useState(today);
+  const [endTime, setEndTime] = useState(today);
 
   const handleDayPress = (objKey) => {
-    const dayInfo = { ...days[objKey] };
-
     setSelectedDay(objKey);
-
-    setDays({
-      ...days,
-      [objKey]: {
-        ...dayInfo,
-        selected: true,
-      },
-    });
   };
 
   const handlePressXMark = (objKey) => {
@@ -62,6 +53,7 @@ const RegularScheduleForm = ({ days, setDays }) => {
         ...dayInfo,
         startTime,
         endTime,
+        selected: true,
       },
     });
   };
@@ -131,7 +123,10 @@ const RegularScheduleForm = ({ days, setDays }) => {
                     style={{ marginRight: 5 }}
                     color={color.COLOR_GRAY_TEXT}
                   />
-                  <SelectedText highlight={selectedDay === day}>
+                  <SelectedText
+                    highlight={selectedDay === day}
+                    onPress={handleDayPress.bind(this, day)}
+                  >
                     {days[day].text} -{" "}
                     {days[day].startTime
                       ? dateToTimeFormat(days[day].startTime)
@@ -156,12 +151,14 @@ const RegularScheduleForm = ({ days, setDays }) => {
       </SelectedList>
 
       {selectedDay && (
-        <TimePicker
-          startTime={startTime}
-          setStartTime={setStartTime}
-          endTime={endTime}
-          setEndTime={setEndTime}
-        />
+        <TimePickerContainer>
+          <TimePicker
+            startTime={startTime}
+            setStartTime={setStartTime}
+            endTime={endTime}
+            setEndTime={setEndTime}
+          />
+        </TimePickerContainer>
       )}
     </>
   );
@@ -216,4 +213,10 @@ const SelectedText = styled.Text`
   font-size: 14;
   font-weight: bold;
   color: ${color.COLOR_GRAY_TEXT};
+`;
+
+const TimePickerContainer = styled.View`
+  margin-vertical: 5;
+  padding-horizontal: 15;
+  width: 100%;
 `;

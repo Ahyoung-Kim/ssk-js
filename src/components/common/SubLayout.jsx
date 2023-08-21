@@ -18,7 +18,7 @@ const Inner = styled.ScrollView`
   width: 100%;
   flex: 1;
   //background-color: ${color.COLOR_GRAY_BACKGROUND};
-  //background-color: yellow;
+  // background-color: yellow;
   flex-direction: column;
   padding-horizontal: 5;
 `;

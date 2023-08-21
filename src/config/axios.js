@@ -1,7 +1,6 @@
 import { APIURL } from "./key";
 import axios from "axios";
 import { getData } from "../constants/asyncStorage";
-import navigation from "./navigation";
 
 const client = axios.create({
   baseURL: APIURL,
@@ -11,28 +10,24 @@ const client = axios.create({
   },
 });
 
+const requestHandler = async (config) => {
+  // AsyncStorage 에서 accessToken 가져와 헤더에 넣는 작업
+  const token = await getData("accessToken");
+  config.headers["Authorization"] = `Bearer ${token}`;
+
+  // console.log("클라이언트 config: ", config);
+
+  return config;
+};
+
+const requestErrorHandler = async (error) => {
+  console.log("client request error: ", error);
+  return Promise.reject(error);
+};
+
 client.interceptors.request.use(
-  async function (config) {
-    const token = await getData("access-token");
-    // console.log("token", token);
-
-    config.headers["Authorization"] = `Bearer ${token}`;
-    console.log("client config: ", config);
-    return config;
-  },
-  function (error) {
-    console.log(error);
-  }
-);
-
-client.interceptors.response.use(
-  async function (response) {
-    return response;
-  },
-  async function (error) {
-    navigation.navigate("LoginScreen");
-    return Promise.reject(error);
-  }
+  (config) => requestHandler(config),
+  (error) => requestErrorHandler(error)
 );
 
 export default client;

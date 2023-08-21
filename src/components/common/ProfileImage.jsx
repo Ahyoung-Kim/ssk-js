@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/native";
 
 import color from "../../common/color";
 
 const ProfileImage = ({ size = 35, image }) => {
-
   return (
     <Container size={size}>
       <Image
         source={
           image
-            ? { uri: image }
+            ? { uri: image, cache: "reload" }
             : require("../../assets/images/default_profile_image.png")
         }
       />

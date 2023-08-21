@@ -6,8 +6,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import color from "../../common/color";
 import ProfileImage from "../common/ProfileImage";
 
-const MyPageButton = ({nickname, type, handleButton }) => {
-
+const MyPageButton = ({ nickname, type, handleButton }) => {
   let component;
   switch (type) {
     case "PROFILE":
@@ -19,7 +18,7 @@ const MyPageButton = ({nickname, type, handleButton }) => {
           </ProfileContainer>
           <FontAwesome5 name="angle-right" size={20} color="#D4D4D4" />
         </>
-      )
+      );
       break;
     case "NOTIFICATION":
       component = (
@@ -27,7 +26,7 @@ const MyPageButton = ({nickname, type, handleButton }) => {
           <ButtonText>푸시 알림</ButtonText>
           <FontAwesome5 name="angle-right" size={20} color="#D4D4D4" />
         </>
-      )
+      );
       break;
     case "AGREEMENT":
       component = (
@@ -35,21 +34,35 @@ const MyPageButton = ({nickname, type, handleButton }) => {
           <ButtonText>이용 약관</ButtonText>
           <FontAwesome5 name="angle-right" size={20} color="#D4D4D4" />
         </>
-      )
+      );
       break;
     case "LOGOUT":
       component = (
         <>
           <ButtonText>로그아웃</ButtonText>
         </>
-      )
+      );
       break;
     case "LEAVE":
       component = (
         <>
           <ButtonText style={{ color: "#EB4040" }}>회원탈퇴</ButtonText>
         </>
-      )
+      );
+      break;
+    case "LOGIN": // 임시
+      component = (
+        <>
+          <ButtonText>로그인(임시)</ButtonText>
+        </>
+      );
+      break;
+    case "CLEAR": // 임시
+      component = (
+        <>
+          <ButtonText>스토리지 초기화(임시)</ButtonText>
+        </>
+      );
       break;
     default:
       break;
@@ -74,7 +87,7 @@ const ButtonContainer = styled.TouchableOpacity`
   padding: 12px 22px;
   background-color: #fff;
   border-bottom-width: 1px;
-  border-bottom-color: ${color.COLOR_GRAY_LINE}
+  border-bottom-color: ${color.COLOR_GRAY_LINE};
 `;
 
 const ButtonText = styled.Text`

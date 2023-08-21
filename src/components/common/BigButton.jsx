@@ -21,8 +21,8 @@ const Wrapper = styled.View`
   bottom: 0;
   left: 0;
   z-index: 100;
-  padding-top: 5;
-  padding-bottom: 10;
+  padding-top: 10;
+  padding-bottom: 30;
   padding-horizontal: 15;
   background-color: ${color.COLOR_WHITE_BACKGROUND};
 `;

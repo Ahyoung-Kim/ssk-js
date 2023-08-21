@@ -7,16 +7,49 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { StyleSheet, Platform } from "react-native";
 
 import ProfileImage from "./ProfileImage";
+import { useNavigation } from "@react-navigation/native";
+import useIsTutor from "../../hooks/useIsTutor";
 
-const ClassItem = () => {
+const ClassItem = ({ classItem }) => {
+  const isTutor = useIsTutor();
+  const {
+    profileImageUrl,
+    subject,
+    tutoringId,
+    tuteeName,
+    tutorName,
+    personName,
+  } = classItem;
+
+  const navigation = useNavigation();
+  const name = personName || tuteeName || tutorName;
+
+  const handlePressClassItem = () => {
+    // navigation.navigate("ClassInfoScreen", { tutoringId });
+    navigation.navigate("ClassList", {
+      screen: "ClassInfoScreen",
+      params: { tutoringId },
+      initial: false,
+    });
+  };
+
   return (
-    <Container style={styles.container}>
+    <Container
+      activeOpacity={0.5}
+      style={styles.container}
+      onPress={handlePressClassItem}
+    >
       <UserInfoView>
-        <ProfileImage />
+        <ProfileImage image={profileImageUrl} />
 
         <UserTextView>
-          <UserBigText>영어</UserBigText>
-          <UserSmallText>박영어 선생님</UserSmallText>
+          <UserBigText numberOfLines={1}>{subject}</UserBigText>
+
+          <UserSmallText numberOfLines={1}>
+            {name
+              ? `${name} ` + (isTutor ? "학생" : "선생님")
+              : "학생이 초대되지 않았습니다."}
+          </UserSmallText>
         </UserTextView>
       </UserInfoView>
 
@@ -46,7 +79,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Container = styled.Pressable`
+const Container = styled.TouchableOpacity`
   background-color: ${color.COLOR_WHITE_BACKGROUND};
   width: 95%;
   margin-vertical: 4;
@@ -56,17 +89,19 @@ const Container = styled.Pressable`
   align-self: center;
   justify-content: space-between;
   padding-horizontal: 18;
-  padding-vertical: 10;
+  padding-vertical: 12;
 `;
 
 const UserInfoView = styled.View`
   height: 40;
   flex-direction: row;
   align-items: center;
+  flex-shrink: 1;
 `;
 
 const UserTextView = styled.View`
   margin-horizontal: 15;
+  flex-shrink: 1;
 `;
 
 const UserBigText = styled.Text`
@@ -76,5 +111,5 @@ const UserBigText = styled.Text`
 
 const UserSmallText = styled.Text`
   color: ${color.COLOR_GRAY_TEXT};
-  margin-top: 3;
+  margin-top: 5;
 `;
