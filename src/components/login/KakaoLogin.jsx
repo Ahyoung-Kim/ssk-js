@@ -12,12 +12,8 @@ const KakaoLogin = () => {
   return (
     <>
       <Wrapper>
-        <LoginButton
-          onPress={handleButton}
-        >
-          <ButtonText>
-            카카오로 로그인하기
-          </ButtonText>
+        <LoginButton onPress={handleButton}>
+          <ButtonText>카카오로 로그인하기</ButtonText>
         </LoginButton>
       </Wrapper>
     </>
@@ -44,11 +40,11 @@ const LoginButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   background-color: #fef01b;
-  padding: 5px;
+  padding: 10px 0;
 `;
 
 const ButtonText = styled.Text`
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   color: #000;
 `;
