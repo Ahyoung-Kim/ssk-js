@@ -19,7 +19,11 @@ const useClassListInfo = (year, month) => {
     if (!classListInfo) {
       dispatchData();
     }
-  }, [classListInfo, year, month]);
+  }, [classListInfo]);
+
+  useEffect(() => {
+    dispatchData();
+  }, [year, month]);
 
   if (classListInfo) {
     return classListInfo;

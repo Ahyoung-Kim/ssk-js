@@ -51,6 +51,7 @@ export const makeMarkedDatesByNoteList = (noteListInfo) => {
     for (let i = 0; i < noteListInfo.length; i++) {
       const color = noteListInfo[i].color;
       const noteList = noteListInfo[i].noteList;
+      const tutoringId = noteListInfo[i].tutoringId;
 
       if (noteList.length > 0) {
         for (let j = 0; j < noteList.length; j++) {
@@ -59,9 +60,9 @@ export const makeMarkedDatesByNoteList = (noteListInfo) => {
 
           const target = result[dateNum];
           if (!target) {
-            result[dateNum] = [{ noteId, color }];
+            result[dateNum] = [{ noteId, color, tutoringId }];
           } else {
-            result[dateNum] = [...target, { noteId, color }];
+            result[dateNum] = [...target, { noteId, color, tutoringId }];
           }
         }
       }

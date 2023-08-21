@@ -101,6 +101,7 @@ const Calendar = ({
           .map((tutoring) => ({
             color: tutoring.color,
             noteList: tutoring.noteList,
+            tutoringId: tutoring.tutoringId,
           }))
       );
     } else if (!tutoringList && classInfo) {
@@ -108,6 +109,7 @@ const Calendar = ({
         {
           color: classInfo.color,
           noteList: classInfo.noteList,
+          tutoringId: classInfo.tutoringId,
         },
       ]);
     }

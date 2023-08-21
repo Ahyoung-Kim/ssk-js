@@ -34,6 +34,7 @@ const SettingIcon = ({ onPress }) => {
 
 const ClassNoteScreen = () => {
   const route = useRoute();
+  // requirement: date, noteId, tutoringId
   const { date, noteId, tutoringId, startTime } = route.params; // noteId 필요
 
   const isTutor = useIsTutor();
