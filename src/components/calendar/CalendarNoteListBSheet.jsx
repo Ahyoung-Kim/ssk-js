@@ -11,38 +11,37 @@ import { StyleSheet, Platform, Pressable } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import tags from "../../common/tags";
 import { useNavigation } from "@react-navigation/native";
+import useClassNote from "../../hooks/useClassNote";
 
-const NoteItem = ({ note }) => {
-  const { color: tagColor, noteId } = note;
-  const [noteInfo, setNoteInfo] = useState(null);
+const NoteItem = ({ note, date, rbRef }) => {
+  const { color: tagColor, noteId, tutoringId } = note;
+
+  const noteInfo = useClassNote(noteId);
+
   const navigation = useNavigation();
 
-  const onPress = () => {};
-
-  const getNoteInfo = async () => {
-    try {
-      const ret = await client.get(` /api/note/detail/${noteId}`);
-
-      if (ret.status == 200) {
-        console.log("data: ", ret.data);
-        setNoteInfo(ret.data);
-      }
-    } catch (err) {
-      console.log("get calendar note item error: ", err);
-    }
+  const onPress = () => {
+    rbRef?.current?.close();
+    setTimeout(() => {
+      navigation.navigate("ClassNoteScreen", {
+        noteId,
+        tutoringId,
+        date,
+      });
+    }, 300);
   };
 
-  //   useEffect(() => {
-  //     getNoteInfo();
-  //   }, [note]);
+  if (!noteInfo) {
+    return <></>;
+  }
 
   return (
     <>
-      <Pressable style={styles.container}>
+      <Pressable style={styles.container} onPress={onPress}>
         <NoteWrapper>
-          <FontAwesome5 name="check" color={tags[tagColor]} size={20} />
+          <FontAwesome5 name="book" color={tags[tagColor]} size={20} />
           <ProgressText numberOfLines={1} ellipsizeMode="tail">
-            진도 보고 내용
+            {noteInfo.progress}
           </ProgressText>
         </NoteWrapper>
 
@@ -71,7 +70,12 @@ const CalendarNoteListBSheet = ({ rbRef, selectedItem }) => {
         ) : (
           <>
             {noteList.map((note) => (
-              <NoteItem key={`noteItem_${note.noteId}`} note={note} />
+              <NoteItem
+                key={`noteItem_${note.noteId}`}
+                note={note}
+                date={date}
+                rbRef={rbRef}
+              />
             ))}
           </>
         )}

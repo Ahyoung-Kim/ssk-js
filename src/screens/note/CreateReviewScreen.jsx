@@ -108,7 +108,7 @@ const CreateReviewScreen = () => {
       tutoringId,
     };
 
-    // console.log("create body: ", body);
+    console.log("create body: ", body);
 
     try {
       const ret = await client.post(`/api/note`, body);
@@ -123,7 +123,7 @@ const CreateReviewScreen = () => {
         dispatch(clearClassInfo());
         dispatch(clearClassListInfo());
 
-        // Alert.alert("수업 일지가 등록되었습니다!");
+        Alert.alert("수업 일지가 등록되었습니다!");
         navigation.navigate("ClassNoteScreen", {
           date,
           noteId,

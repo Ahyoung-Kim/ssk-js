@@ -9,7 +9,7 @@ const ProfileImage = ({ size = 35, image }) => {
       <Image
         source={
           image
-            ? { uri: image }
+            ? { uri: image, cache: "reload" }
             : require("../../assets/images/default_profile_image.png")
         }
       />
