@@ -72,6 +72,7 @@ const InputForm = styled.TextInput`
   border-radius: 5px;
   padding-horizontal: 15;
   font-size: 16;
+  text-align-vertical: center;
 `;
 
 const Button = styled.TouchableOpacity`
