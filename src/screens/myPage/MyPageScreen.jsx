@@ -102,6 +102,13 @@ const MyPageScreen = () => {
             await clearData();
           }}
         />
+        {/* 임시 */}
+        <MyPageButton
+          type="TEST_NOTI"
+          handleButton={async () => {
+            navigation.navigate("TestNotiScreen");
+          }}
+        />
       </MainLayout>
       {isLeaveModalOpened && (
         <ConfirmModal

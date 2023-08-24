@@ -96,6 +96,13 @@ const MyPageButton = ({ nickname, type, handleButton }) => {
         </>
       );
       break;
+    case "TEST_NOTI": // 임시
+      component = (
+        <>
+          <ButtonText>알림 테스트(임시)</ButtonText>
+        </>
+      );
+      break;
     default:
       break;
   }

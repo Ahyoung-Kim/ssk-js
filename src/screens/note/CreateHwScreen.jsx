@@ -78,7 +78,7 @@ const CreateHwScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
-  const { date, tutoringId, prevStates, prevAssignment } = route.params;
+  const { date, tutoringId, prevStates, prevAssignment, noteId } = route.params;
 
   const [assignmentList, setAssignmentList] = useState([]);
   // 숙제 내용
@@ -155,6 +155,7 @@ const CreateHwScreen = () => {
       const data = {
         ...getAssignmentBody(),
         tutoringId,
+        noteId: noteId ? noteId : 0,
       };
 
       // console.log(data);
