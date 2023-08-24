@@ -20,6 +20,10 @@ import EmptyMessage from "../../components/common/EmptyMessage";
 import useClassNote from "../../hooks/useClassNote";
 import { useDispatch } from "react-redux";
 import { getClassNote } from "../../redux/actions/classNoteAction";
+import { Alert } from "react-native";
+import client from "../../config/axios";
+import { getAssignmentList } from "../../redux/actions/assignmentListAction";
+import { getReviewList } from "../../redux/actions/reviewListAction";
 
 const SettingIcon = ({ onPress }) => {
   return (
@@ -69,6 +73,68 @@ const ClassNoteScreen = () => {
 
   const handleRefresh = async () => {
     await getClassNote(noteId).then((ret) => dispatch(ret));
+  };
+
+  const handleDeleteAssignments = async () => {
+    try {
+      const assignmentIdList = selectedHwList.map((el) => el.id);
+
+      const ret = await client.post(`/api/assignment/multi-delete`, {
+        assignmentIdList,
+      });
+
+      if (ret.status == 200) {
+        await getAssignmentList(tutoringId).then((ret) => dispatch(ret));
+        await getClassNote(noteId).then((ret) => dispatch(ret));
+        setHwEditMode(false);
+      }
+    } catch (err) {
+      console.log("delete multiple assignments error: ", err);
+    }
+  };
+
+  const handleDeleteReviews = async () => {
+    try {
+      const reviewIdList = selectedReviewList.map((el) => el.id);
+
+      const ret = await client.post(`/api/review/multi-delete`, {
+        reviewIdList,
+      });
+
+      if (ret.status == 200) {
+        await getReviewList(tutoringId).then((ret) => dispatch(ret));
+        await getClassNote(noteId).then((ret) => dispatch(ret));
+        setReviewEditMode(false);
+      }
+    } catch (err) {
+      console.log("delete multiple assignments error: ", err);
+    }
+  };
+
+  const handleDelete = async (type) => {
+    const message =
+      type === "assignment"
+        ? "숙제 목록"
+        : type === "review"
+        ? "복습 목록"
+        : "";
+
+    Alert.alert(`${message} 삭제`, `선택한 ${message}을 삭제하시겠습니까?`, [
+      {
+        text: "취소",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "삭제",
+        onPress:
+          type === "assignment"
+            ? handleDeleteAssignments
+            : type === "review"
+            ? handleDeleteReviews
+            : () => {},
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -170,15 +236,23 @@ const ClassNoteScreen = () => {
         )}
       </MainLayout>
 
-      {hwEditMode ||
-        (reviewEditMode && (
-          <ConfirmButtons
-            confirmText={"삭제"}
-            buttonColor={color.COLOR_RED_TEXT}
-            onCancel={() => {}}
-            onConfirm={() => {}}
-          />
-        ))}
+      {(hwEditMode || reviewEditMode) && (
+        <ConfirmButtons
+          confirmText={"삭제"}
+          buttonColor={color.COLOR_RED_TEXT}
+          onCancel={() => {
+            setHwEditMode(false);
+            setReviewEditMode(false);
+          }}
+          onConfirm={() => {
+            if (hwEditMode) {
+              handleDelete("assignment");
+            } else {
+              handleDelete("review");
+            }
+          }}
+        />
+      )}
 
       {/* 진도 복, 숙제 노트, 복습 노트 생성 바텀시트 */}
       <CreateNoteBSheet

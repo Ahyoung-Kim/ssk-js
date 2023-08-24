@@ -58,7 +58,7 @@ const CreateReviewScreen = () => {
   const dispatch = useDispatch();
 
   // requirement: tutoringId
-  const { date, tutoringId, prevStates, prevReview } = route.params;
+  const { date, tutoringId, prevStates, prevReview, noteId } = route.params;
 
   // console.log("prevStates: ", prevStates);
   // console.log("prevReivew: ", prevReview);
@@ -160,6 +160,7 @@ const CreateReviewScreen = () => {
         tutoringId,
         body,
         tagId: tag.id,
+        noteId: noteId ? noteId : 0,
       };
 
       // console.log(data);

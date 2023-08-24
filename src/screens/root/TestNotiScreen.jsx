@@ -57,7 +57,13 @@ async function registerForPushNotificationsAsync() {
       return;
     }
 
-    token = (await Notifications.getExpoPushTokenAsync()).data;
+    // token = (await Notifications.getExpoPushTokenAsync()).data;
+    token = (
+      await Notifications.getDevicePushTokenAsync({
+        projectId: process.env.EXPO_PUBLIC_EXPO_DEV_ID,
+      })
+    ).data;
+    console.log(token);
   } else {
     alert("Must use physical device for Push Notifications");
   }
@@ -155,6 +161,12 @@ const TestNotiScreen = () => {
             title="Press to schedule a notification"
             onPress={async () => {
               await schedulePushNotification();
+            }}
+          />
+          <Button
+            title="Press to FCM Test"
+            onPress={async () => {
+              await getTest();
             }}
           />
         </View>

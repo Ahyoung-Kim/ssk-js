@@ -11,6 +11,8 @@ npm-debug.*
 web-build/
 google-services.json
 credentials.json
+eas.json
+ssk-js-a56ae5433feb.json
 
 # macOS
 .DS_Store
@@ -20,3 +22,4 @@ credentials.json
 
 # env
 .env
+

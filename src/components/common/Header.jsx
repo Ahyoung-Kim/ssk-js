@@ -9,7 +9,6 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import color from "../../common/color";
-import { StatusBar } from "react-native";
 
 const Header = ({
   headerText,
@@ -89,7 +88,6 @@ const Header = ({
   return (
     <>
       <HeaderWrapper>
-        <StatusBar />
         {leftComponent}
         <Text>{headerText}</Text>
         {rightComponent}

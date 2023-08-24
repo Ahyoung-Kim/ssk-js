@@ -43,12 +43,27 @@ const LoginScreen = () => {
     <>
       <Layout>
         <PageWrapper>
-          <Toast position="top" topOffset={20} visibilityTime={1200} />
+          {/* <Toast position="top" topOffset={20} visibilityTime={1200} />
           <ContentWrapper>
             <LoginLogo />
             <Margin size={40} />
             <KakaoLogin />
-          </ContentWrapper>
+          </ContentWrapper> */}
+          <Toast position="top" topOffset={20} visibilityTime={1200} />
+          <Margin size={90} />
+          {!isKeyboardShown && (
+            <>
+              <Margin size={40} />
+              <LoginLogo />
+              <Margin size={40} />
+            </>
+          )}
+          <LoginForm
+            successMessage={successMessage}
+            errorMessage={errorMessage}
+          />
+          <KakaoLogin />
+          <LoginOptions />
         </PageWrapper>
       </Layout>
     </>
