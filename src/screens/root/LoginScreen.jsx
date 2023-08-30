@@ -10,6 +10,7 @@ import LoginLogo from "../../components/login/LoginLogo";
 import LoginForm from "../../components/login/LoginForm";
 import LoginOptions from "../../components/login/LoginOptions";
 import KakaoLogin from "../../components/login/KakaoLogin";
+import GoogleLogin from "../../components/login/GoogleLogin";
 
 const LoginScreen = () => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
@@ -63,6 +64,7 @@ const LoginScreen = () => {
             errorMessage={errorMessage}
           />
           <KakaoLogin />
+          <GoogleLogin />
           <LoginOptions />
         </PageWrapper>
       </Layout>
