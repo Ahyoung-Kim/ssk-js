@@ -2,7 +2,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginScreen from "../screens/root/LoginScreen";
-import OAuthLoginScreen from "../screens/root/OAuthLoginScreen";
+import GoogleLoginScreen from "../screens/root/GoogleLoginScreen";
+import KakaoLoginScreen from "../screens/root/KakaoLoginScreen";
 import OAuthInfoScreen from "../screens/root/OAuthInfoScreen";
 import SignUpScreen from "../screens/root/SignUpScreen";
 import OnBoardingScreen from "../screens/root/OnBoardingScreen";
@@ -21,8 +22,13 @@ const RootNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="OAuthLoginScreen"
-        component={OAuthLoginScreen}
+        name="GoogleLoginScreen"
+        component={GoogleLoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="KakaoLoginScreen"
+        component={KakaoLoginScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

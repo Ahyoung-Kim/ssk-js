@@ -4,9 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 
 import { storeData } from "../../constants/asyncStorage";
 
-const OAuthLoginScreen = () => {
-  const REDIRECT_URI = "http://naver.com";
-  const BACKEND_URI = `http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao?redirect_uri=${REDIRECT_URI}`;
+const GoogleLoginScreen = () => {
+  const REDIRECT_URI = "https://susukgwan.com/redirect";
+  const BACKEND_URI = `http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google?redirect_uri=${REDIRECT_URI}`;
   const webViewRef = useRef();
 
   const navigation = useNavigation();
@@ -70,4 +70,4 @@ const OAuthLoginScreen = () => {
   );
 };
 
-export default OAuthLoginScreen;
+export default GoogleLoginScreen;

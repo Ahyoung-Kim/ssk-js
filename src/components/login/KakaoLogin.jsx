@@ -1,19 +1,27 @@
 import React, { useState } from "react";
+import { Image } from "react-native";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
+
+import kakaoLoginButton from "../../assets/images/kakaoLogin.png";
 
 const KakaoLogin = () => {
   const navigation = useNavigation();
 
   const handleButton = () => {
-    navigation.navigate("OAuthLoginScreen");
+    navigation.navigate("KakaoLoginScreen");
   };
 
   return (
     <>
       <Wrapper>
         <LoginButton onPress={handleButton}>
-          <ButtonText>카카오로 로그인하기</ButtonText>
+          <LoginButtonImage
+            className="login_button"
+            source={kakaoLoginButton}
+            alt="카카오 로그인 버튼"
+            style={{ height: 38 }}
+          />
         </LoginButton>
       </Wrapper>
     </>
@@ -35,16 +43,9 @@ const Wrapper = styled.View`
 const LoginButton = styled.TouchableOpacity`
   width: 100%;
   border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #fef01b;
-  padding: 10px 0;
+  overflow: hidden;
 `;
 
-const ButtonText = styled.Text`
-  font-size: 18px;
-  font-weight: 700;
-  color: #000;
+const LoginButtonImage = styled.Image`
+  width: 100%;
 `;
