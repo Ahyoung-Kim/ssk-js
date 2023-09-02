@@ -54,17 +54,19 @@ const LoginScreen = () => {
           <Margin size={90} />
           {!isKeyboardShown && (
             <>
-              <Margin size={40} />
+              <Margin size={20} />
               <LoginLogo />
-              <Margin size={40} />
+              <Margin size={20} />
             </>
           )}
           <LoginForm
             successMessage={successMessage}
             errorMessage={errorMessage}
           />
+          <Margin size={10} />
           <KakaoLogin />
           <GoogleLogin />
+          <Margin size={20} />
           <LoginOptions />
         </PageWrapper>
       </Layout>
