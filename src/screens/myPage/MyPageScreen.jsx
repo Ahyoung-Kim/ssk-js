@@ -35,7 +35,7 @@ const MyPageScreen = () => {
     try {
       const token = await getData("accessToken");
       const response = await axios.delete(
-        "http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/withdraw",
+        "https://susukgwan.com/api/user/withdraw",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -86,10 +86,7 @@ const MyPageScreen = () => {
         />
         <MyPageButton type="AGREEMENT" />
         <MyPageButton type="LOGOUT" handleButton={handleLogout} />
-        <MyPageButton
-          type="LEAVE"
-          handleButton={() => setIsLeaveModalOpened(true)}
-        />
+        <MyPageButton type="LEAVE" handleButton={() => withdrawUser()} />
         {/* 임시 */}
         <MyPageButton
           type="LOGIN"
@@ -110,7 +107,7 @@ const MyPageScreen = () => {
           }}
         />
       </MainLayout>
-      {isLeaveModalOpened && (
+      {/* {isLeaveModalOpened && (
         <ConfirmModal
           modalText="정말로 회원 탈퇴하시겠습니까?"
           confirmText="탈퇴하기"
@@ -118,7 +115,7 @@ const MyPageScreen = () => {
           onCancel={() => setIsLeaveModalOpened(false)}
           onConfirm={withdrawUser}
         />
-      )}
+      )} */}
     </>
   );
 };

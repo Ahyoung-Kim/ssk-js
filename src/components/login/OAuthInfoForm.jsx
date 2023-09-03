@@ -25,7 +25,7 @@ const OAuthInfoForm = () => {
       const data = { role: role, name: name };
       console.log("보내기 전: ", data);
       const response = await axios.post(
-        "http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/signup",
+        "https://susukgwan.com/api/user/signup",
         data,
         {
           headers: {
