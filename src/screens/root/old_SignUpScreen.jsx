@@ -1,3 +1,4 @@
+// deprecated
 import React, { useState, useEffect } from "react";
 import { Keyboard } from "react-native";
 import styled from "styled-components/native";

@@ -8,7 +8,7 @@ import { Alert } from "react-native";
 
 import MainLayout from "../../components/common/MainLayout";
 import MyPageButton from "../../components/myPage/MyPageButton";
-import ConfirmModal from "../../components/common/ConfirmModal";
+import ConfirmModalWithoutInput from "../../components/common/ConfirmModalWithoutInput";
 import useUser from "../../hooks/useUser";
 import useClearRedux from "../../hooks/useClearRedux";
 
@@ -35,7 +35,7 @@ const MyPageScreen = () => {
     try {
       const token = await getData("accessToken");
       const response = await axios.delete(
-        "http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/api/user/withdraw",
+        "https://susukgwan.com/api/user/withdraw",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,6 +43,11 @@ const MyPageScreen = () => {
         }
       );
       console.log(response);
+      setTimeout(async () => {
+        navigation.navigate("LoginScreen");
+        await clearData();
+        await clearReduxData(true);
+      });
     } catch (error) {
       console.log("error: ", error);
     }
@@ -111,13 +116,16 @@ const MyPageScreen = () => {
         />
       </MainLayout>
       {isLeaveModalOpened && (
-        <ConfirmModal
-          modalText="정말로 회원 탈퇴하시겠습니까?"
-          confirmText="탈퇴하기"
-          cancelText="취소하기"
-          onCancel={() => setIsLeaveModalOpened(false)}
-          onConfirm={withdrawUser}
-        />
+        <>
+          <ConfirmModalWithoutInput
+            modalText="정말로 회원 탈퇴하시겠습니까?"
+            confirmText="탈퇴하기"
+            cancelText="취소하기"
+            onCancel={() => setIsLeaveModalOpened(false)}
+            onConfirm={() => withdrawUser()}
+            isVisible={isLeaveModalOpened}
+          />
+        </>
       )}
     </>
   );

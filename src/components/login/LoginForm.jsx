@@ -56,7 +56,7 @@ const LoginForm = ({ successMessage, errorMessage }) => {
   return (
     <>
       <Wrapper>
-        <FormWrapper>
+        <InputWrapper>
           <FormInput
             editable
             onChangeText={(text) => setEmail(text)}
@@ -64,8 +64,8 @@ const LoginForm = ({ successMessage, errorMessage }) => {
             placeholder="이메일"
             placeholderTextColor="#979797"
           />
-        </FormWrapper>
-        <FormWrapper>
+        </InputWrapper>
+        <InputWrapper>
           <FormInput
             editable
             onChangeText={(text) => setPassword(text)}
@@ -74,7 +74,7 @@ const LoginForm = ({ successMessage, errorMessage }) => {
             placeholderTextColor="#979797"
             secureTextEntry={true}
           />
-        </FormWrapper>
+        </InputWrapper>
         <LoginButton onPress={handleLoginButton}>
           <LoginText>로그인 하기</LoginText>
         </LoginButton>
@@ -91,18 +91,18 @@ const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
   padding: 5px 30px;
 `;
 
-const FormWrapper = styled.View`
+const InputWrapper = styled.View`
   background-color: #e9ecef;
   border-radius: 6px;
-  padding: 5px;
+  padding: 4px 4px;
 `;
 
 const FormInput = styled.TextInput`
-  padding: 10px;
+  padding: 4px 10px;
   color: #0c9bfb;
 `;
 
@@ -114,11 +114,11 @@ const LoginButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   background-color: #0c9bfb;
-  padding: 10px;
+  padding: 9px;
 `;
 
 const LoginText = styled.Text`
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 400;
   color: #fff;
 `;

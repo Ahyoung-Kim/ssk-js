@@ -5,6 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import { storeData } from "../../constants/asyncStorage";
 
 const GoogleLoginScreen = () => {
+  const customUserAgent =
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+
   const REDIRECT_URI = "https://susukgwan.com/redirect";
   const BACKEND_URI = `http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google?redirect_uri=${REDIRECT_URI}`;
   const webViewRef = useRef();
@@ -66,6 +69,7 @@ const GoogleLoginScreen = () => {
       javaScriptEnabled={true}
       domStorageEnabled={true}
       setSupportMultipleWindows={false}
+      userAgent={customUserAgent}
     />
   );
 };
