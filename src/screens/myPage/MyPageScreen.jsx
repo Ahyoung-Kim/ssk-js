@@ -8,7 +8,7 @@ import { Alert } from "react-native";
 
 import MainLayout from "../../components/common/MainLayout";
 import MyPageButton from "../../components/myPage/MyPageButton";
-import ConfirmModal from "../../components/common/ConfirmModal";
+import ConfirmModalWithoutInput from "../../components/common/ConfirmModalWithoutInput";
 import useUser from "../../hooks/useUser";
 import useClearRedux from "../../hooks/useClearRedux";
 
@@ -43,6 +43,11 @@ const MyPageScreen = () => {
         }
       );
       console.log(response);
+      setTimeout(async () => {
+        navigation.navigate("LoginScreen");
+        await clearData();
+        await clearReduxData(true);
+      });
     } catch (error) {
       console.log("error: ", error);
     }
@@ -86,7 +91,10 @@ const MyPageScreen = () => {
         />
         <MyPageButton type="AGREEMENT" />
         <MyPageButton type="LOGOUT" handleButton={handleLogout} />
-        <MyPageButton type="LEAVE" handleButton={() => withdrawUser()} />
+        <MyPageButton
+          type="LEAVE"
+          handleButton={() => setIsLeaveModalOpened(true)}
+        />
         {/* 임시 */}
         <MyPageButton
           type="LOGIN"
@@ -107,15 +115,18 @@ const MyPageScreen = () => {
           }}
         />
       </MainLayout>
-      {/* {isLeaveModalOpened && (
-        <ConfirmModal
-          modalText="정말로 회원 탈퇴하시겠습니까?"
-          confirmText="탈퇴하기"
-          cancelText="취소하기"
-          onCancel={() => setIsLeaveModalOpened(false)}
-          onConfirm={withdrawUser}
-        />
-      )} */}
+      {isLeaveModalOpened && (
+        <>
+          <ConfirmModalWithoutInput
+            modalText="정말로 회원 탈퇴하시겠습니까?"
+            confirmText="탈퇴하기"
+            cancelText="취소하기"
+            onCancel={() => setIsLeaveModalOpened(false)}
+            onConfirm={() => withdrawUser()}
+            isVisible={isLeaveModalOpened}
+          />
+        </>
+      )}
     </>
   );
 };
