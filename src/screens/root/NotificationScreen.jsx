@@ -19,29 +19,33 @@ const NotificationScreen = () => {
     },
   ]);
 
-  // 알림 내역 불러오기 함수
-  const fetchNotificationList = async () => {
-    try {
-      const result = await client.get(`/api/fcm/push/list`);
-      console.log(result);
-      setNotificationList(result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // // 알림 내역 불러오기 함수
+  // const fetchNotificationList = async () => {
+  //   try {
+  //     const result = await client.get(`/api/fcm/push/list`);
+  //     console.log(result);
+  //     setNotificationList(result);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchNotificationList();
-  }, []);
+  // useEffect(() => {
+  //   fetchNotificationList();
+  // }, []);
 
   return (
     <>
       <MainLayoutInView headerText={"알림 내역 조회"} headerLeftType={"back"}>
-        <CardList
-          data={notificationList}
-          renderItem={({ item }) => <NotificationCard id={item.id} />}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        <Wrapper>
+          <CardList
+            data={notificationList}
+            renderItem={({ item }) => (
+              <NotificationCard id={item.id} title={item.title} />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </Wrapper>
       </MainLayoutInView>
     </>
   );
@@ -49,4 +53,10 @@ const NotificationScreen = () => {
 
 export default NotificationScreen;
 
-const CardList = styled.FlatList``;
+const Wrapper = styled.View`
+  width: 100%;
+  padding: 10px;
+`;
+const CardList = styled.FlatList`
+  width: 100%;
+`;

@@ -8,7 +8,7 @@ const NotificationCard = ({ id }) => {
     <>
       <CardWrapper>
         <CardHeader>
-          <HeaderTitle>{`ID: ${id}`}</HeaderTitle>
+          <HeaderTitle>{id}</HeaderTitle>
         </CardHeader>
         <BodyText>하이</BodyText>
       </CardWrapper>
@@ -19,18 +19,30 @@ const NotificationCard = ({ id }) => {
 export default NotificationCard;
 
 const CardWrapper = styled.View`
-  width: 80%;
+  width: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px 10px;
-  border-radius: 12px;
+  border: 1px solid black;
+  border-radius: 4px;
   background-color: ${color.COLOR_WHITE_BACKGROUND};
+  elevation: 5;
 `;
 
-const CardHeader = styled.View``;
+const CardHeader = styled.View`
+  width: 100%;
+  background-color: ${color.COLOR_MAIN};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+`;
 
-const HeaderTitle = styled.Text``;
+const HeaderTitle = styled.Text`
+  color: ${color.COLOR_WHITE_BACKGROUND};
+`;
 
 const BodyText = styled.Text``;
