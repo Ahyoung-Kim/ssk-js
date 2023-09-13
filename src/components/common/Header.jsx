@@ -26,7 +26,7 @@ const Header = ({
 
   // bell 버튼 핸들링
   const handleBellButton = () => {
-    navigation.navigate("TestNotiScreen");
+    navigation.navigate("NotificationScreen");
   };
 
   const makeComponent = (type, onPress) => {
