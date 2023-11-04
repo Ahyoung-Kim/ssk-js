@@ -80,11 +80,11 @@ const ScheduleDetailBSheet = ({
           clickable={false}
         />
 
-        <LeftBarContainer label="Description">
+        {/* <LeftBarContainer label="Description">
           <DescriptionText>
             디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션디스크립션
           </DescriptionText>
-        </LeftBarContainer>
+        </LeftBarContainer> */}
 
         <SelectTag tag={tagColor} edit={false} />
 

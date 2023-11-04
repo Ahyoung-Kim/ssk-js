@@ -3,14 +3,15 @@ import styled from "styled-components/native";
 
 import color from "../../common/color";
 
-const NotificationCard = ({ id }) => {
+const NotificationCard = ({ title, body, read }) => {
   return (
     <>
       <CardWrapper>
         <CardHeader>
-          <HeaderTitle>{id}</HeaderTitle>
+          {!read && <Flag>new  </Flag>}
+          <HeaderTitle>{title}</HeaderTitle>
         </CardHeader>
-        <BodyText>하이</BodyText>
+        <BodyText>{body}</BodyText>
       </CardWrapper>
     </>
   );
@@ -25,8 +26,9 @@ const CardWrapper = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
-  border-radius: 4px;
+  margin-bottom: 10px;
+  /* border: 1px solid black; */
+  border-radius: 10px;
   background-color: ${color.COLOR_WHITE_BACKGROUND};
   elevation: 5;
 `;
@@ -40,6 +42,10 @@ const CardHeader = styled.View`
   align-items: center;
   padding: 5px 10px;
 `;
+
+const Flag = styled.Text`
+  color: ${color.COLOR_RED_TEXT};
+`
 
 const HeaderTitle = styled.Text`
   color: ${color.COLOR_WHITE_BACKGROUND};

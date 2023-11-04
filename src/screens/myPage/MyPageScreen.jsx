@@ -30,6 +30,11 @@ const MyPageScreen = () => {
     navigation.navigate("MyPageNotificationScreen");
   };
 
+  // 버튼: 링크 있는 화면으로 가기
+  const handleAgreement = () => {
+    navigation.navigate("MyPageAgreementScreen");
+  };
+
   // 회원 탈퇴
   const withdrawUser = async () => {
     try {
@@ -89,31 +94,13 @@ const MyPageScreen = () => {
           type="NOTIFICATION"
           handleButton={handleNotificationButton}
         />
-        <MyPageButton type="AGREEMENT" />
+        <MyPageButton type="AGREEMENT" handleButton={handleAgreement}/>
         <MyPageButton type="LOGOUT" handleButton={handleLogout} />
         <MyPageButton
           type="LEAVE"
           handleButton={() => setIsLeaveModalOpened(true)}
         />
-        {/* 임시 */}
-        <MyPageButton
-          type="LOGIN"
-          handleButton={() => navigation.navigate("LoginScreen")}
-        />
-        {/* 임시 */}
-        <MyPageButton
-          type="CLEAR"
-          handleButton={async () => {
-            await clearData();
-          }}
-        />
-        {/* 임시 */}
-        <MyPageButton
-          type="TEST_NOTI"
-          handleButton={async () => {
-            navigation.navigate("TestNotiScreen");
-          }}
-        />
+       
       </MainLayout>
       {isLeaveModalOpened && (
         <>

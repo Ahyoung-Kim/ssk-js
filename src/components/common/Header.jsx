@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
@@ -10,6 +10,8 @@ import {
 } from "@expo/vector-icons";
 import color from "../../common/color";
 
+import client from "../../config/axios";
+
 const Header = ({
   headerText,
   headerLeftType,
@@ -18,6 +20,22 @@ const Header = ({
   handlePressHeaderRight = () => {},
 }) => {
   const navigation = useNavigation(); // 네비게이션
+  const [isNewAlarm, setIsNewAlarm] = useState(false);
+  useEffect(() =>{
+    async function checkNewAlarm() {
+      let newAlarm = false;
+      try {
+        const ret = await client.get(`/api/fcm/alarm/new`);
+        if (ret.status == 200) {
+          newAlarm = ret.data.newAlarm;
+        }
+      } catch (err) {
+        console.log("check new alarm error: ", err);
+      }
+      setIsNewAlarm(newAlarm);
+    }
+    checkNewAlarm();
+  });
 
   // 이전 버튼 핸들링
   const handleBackButton = () => {
@@ -26,6 +44,7 @@ const Header = ({
 
   // bell 버튼 핸들링
   const handleBellButton = () => {
+    setIsNewAlarm(false);
     navigation.navigate("NotificationScreen");
   };
 
@@ -58,7 +77,8 @@ const Header = ({
       case "bell": // 종 모양(알림)
         return (
           <TouchableArea onPress={handleBellButton}>
-            <MaterialCommunityIcons name="bell" size={26} color="#fff" />
+            
+            <MaterialCommunityIcons name="bell" size={26} color = {isNewAlarm? "#d0312d" : "#fff"} />
           </TouchableArea>
         );
       case "pen": // 펜슬
@@ -104,7 +124,9 @@ const HeaderWrapper = styled.View`
   display: flex;
   flex-direction: row;
   background-color: ${color.COLOR_MAIN};
-  padding: 15px;
+  margin-right: 30px;
+  margin-top: 30px;
+  padding: 5px; 
   justify-content: space-between;
   align-items: center;
 `;
@@ -113,6 +135,14 @@ const Text = styled.Text`
   font-size: 24px;
   color: #fff;
   font-family: "ExtraBold";
+`;
+
+const RedBall = styled.View`
+  width: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TouchableArea = styled.TouchableOpacity`

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
-import { Keyboard, Platform } from "react-native";
+import { Keyboard, Platform, Alert } from "react-native";
 
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -51,7 +51,7 @@ async function registerForPushNotificationsAsync() {
     }
 
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
+      Alert.alert("알림 허용이 필요해요!", "알림 미설정 시 수업 연결, 일정 변경, 숙제 등의 알림을 받지 못해요.");
       return;
     }
 
@@ -175,15 +175,15 @@ const LoginScreen = () => {
               <Margin size={20} />
             </>
           )}
-          <LoginForm
+          {/* <LoginForm
             successMessage={successMessage}
             errorMessage={errorMessage}
-          />
+          /> */}
           <Margin size={10} />
           <KakaoLogin />
           <GoogleLogin />
           <Margin size={20} />
-          <LoginOptions />
+          {/* <LoginOptions /> */}
         </PageWrapper>
       </Layout>
     </>

@@ -82,27 +82,27 @@ const MyPageButton = ({ nickname, type, handleButton }) => {
         </>
       );
       break;
-    case "LOGIN": // 임시
-      component = (
-        <>
-          <ButtonText>로그인(임시)</ButtonText>
-        </>
-      );
-      break;
-    case "CLEAR": // 임시
-      component = (
-        <>
-          <ButtonText>스토리지 초기화(임시)</ButtonText>
-        </>
-      );
-      break;
-    case "TEST_NOTI": // 임시
-      component = (
-        <>
-          <ButtonText>알림 테스트(임시)</ButtonText>
-        </>
-      );
-      break;
+    // case "LOGIN": // 임시
+    //   component = (
+    //     <>
+    //       <ButtonText>로그인(임시)</ButtonText>
+    //     </>
+    //   );
+    //   break;
+    // case "CLEAR": // 임시
+    //   component = (
+    //     <>
+    //       <ButtonText>스토리지 초기화(임시)</ButtonText>
+    //     </>
+    //   );
+    //   break;
+    // case "TEST_NOTI": // 임시
+    //   component = (
+    //     <>
+    //       <ButtonText>알림 테스트(임시)</ButtonText>
+    //     </>
+    //   );
+    //   break;
     default:
       break;
   }
