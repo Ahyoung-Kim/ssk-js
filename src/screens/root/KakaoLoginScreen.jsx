@@ -6,7 +6,7 @@ import { storeData } from "../../constants/asyncStorage";
 
 const KakaoLoginScreen = () => {
   const REDIRECT_URI = "https://susukgwan.com/redirect";
-  const BACKEND_URI = `http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/kakao?redirect_uri=${REDIRECT_URI}`;
+  const BACKEND_URI = `https://susukgwan.com/oauth2/authorization/kakao?redirect_uri=${REDIRECT_URI}`;
   const webViewRef = useRef();
 
   const navigation = useNavigation();

@@ -6,19 +6,23 @@ import client from "../../config/axios";
 
 import MainLayoutInView from "../../components/common/MainLayoutInView";
 import NotificationCard from "../../components/notification/NotificationCard";
+import FetchNotifications from "./FetchNotifications";
+import ReadNotifications from "./ReadNotifications";
 
 const NotificationScreen = () => {
-  const [notificationList, setNotificationList] = useState([
-    {
-      id: 15,
-      title: "초대 승인",
-      body: "~가 수업 초대를 승인하였습니다.",
-      topic: "approve",
-      receiverId: 10,
-      isRead: "false",
-    },
-  ]);
+  const [fetchedNotifications, setFetchedNotifications] = useState([]);
 
+  useEffect(() => {
+    async function getNotifications() {
+      const notifications = await FetchNotifications();
+      setFetchedNotifications(notifications);
+    }
+    getNotifications();
+    async function readAllNotifications() {
+      await ReadNotifications();
+    }
+    readAllNotifications();
+  }, []);
   // // 알림 내역 불러오기 함수
   // const fetchNotificationList = async () => {
   //   try {
@@ -39,9 +43,9 @@ const NotificationScreen = () => {
       <MainLayoutInView headerText={"알림 내역 조회"} headerLeftType={"back"}>
         <Wrapper>
           <CardList
-            data={notificationList}
+            data={fetchedNotifications}
             renderItem={({ item }) => (
-              <NotificationCard id={item.id} title={item.title} />
+              <NotificationCard id={item.id} title={item.title} read={item.read} />
             )}
             keyExtractor={(item) => item.id.toString()}
           />

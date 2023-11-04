@@ -2,10 +2,15 @@ import React from "react";
 import styled from "styled-components/native";
 
 import color from "../../common/color";
+import SetPushState from "../../screens/myPage/SetPushState";
 
 const NotificationButton = ({ type, isAccepted, setIsAccepted }) => {
 
   const handleButton = () => {
+    async function setPushState(isAccepted) {
+      await SetPushState(isAccepted);
+    }
+    setPushState(isAccepted);
     setIsAccepted(!isAccepted);
   }
 
@@ -14,13 +19,6 @@ const NotificationButton = ({ type, isAccepted, setIsAccepted }) => {
     case "PUSH":
       component =(<>
         <ButtonText>푸시 알림 허용</ButtonText>
-        {isAccepted ? <ToggleButtonImage source={require("../../assets/images/toggleOn.png")}/> : 
-        <ToggleButtonImage source={require("../../assets/images/toggleOff.png")}/> }
-      </>)
-      break;
-    case "APP":
-      component =(<>
-        <ButtonText>앱 알림 허용</ButtonText>
         {isAccepted ? <ToggleButtonImage source={require("../../assets/images/toggleOn.png")}/> : 
         <ToggleButtonImage source={require("../../assets/images/toggleOff.png")}/> }
       </>)
