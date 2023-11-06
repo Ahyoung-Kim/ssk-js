@@ -127,9 +127,7 @@ const HeaderWrapper = styled.View`
   margin-right: 30px;
   margin-top: 30px;
   padding: 5px;
-  /* 임시 처리!! 알람 확인용 
   justify-content: space-between;
-  */
   align-items: center;
 `;
 
