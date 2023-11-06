@@ -28,6 +28,11 @@ import { getClassNote } from "../../redux/actions/classNoteAction";
 import { getReviewList } from "../../redux/actions/reviewListAction";
 import { getAssignmentList } from "../../redux/actions/assignmentListAction";
 
+import ReviewTagItem from "../../components/note/ReviewTagItem";
+import EmptyMessage from "../../components/common/EmptyMessage";
+import { getReviewTagList } from "../../redux/actions/reviewTagListAction";
+import { View, ScrollView } from "react-native";
+
 const EachReviewItem = ({ review, onPressXButton }) => {
   const { body, tagId, tag } = review;
 
@@ -70,6 +75,34 @@ const CreateReviewScreen = () => {
   const [tag, setTag] = useState(null);
 
   const tagList = useReviewTagList(tutoringId);
+
+  const [tagName, setTagName] = useState("");
+  const [plusTag, setPlusTag] = useState(true);
+  const [refetch, setRefetch] = useState(false);
+  const handleCreateTag = async () => {
+    try {
+      const ret = await client.post("/api/tag", {
+        tutoringId,
+        tagName,
+      });
+
+      if (ret.status == 200) {
+        setTagName("");
+        setRefetch(true);
+      }
+    } catch (err) {
+      console.log("create tag error: ", err);
+    }
+  };
+
+  useEffect(() => {
+    if (refetch) {
+      getReviewTagList(tutoringId).then((ret) => {
+        dispatch(ret);
+        setRefetch(false);
+      });
+    }
+  }, [refetch]);
 
   const onPressPlustButton = () => {
     if (!body) {
@@ -264,50 +297,87 @@ const CreateReviewScreen = () => {
           onChangeText={setBody}
           placeholder={"복습 내용을 입력하세요."}
         />
-
-        <DropDownForm
-          label="복습 태그"
-          placeholder={"복습 태그를 선택하세요."}
-          list={tagList ? tagList : []}
-          textKey={"name"}
-          onPressItem={(item) => {
-            // console.log(item);
-            setTag(item);
-          }}
-          menuHeight={150}
-          initialItem={
-            prevReview
-              ? {
-                  id: prevReview.tagId,
-                  name: prevReview.tagName,
-                }
-              : null
-          }
-        />
-
-        {prevStates && (
-          <Container>
-            <PlusButton onPress={onPressPlustButton}>
-              <FontAwesome5
-                name="plus"
-                size={16}
-                color={color.COLOR_GRAY_ICON}
+        
+        <View>
+          <ScrollView style={{ marginBottom: 200 }}>
+            <View style={{ zIndex: 100, elevation: 3}}>
+            <DropDownForm
+              label="복습 태그"
+              placeholder={"복습 태그를 선택하세요."}
+              list={tagList ? tagList : []}
+              textKey={"name"}
+              onPressItem={(item) => {
+                // console.log(item);
+                setTag(item);
+              }}
+              menuHeight={450}
+              
+              dropDownDirection="TOP"
+              initialItem={
+                prevReview
+                  ? {
+                      id: prevReview.tagId,
+                      name: prevReview.tagName,
+                    }
+                  : null
+              }
+            />
+            </View>
+            <TextInputForm
+                label="태그 추가"
+                placeholder={"복습 태그 이름을 입력하세요."}
+                value={tagName}
+                onChangeText={setTagName}
+                button={"입력"}
+                handleButtonPress={handleCreateTag}
               />
-            </PlusButton>
 
-            {reviewList.length > 0 && (
-              <ReviewList>
-                {reviewList.map((review, idx) => (
-                  <EachReviewItem
-                    key={`review_${review.body}`}
-                    review={review}
-                    onPressXButton={onPressXButton.bind(this, idx)}
+
+            {prevStates && (
+              <Container>
+                <PlusButton onPress={onPressPlustButton}>
+                  <FontAwesome5
+                    name="plus"
+                    size={16}
+                    color={color.COLOR_GRAY_ICON}
                   />
-                ))}
-              </ReviewList>
+                </PlusButton>
+
+                {reviewList.length > 0 && (
+                  <ReviewList>
+                    {reviewList.map((review, idx) => (
+                      <EachReviewItem
+                        key={`review_${review.body}`}
+                        review={review}
+                        onPressXButton={onPressXButton.bind(this, idx)}
+                      />
+                    ))}
+                  </ReviewList>
+                )}
+              </Container>
             )}
-          </Container>
-        )}
+            <NoteHeader
+          text={"태그 관리"}
+          
+        />
+            <Contents>
+              {tagList && tagList.length > 0 ? (
+                <TagList>
+                  {tagList.map((tag) => (
+                    <ReviewTagItem
+                      key={`${tag.name}_${tag.id}`}
+                      tag={tag}
+                      setRefetch={setRefetch}
+                    />
+                  ))}
+                </TagList>
+              ) : (
+                <EmptyMessage message={"태그 목록이 없습니다."} />
+              )}
+            </Contents>
+            
+          </ScrollView>
+        </View>
       </MainLayout>
 
       {prevStates ? (
@@ -376,4 +446,19 @@ const TagName = styled.Text``;
 const ReviewName = styled.Text`
   font-weight: bold;
   font-size: 16;
+`;
+
+const Contents = styled.View`
+  padding-horizontal: 15;
+  margin-vertical: 10;
+`;
+
+const TagList = styled.View``;
+
+const EmptyText = styled.Text`
+  font-weight: bold;
+  font-size: 16;
+  color: ${color.COLOR_GRAY_TEXT};
+  text-align: center;
+  padding-vertical: 30;
 `;

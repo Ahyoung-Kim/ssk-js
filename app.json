@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ssk-js",
-    "slug": "ssk-js",
+    "name": "수숙관",
+    "slug": "susukgwan",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,26 +9,30 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0c9bfb"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "bundleIdentifier": "com.springbeam.susukgwan"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
-      "permissions": [
+      "blockedPermissions": [
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.springbeam.susukgwan"
+      "package": "com.springbeam.susukgwan",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -43,8 +47,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "c0bbecb6-1f82-4295-844e-0366edc20f89"
+        "projectId": "3471a0d8-bbd5-4d27-9054-85141ceaa97c"
       }
-    }
+    },
+    "owner": "grindincodes"
   }
 }
