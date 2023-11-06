@@ -155,7 +155,6 @@ const UserInfoScreen = () => {
 
         <TextInputForm label="역할" value={user.role} editable={false} />
 
-        <TextInputForm label="이메일" value={user.userId} editable={false} />
       </MainLayout>
 
       <SelectPhotoBSheet
