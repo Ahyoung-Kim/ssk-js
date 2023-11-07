@@ -57,9 +57,7 @@ async function registerForPushNotificationsAsync() {
 
     // token = (await Notifications.getExpoPushTokenAsync()).data;
     token = (
-      await Notifications.getDevicePushTokenAsync({
-        projectId: process.env.EXPO_PUBLIC_EXPO_DEV_ID,
-      })
+      await Notifications.getDevicePushTokenAsync()
     ).data;
     console.log(token);
   } else {
