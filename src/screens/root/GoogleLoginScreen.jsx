@@ -9,7 +9,7 @@ const GoogleLoginScreen = () => {
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
 
   const REDIRECT_URI = "https://susukgwan.com/redirect";
-  const BACKEND_URI = `http://ec2-43-201-71-214.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google?redirect_uri=${REDIRECT_URI}`;
+  const BACKEND_URI = `https://susukgwan.com/oauth2/authorization/google?redirect_uri=${REDIRECT_URI}`;
   const webViewRef = useRef();
 
   const navigation = useNavigation();
@@ -22,7 +22,9 @@ const GoogleLoginScreen = () => {
     }
     return null;
   };
-
+  async function setFCMIsChanged() {
+    await storeData("FCMIsChanged", true);
+  }
   const handleRedirects = async (webview) => {
     const urlData = webview.url;
     if (urlData) {
@@ -45,6 +47,7 @@ const GoogleLoginScreen = () => {
       console.log("userId:", userId);
 
       await storeData("accessToken", accessToken);
+      await setFCMIsChanged();
       if (accessToken) {
         setTimeout(() => {
           if (isEnabled === "true") {
