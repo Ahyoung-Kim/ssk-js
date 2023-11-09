@@ -6,7 +6,7 @@ import { storeData } from "../../constants/asyncStorage";
 
 const GoogleLoginScreen = () => {
   const customUserAgent =
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+    "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.134 Mobile Safari/537.36";
 
   const REDIRECT_URI = "https://susukgwan.com/redirect";
   const BACKEND_URI = `https://susukgwan.com/oauth2/authorization/google?redirect_uri=${REDIRECT_URI}`;
