@@ -94,6 +94,8 @@ const UserInfoScreen = () => {
       });
 
       if (ret.status == 200) {
+        console.log("here");
+        console.log(ret.data);
         setProfileImage(ret.data);
       }
     } catch (err) {
