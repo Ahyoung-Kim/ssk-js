@@ -125,7 +125,7 @@ const HeaderWrapper = styled.View`
   flex-direction: row;
   background-color: ${color.COLOR_MAIN};
   margin-right: 30px;
-  margin-top: 30px;
+  margin-top: 25px;
   padding: 5px;
   justify-content: space-between;
   align-items: center;

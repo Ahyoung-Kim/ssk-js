@@ -19,6 +19,7 @@ import LeftBarContainer from "../../components/common/LeftBarContainer";
 import useClassListInfo from "../../hooks/useClassListInfo";
 import useTodayClassList from "../../hooks/useTodayClassList";
 import { getClassListInfo } from "../../redux/actions/classListInfoAction";
+import GetDevicePushTokenAndSend from "../root/GetDevicePushTokenAndSend";
 
 const HomeScreen = () => {
   const today = new Date();
@@ -33,7 +34,9 @@ const HomeScreen = () => {
   const handleRefresh = async () => {
     await getClassListInfo(year, month).then((ret) => dispatch(ret));
   };
-
+  useEffect(() =>{
+    GetDevicePushTokenAndSend();
+  });
   return (
     <>
       <MainLayout

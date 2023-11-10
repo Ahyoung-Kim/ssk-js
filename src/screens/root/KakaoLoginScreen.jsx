@@ -19,7 +19,9 @@ const KakaoLoginScreen = () => {
     }
     return null;
   };
-
+  async function setFCMIsChanged() {
+    await storeData("FCMIsChanged", true);
+  }
   const handleRedirects = async (webview) => {
     const urlData = webview.url;
     if (urlData) {
@@ -42,6 +44,9 @@ const KakaoLoginScreen = () => {
       console.log("userId:", userId);
 
       await storeData("accessToken", accessToken);
+      // fcm 토큰 로그인 후 홈에서 발급받도록 bool값 설정
+      await setFCMIsChanged();
+
       if (accessToken) {
         setTimeout(() => {
           if (isEnabled === "true") {
